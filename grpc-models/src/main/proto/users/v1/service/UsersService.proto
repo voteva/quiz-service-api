@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package com.voteva.users.grpc.service.v1;
+
+import "common/model/CommonModels.proto";
+import "users/v1/model/UsersModels.proto";
+
+option java_multiple_files = true;
+
+
+service UsersServiceV1 {
+
+  rpc getUserInfoByUid (com.voteva.users.grpc.model.v1.UserUidRequest) returns (com.voteva.users.grpc.model.v1.UserInfoResponse);
+
+  rpc getUserInfoByEmail (com.voteva.users.grpc.model.v1.UserEmailRequest) returns (com.voteva.users.grpc.model.v1.UserInfoResponse);
+
+  rpc addUser (com.voteva.users.grpc.model.v1.UserInfoRequest) returns (com.voteva.users.grpc.model.v1.UserInfoResponse);
+
+  rpc updateUser (com.voteva.users.grpc.model.v1.UserInfoRequest) returns (com.voteva.users.grpc.model.v1.UserInfoResponse);
+
+  rpc removeUser (com.voteva.users.grpc.model.v1.UserUidRequest) returns (com.voteva.common.grpc.model.Empty);
+
+  rpc blockUser (com.voteva.users.grpc.model.v1.UserUidRequest) returns (com.voteva.common.grpc.model.Empty);
+
+  rpc unblockUser (com.voteva.users.grpc.model.v1.UserUidRequest) returns (com.voteva.common.grpc.model.Empty);
+
+}

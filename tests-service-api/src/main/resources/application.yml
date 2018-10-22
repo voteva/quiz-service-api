@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: tests-service-api
+
+grpc:
+  port: 6566

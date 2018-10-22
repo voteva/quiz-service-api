@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package com.voteva.users.grpc.model.v1;
+
+option java_multiple_files = true;
+
+
+message UserUidRequest {
+  string uuid = 1;
+}
+
+message UserEmailRequest {
+  string email = 1;
+}
+
+message UserInfoRequest {
+  ObjUserInfo objUserInfo = 1;
+}
+
+message UserInfoResponse {
+  ObjUserInfo objUserInfo = 1;
+}
+
+message ObjUserInfo {
+   string uuid = 1;
+   string email = 2;
+   bool isBlocked = 3;
+   bool isAdmin = 4;
+}

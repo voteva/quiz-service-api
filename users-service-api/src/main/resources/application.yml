@@ -1,0 +1,13 @@
+grpc:
+  port: 6565
+
+spring:
+  application:
+    name: users-service-api
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: srv_users
+    password: "0000"
+
+spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
