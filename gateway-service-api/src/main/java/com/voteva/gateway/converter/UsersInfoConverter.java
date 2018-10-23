@@ -1,25 +1,17 @@
 package com.voteva.gateway.converter;
 
 import com.voteva.gateway.web.to.common.UserInfo;
-import com.voteva.users.grpc.model.v1.ObjUserInfo;
+import com.voteva.users.grpc.model.v1.GObjUserInfo;
 
 import java.util.UUID;
 
 public class UsersInfoConverter {
 
-    public static UserInfo convert(ObjUserInfo objUserInfo) {
-        return new UserInfo(
-                UUID.fromString(objUserInfo.getUuid()),
-                objUserInfo.getEmail(),
-                "full_name",
-                123456,
-                objUserInfo.getIsBlocked(),
-                objUserInfo.getIsAdmin()
-        );
-    }
-
-    public static ObjUserInfo convert(UserInfo userInfo) {
-        return ObjUserInfo.newBuilder()
-                .build();
+    public static UserInfo convert(GObjUserInfo objUserInfo) {
+        return new UserInfo()
+                .setUserUid(UUID.fromString(objUserInfo.getUuid()))
+                .setEmail(objUserInfo.getEmail())
+                .setFullName(objUserInfo.getFullName())
+                .setCreatedDatetime(objUserInfo.getCreatedDtime());
     }
 }

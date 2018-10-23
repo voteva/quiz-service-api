@@ -35,25 +35,18 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    @RequestMapping(path = "/get", method = RequestMethod.GET)
-    public ResponseEntity<UserInfo> getUserByUid(@RequestParam("user_uid") UUID userUid) {
-        logger.debug("Getting user info by uid={}", userUid);
-
-        return ResponseEntity.ok(usersService.getUserByUuid(userUid));
-    }
-
-    /*@RequestMapping(path = "/get", method = RequestMethod.GET)
-    public ResponseEntity<UserInfo> getUserByEmail(@RequestParam("email") String email) {
-        logger.debug("Getting user info by email={}", email);
-
-        return ResponseEntity.ok(usersService.getUserByEmail(email));
-    }*/
-
-    @RequestMapping(path = "/list", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserInfo>> getUsers(SpringDataWebProperties.Pageable pageable) {
         logger.debug("Getting users for page={}", pageable);
 
         return ResponseEntity.ok(usersService.getUsers(pageable));
+    }
+
+    @RequestMapping(path = "/get", method = RequestMethod.GET)
+    public ResponseEntity<UserInfo> getUserByUid(@RequestParam("user_uid") UUID userUid) {
+        logger.debug("Getting user info by uid={}", userUid);
+
+        return ResponseEntity.ok(usersService.getUserByUid(userUid));
     }
 
     @RequestMapping(path = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

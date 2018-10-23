@@ -5,25 +5,32 @@ package com.voteva.users.grpc.model.v1;
 option java_multiple_files = true;
 
 
-message UserUidRequest {
+message GUserUidRequest {
   string uuid = 1;
 }
 
-message UserEmailRequest {
+message GUserEmailRequest {
   string email = 1;
 }
 
-message UserInfoRequest {
-  ObjUserInfo objUserInfo = 1;
+message GAddUserRequest {
+    string email = 1;
+    string fullName = 2;
 }
 
-message UserInfoResponse {
-  ObjUserInfo objUserInfo = 1;
+message GUpdateUserRequest {
+    string uuid = 1;
+    string email = 2;
+    string fullName = 3;
 }
 
-message ObjUserInfo {
+message GUserInfoResponse {
+    GObjUserInfo objUserInfo = 1;
+}
+
+message GObjUserInfo {
    string uuid = 1;
    string email = 2;
-   bool isBlocked = 3;
-   bool isAdmin = 4;
+   string fullName = 3;
+   int64 createdDtime = 4;
 }

@@ -1,6 +1,6 @@
 package com.voteva.users.service;
 
-import com.voteva.users.grpc.model.v1.ObjUserInfo;
+import com.voteva.users.model.entity.ObjUserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -8,19 +8,15 @@ import java.util.UUID;
 
 public interface UsersService {
 
-    Page<ObjUserInfo> getUsers(Pageable pageable);
+    Page<ObjUserEntity> getUsers(Pageable pageable);
 
-    ObjUserInfo getUserByUid(UUID userUid);
+    ObjUserEntity getUserByUid(UUID userUid);
 
-    ObjUserInfo getUserByEmail(String email);
+    ObjUserEntity getUserByEmail(String email);
 
-    ObjUserInfo addUser(ObjUserInfo userInfo);
+    ObjUserEntity addUser(ObjUserEntity userInfo);
 
-    ObjUserInfo updateUser(ObjUserInfo userInfo);
+    ObjUserEntity updateUser(ObjUserEntity userInfo);
 
     void removeUser(UUID userUid);
-
-    void blockUser(UUID userUid);
-
-    void unblockUser(UUID userUid);
 }

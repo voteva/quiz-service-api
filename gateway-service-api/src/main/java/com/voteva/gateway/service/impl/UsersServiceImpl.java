@@ -1,12 +1,15 @@
 package com.voteva.gateway.service.impl;
 
 import com.voteva.gateway.converter.UsersInfoConverter;
-import com.voteva.gateway.grpc.UsersServiceClient;
+import com.voteva.gateway.grpc.client.GRpcUsersServiceClient;
 import com.voteva.gateway.service.UsersService;
 import com.voteva.gateway.web.to.common.UserInfo;
 import com.voteva.gateway.web.to.in.AddUserRequest;
 import com.voteva.gateway.web.to.in.UpdateUserRequest;
-import com.voteva.users.grpc.model.v1.ObjUserInfo;
+import com.voteva.users.grpc.model.v1.GAddUserRequest;
+import com.voteva.users.grpc.model.v1.GUpdateUserRequest;
+import com.voteva.users.grpc.model.v1.GUserEmailRequest;
+import com.voteva.users.grpc.model.v1.GUserUidRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,21 +24,31 @@ public class UsersServiceImpl implements UsersService {
 
     private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 
-    private final UsersServiceClient usersServiceClient;
+    private final GRpcUsersServiceClient gRpcUsersServiceClient;
 
     @Autowired
-    public UsersServiceImpl(UsersServiceClient usersServiceClient) {
-        this.usersServiceClient = usersServiceClient;
+    public UsersServiceImpl(GRpcUsersServiceClient gRpcUsersServiceClient) {
+        this.gRpcUsersServiceClient = gRpcUsersServiceClient;
     }
 
     @Override
-    public UserInfo getUserByUuid(UUID userUid) {
-        return UsersInfoConverter.convert(usersServiceClient.getUserInfo(userUid));
+    public UserInfo getUserByUid(UUID userUid) {
+        return UsersInfoConverter.convert(
+                gRpcUsersServiceClient.getUserInfoByUid(
+                        GUserUidRequest.newBuilder()
+                                .setUuid(String.valueOf(userUid))
+                                .build())
+                        .getObjUserInfo());
     }
 
     @Override
     public UserInfo getUserByEmail(String email) {
-        return null;
+        return UsersInfoConverter.convert(
+                gRpcUsersServiceClient.getUserInfoByEmail(
+                        GUserEmailRequest.newBuilder()
+                                .setEmail(email)
+                                .build())
+                        .getObjUserInfo());
     }
 
     @Override
@@ -45,21 +58,40 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UserInfo addUser(AddUserRequest addUserRequest) {
-        return UsersInfoConverter.convert(usersServiceClient.addUser(addUserRequest));
+        return UsersInfoConverter.convert(
+                gRpcUsersServiceClient.addUser(
+                        GAddUserRequest.newBuilder()
+                                .setEmail(addUserRequest.getEmail())
+                                .setFullName(addUserRequest.getFullName())
+                                .build())
+                        .getObjUserInfo());
     }
 
     @Override
     public UserInfo updateUser(UpdateUserRequest updateUserRequest) {
-        return null;
+        return UsersInfoConverter.convert(
+                gRpcUsersServiceClient.updateUser(
+                        GUpdateUserRequest.newBuilder()
+                                .setUuid(String.valueOf(updateUserRequest.getUserUid()))
+                                .setEmail(updateUserRequest.getEmail())
+                                .setFullName(updateUserRequest.getFullName())
+                                .build())
+                        .getObjUserInfo());
     }
 
     @Override
     public void blockUser(UUID userUid) {
-
+        /*gRpcUsersServiceClient.blockUser(
+                GUserUidRequest.newBuilder()
+                        .setUuid(String.valueOf(userUid))
+                        .build());*/
     }
 
     @Override
     public void unblockUser(UUID userUid) {
-
+        /*gRpcUsersServiceClient.unblockUser(
+                GUserUidRequest.newBuilder()
+                        .setUuid(String.valueOf(userUid))
+                        .build());*/
     }
 }

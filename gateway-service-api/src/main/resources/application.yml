@@ -15,7 +15,16 @@ spring:
     mode: HTML
 
 gateway:
-  grpc:
+  grpc.client:
+    QuizServiceV1Grpc:
+      host: localhost
+      port: 6567
+    TestsServiceV1Grpc:
+      host: localhost
+      port: 6566
+    UsersServiceV1Grpc:
+      host: localhost
+      port: 6565
 
 
 

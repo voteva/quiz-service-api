@@ -1,8 +1,6 @@
 package com.voteva.gateway.web.to.common;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Email;
@@ -12,39 +10,30 @@ import java.util.UUID;
 public class UserInfo {
 
     @ApiModelProperty(example = "8152e3f9-449f-44c1-9d3a-e3c6f1afd752")
-    private final UUID userUid;
+    private UUID userUid;
 
     @Email
     @Size(max = 200)
     @ApiModelProperty(example = "user@example.com")
-    private final String email;
+    private String email;
 
-    private final String fullName;
+    @ApiModelProperty(example = "Vladimir Putin")
+    private String fullName;
 
-    private final long createdDatetime;
+    private long createdDatetime;
 
-    private final boolean isBlocked;
+    private boolean isBlocked;
 
-    private final boolean isAdmin;
-
-    @JsonCreator
-    public UserInfo(@JsonProperty("user_uid") UUID userUid,
-                    @JsonProperty("email") String email,
-                    @JsonProperty("full_name") String fullName,
-                    @JsonProperty("created_datetime") long createdDatetime,
-                    @JsonProperty("is_blocked") boolean isBlocked,
-                    @JsonProperty("is_admin") boolean isAdmin) {
-        this.userUid = userUid;
-        this.email = email;
-        this.fullName = fullName;
-        this.createdDatetime = createdDatetime;
-        this.isBlocked = isBlocked;
-        this.isAdmin = isAdmin;
-    }
+    private boolean isAdmin;
 
     @JsonGetter("user_uid")
     public UUID getUserUid() {
         return userUid;
+    }
+
+    public UserInfo setEmail(String email) {
+        this.email = email;
+        return this;
     }
 
     @JsonGetter("email")
@@ -52,9 +41,19 @@ public class UserInfo {
         return email;
     }
 
+    public UserInfo setFullName(String fullName) {
+        this.fullName = fullName;
+        return this;
+    }
+
     @JsonGetter("full_name")
     public String getFullName() {
         return fullName;
+    }
+
+    public UserInfo setCreatedDatetime(long createdDatetime) {
+        this.createdDatetime = createdDatetime;
+        return this;
     }
 
     @JsonGetter("created_datetime")
@@ -62,13 +61,28 @@ public class UserInfo {
         return createdDatetime;
     }
 
+    public UserInfo setBlocked(boolean blocked) {
+        isBlocked = blocked;
+        return this;
+    }
+
     @JsonGetter("is_blocked")
     public boolean isBlocked() {
         return isBlocked;
     }
 
+    public UserInfo setAdmin(boolean admin) {
+        isAdmin = admin;
+        return this;
+    }
+
     @JsonGetter("is_admin")
     public boolean isAdmin() {
         return isAdmin;
+    }
+
+    public UserInfo setUserUid(UUID userUid) {
+        this.userUid = userUid;
+        return this;
     }
 }

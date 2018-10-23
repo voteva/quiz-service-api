@@ -1,6 +1,13 @@
+grpc:
+  port: 6566
+
 spring:
   application:
     name: tests-service-api
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: srv_tests
+    password: "0000"
 
-grpc:
-  port: 6566
+spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false

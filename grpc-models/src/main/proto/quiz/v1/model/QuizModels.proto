@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package com.voteva.quiz.grpc.model.v1;
+
+option java_multiple_files = true;
+
+
+message GUserUidRequest {
+    string uuid = 1;
+}
+
+message GUser2TestAssignRequest {
+    string userUid = 1;
+    string testUid = 2;
+    int32 attemptsAllowed = 3;
+}
+
+message GUser2TestResultRequest {
+    string userUid = 1;
+    string testUid = 2;
+    int32 percent = 3;
+}
+
+message GUserResponse {
+    string userUid = 1;
+    bool isAdmin = 2;
+    bool isBlocked = 3;
+}
+
+message GUser2TestResponse {
+    string userUid = 1;
+    string testUid = 2;
+    int32 percent = 3;
+    int32 attemptsAllowed = 4;
+}

@@ -1,12 +1,14 @@
 package com.voteva.users.model.entity;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -19,10 +21,9 @@ public class ObjUserEntity {
 
     private int userId;
     private String userEmail;
+    private String fullName;
     private UUID userUid = UUID.randomUUID();
     private Timestamp userCreatedDtime = Timestamp.from(Instant.now());
-    private boolean isBlocked = false;
-    private boolean isAdmin;
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -49,6 +50,17 @@ public class ObjUserEntity {
     }
 
     @Basic
+    @Column(name = "full_name")
+    public String getFullName() {
+        return fullName;
+    }
+
+    public ObjUserEntity setFullName(String fullName) {
+        this.fullName = fullName;
+        return this;
+    }
+
+    @Basic
     @Column(name = "user_uid", nullable = false)
     public UUID getUserUid() {
         return userUid;
@@ -70,25 +82,18 @@ public class ObjUserEntity {
         return this;
     }
 
-    @Basic
-    @Column(name = "blocked")
-    public boolean isBlocked() {
-        return isBlocked;
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o, false);
     }
 
-    public ObjUserEntity setBlocked(boolean blocked) {
-        isBlocked = blocked;
-        return this;
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
-    @Basic
-    @Column(name = "admin")
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public ObjUserEntity setAdmin(boolean admin) {
-        isAdmin = admin;
-        return this;
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

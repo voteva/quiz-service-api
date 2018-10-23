@@ -1,6 +1,14 @@
+grpc:
+  port: 6567
+
 spring:
   application:
     name: quiz-service-api
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: srv_quiz
+    password: "0000"
 
-grpc:
-  port: 6567
+spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
+

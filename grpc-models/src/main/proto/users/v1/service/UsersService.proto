@@ -10,18 +10,12 @@ option java_multiple_files = true;
 
 service UsersServiceV1 {
 
-  rpc getUserInfoByUid (com.voteva.users.grpc.model.v1.UserUidRequest) returns (com.voteva.users.grpc.model.v1.UserInfoResponse);
+  rpc getUserInfoByUid (com.voteva.users.grpc.model.v1.GUserUidRequest) returns (com.voteva.users.grpc.model.v1.GUserInfoResponse);
 
-  rpc getUserInfoByEmail (com.voteva.users.grpc.model.v1.UserEmailRequest) returns (com.voteva.users.grpc.model.v1.UserInfoResponse);
+  rpc getUserInfoByEmail (com.voteva.users.grpc.model.v1.GUserEmailRequest) returns (com.voteva.users.grpc.model.v1.GUserInfoResponse);
 
-  rpc addUser (com.voteva.users.grpc.model.v1.UserInfoRequest) returns (com.voteva.users.grpc.model.v1.UserInfoResponse);
+  rpc addUser (com.voteva.users.grpc.model.v1.GAddUserRequest) returns (com.voteva.users.grpc.model.v1.GUserInfoResponse);
 
-  rpc updateUser (com.voteva.users.grpc.model.v1.UserInfoRequest) returns (com.voteva.users.grpc.model.v1.UserInfoResponse);
-
-  rpc removeUser (com.voteva.users.grpc.model.v1.UserUidRequest) returns (com.voteva.common.grpc.model.Empty);
-
-  rpc blockUser (com.voteva.users.grpc.model.v1.UserUidRequest) returns (com.voteva.common.grpc.model.Empty);
-
-  rpc unblockUser (com.voteva.users.grpc.model.v1.UserUidRequest) returns (com.voteva.common.grpc.model.Empty);
+  rpc updateUser (com.voteva.users.grpc.model.v1.GUpdateUserRequest) returns (com.voteva.users.grpc.model.v1.GUserInfoResponse);
 
 }

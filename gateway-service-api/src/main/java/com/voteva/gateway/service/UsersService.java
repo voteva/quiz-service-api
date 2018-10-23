@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface UsersService {
 
-    UserInfo getUserByUuid(UUID userUid);
+    UserInfo getUserByUid(UUID userUid);
 
     UserInfo getUserByEmail(String email);
 

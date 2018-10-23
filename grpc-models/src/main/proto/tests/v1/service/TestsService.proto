@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package com.voteva.tests.grpc.service.v1;
+
+import "common/model/CommonModels.proto";
+import "tests/v1/model/TestsModels.proto";
+
+option java_multiple_files = true;
+
+
+service TestsServiceV1 {
+
+
+}
