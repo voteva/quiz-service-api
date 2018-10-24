@@ -1,7 +1,7 @@
 package com.voteva.quiz.grpc.service.impl.v1;
 
 import com.voteva.common.grpc.model.Empty;
-import com.voteva.quiz.converter.GRpcConverter;
+import com.voteva.quiz.converter.ModelConverter;
 import com.voteva.quiz.exception.NotFoundUserException;
 import com.voteva.quiz.grpc.model.v1.GUser2TestAssignRequest;
 import com.voteva.quiz.grpc.model.v1.GUser2TestResponse;
@@ -35,7 +35,7 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
             ObjUserEntity userEntity = quizService.addUser(
                     new ObjUserEntity().setUserUid(UUID.fromString(request.getUuid())));
 
-            responseObserver.onNext(GRpcConverter.convert(userEntity));
+            responseObserver.onNext(ModelConverter.convert(userEntity));
             responseObserver.onCompleted();
         } catch (Exception e) {
             onError(responseObserver, e);
@@ -50,7 +50,7 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
                     UUID.fromString(request.getTestUid()),
                     request.getAttemptsAllowed());
 
-            responseObserver.onNext(GRpcConverter.convert(user2TestEntity));
+            responseObserver.onNext(ModelConverter.convert(user2TestEntity));
             responseObserver.onCompleted();
         } catch (Exception e) {
             onError(responseObserver, e);
@@ -65,7 +65,7 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
                     UUID.fromString(request.getTestUid()),
                     request.getPercent());
 
-            responseObserver.onNext(GRpcConverter.convert(user2TestEntity));
+            responseObserver.onNext(ModelConverter.convert(user2TestEntity));
             responseObserver.onCompleted();
         } catch (Exception e) {
             onError(responseObserver, e);

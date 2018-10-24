@@ -1,5 +1,11 @@
 package com.voteva.gateway.grpc.client;
 
+import com.voteva.tests.grpc.model.v1.GAddTestRequest;
+import com.voteva.tests.grpc.model.v1.GAddTestResponse;
+import com.voteva.tests.grpc.model.v1.GGetTestRequest;
+import com.voteva.tests.grpc.model.v1.GGetTestResponse;
+import com.voteva.tests.grpc.model.v1.GRemoveTestRequest;
+import com.voteva.tests.grpc.model.v1.GRemoveTestResponse;
 import com.voteva.tests.grpc.service.v1.TestsServiceV1Grpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -28,4 +34,15 @@ public class GRpcTestsServiceClient {
         testsServiceV1BlockingStub = TestsServiceV1Grpc.newBlockingStub(managedChannel);
     }
 
+    public GGetTestResponse getTest(GGetTestRequest request) {
+        return testsServiceV1BlockingStub.getTest(request);
+    }
+
+    public GAddTestResponse addTest(GAddTestRequest request) {
+        return testsServiceV1BlockingStub.addTest(request);
+    }
+
+    public GRemoveTestResponse removeTest(GRemoveTestRequest request) {
+        return testsServiceV1BlockingStub.removeTest(request);
+    }
 }

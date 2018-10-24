@@ -7,7 +7,7 @@ import com.voteva.users.model.entity.ObjUserEntity;
 
 import java.util.UUID;
 
-public class GRpcConverter {
+public class ModelConverter {
 
     public static GObjUserInfo convert(ObjUserEntity objUserEntity) {
         return GObjUserInfo.newBuilder()

@@ -4,10 +4,13 @@ grpc:
 spring:
   application:
     name: tests-service-api
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://localhost:5432/postgres"
-    username: srv_tests
-    password: "0000"
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: tests_db
 
 spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
+
+#spring.data.mongodb.uri: tests_db://srv_tests:0000@localhost:27017
+

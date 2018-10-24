@@ -3,6 +3,7 @@ package com.voteva.gateway.service.impl;
 import com.voteva.gateway.converter.UsersInfoConverter;
 import com.voteva.gateway.grpc.client.GRpcUsersServiceClient;
 import com.voteva.gateway.service.UsersService;
+import com.voteva.gateway.util.GRpcExceptionUtils;
 import com.voteva.gateway.web.to.common.UserInfo;
 import com.voteva.gateway.web.to.in.AddUserRequest;
 import com.voteva.gateway.web.to.in.UpdateUserRequest;
@@ -10,6 +11,7 @@ import com.voteva.users.grpc.model.v1.GAddUserRequest;
 import com.voteva.users.grpc.model.v1.GUpdateUserRequest;
 import com.voteva.users.grpc.model.v1.GUserEmailRequest;
 import com.voteva.users.grpc.model.v1.GUserUidRequest;
+import io.grpc.StatusRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,31 +26,41 @@ public class UsersServiceImpl implements UsersService {
 
     private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 
-    private final GRpcUsersServiceClient gRpcUsersServiceClient;
+    private final GRpcUsersServiceClient grpcUsersServiceClient;
 
     @Autowired
     public UsersServiceImpl(GRpcUsersServiceClient gRpcUsersServiceClient) {
-        this.gRpcUsersServiceClient = gRpcUsersServiceClient;
+        this.grpcUsersServiceClient = gRpcUsersServiceClient;
     }
 
     @Override
     public UserInfo getUserByUid(UUID userUid) {
-        return UsersInfoConverter.convert(
-                gRpcUsersServiceClient.getUserInfoByUid(
-                        GUserUidRequest.newBuilder()
-                                .setUuid(String.valueOf(userUid))
-                                .build())
-                        .getObjUserInfo());
+        try {
+            return UsersInfoConverter.convert(
+                    grpcUsersServiceClient.getUserInfoByUid(
+                            GUserUidRequest.newBuilder()
+                                    .setUuid(String.valueOf(userUid))
+                                    .build())
+                            .getObjUserInfo());
+        } catch (StatusRuntimeException e) {
+            logger.error("Failed to get user info by uid={}", userUid);
+            throw GRpcExceptionUtils.convert(e);
+        }
     }
 
     @Override
     public UserInfo getUserByEmail(String email) {
-        return UsersInfoConverter.convert(
-                gRpcUsersServiceClient.getUserInfoByEmail(
-                        GUserEmailRequest.newBuilder()
-                                .setEmail(email)
-                                .build())
-                        .getObjUserInfo());
+        try {
+            return UsersInfoConverter.convert(
+                    grpcUsersServiceClient.getUserInfoByEmail(
+                            GUserEmailRequest.newBuilder()
+                                    .setEmail(email)
+                                    .build())
+                            .getObjUserInfo());
+        } catch (StatusRuntimeException e) {
+            logger.error("Failed to get user info by email={}", email);
+            throw GRpcExceptionUtils.convert(e);
+        }
     }
 
     @Override
@@ -59,7 +71,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UserInfo addUser(AddUserRequest addUserRequest) {
         return UsersInfoConverter.convert(
-                gRpcUsersServiceClient.addUser(
+                grpcUsersServiceClient.addUser(
                         GAddUserRequest.newBuilder()
                                 .setEmail(addUserRequest.getEmail())
                                 .setFullName(addUserRequest.getFullName())
@@ -70,7 +82,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UserInfo updateUser(UpdateUserRequest updateUserRequest) {
         return UsersInfoConverter.convert(
-                gRpcUsersServiceClient.updateUser(
+                grpcUsersServiceClient.updateUser(
                         GUpdateUserRequest.newBuilder()
                                 .setUuid(String.valueOf(updateUserRequest.getUserUid()))
                                 .setEmail(updateUserRequest.getEmail())
@@ -81,7 +93,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public void blockUser(UUID userUid) {
-        /*gRpcUsersServiceClient.blockUser(
+        /*grpcUsersServiceClient.blockUser(
                 GUserUidRequest.newBuilder()
                         .setUuid(String.valueOf(userUid))
                         .build());*/
@@ -89,7 +101,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public void unblockUser(UUID userUid) {
-        /*gRpcUsersServiceClient.unblockUser(
+        /*grpcUsersServiceClient.unblockUser(
                 GUserUidRequest.newBuilder()
                         .setUuid(String.valueOf(userUid))
                         .build());*/

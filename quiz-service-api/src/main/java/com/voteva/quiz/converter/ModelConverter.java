@@ -5,7 +5,7 @@ import com.voteva.quiz.grpc.model.v1.GUserResponse;
 import com.voteva.quiz.model.entity.ObjUserEntity;
 import com.voteva.quiz.model.entity.RelUser2TestEntity;
 
-public class GRpcConverter {
+public class ModelConverter {
 
     public static GUserResponse convert(ObjUserEntity userEntity) {
         return GUserResponse.newBuilder()

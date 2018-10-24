@@ -1,6 +1,6 @@
 package com.voteva.users.grpc.service.impl.v1;
 
-import com.voteva.users.converter.GRpcConverter;
+import com.voteva.users.converter.ModelConverter;
 import com.voteva.users.exception.NotFoundUserException;
 import com.voteva.users.grpc.model.v1.GAddUserRequest;
 import com.voteva.users.grpc.model.v1.GObjUserInfo;
@@ -30,7 +30,7 @@ public class UsersServiceGrpcV1 extends UsersServiceV1Grpc.UsersServiceV1ImplBas
     @Override
     public void getUserInfoByUid(GUserUidRequest request, StreamObserver<GUserInfoResponse> responseObserver) {
         try {
-            GObjUserInfo userInfo = GRpcConverter.convert(
+            GObjUserInfo userInfo = ModelConverter.convert(
                     usersService.getUserByUid(UUID.fromString(request.getUuid())));
 
             GUserInfoResponse response = GUserInfoResponse.newBuilder()
@@ -47,7 +47,7 @@ public class UsersServiceGrpcV1 extends UsersServiceV1Grpc.UsersServiceV1ImplBas
     @Override
     public void getUserInfoByEmail(GUserEmailRequest request, StreamObserver<GUserInfoResponse> responseObserver) {
         try {
-            GObjUserInfo userInfo = GRpcConverter.convert(usersService.getUserByEmail(request.getEmail()));
+            GObjUserInfo userInfo = ModelConverter.convert(usersService.getUserByEmail(request.getEmail()));
 
             GUserInfoResponse response = GUserInfoResponse.newBuilder()
                     .setObjUserInfo(userInfo)
@@ -63,8 +63,8 @@ public class UsersServiceGrpcV1 extends UsersServiceV1Grpc.UsersServiceV1ImplBas
     @Override
     public void addUser(GAddUserRequest request, StreamObserver<GUserInfoResponse> responseObserver) {
         try {
-            GObjUserInfo userInfo = GRpcConverter.convert(
-                    usersService.addUser(GRpcConverter.convert(request)));
+            GObjUserInfo userInfo = ModelConverter.convert(
+                    usersService.addUser(ModelConverter.convert(request)));
 
             GUserInfoResponse response = GUserInfoResponse.newBuilder()
                     .setObjUserInfo(userInfo)
@@ -80,8 +80,8 @@ public class UsersServiceGrpcV1 extends UsersServiceV1Grpc.UsersServiceV1ImplBas
     @Override
     public void updateUser(GUpdateUserRequest request, StreamObserver<GUserInfoResponse> responseObserver) {
         try {
-            GObjUserInfo userInfo = GRpcConverter.convert(
-                    usersService.updateUser(GRpcConverter.convert(request)));
+            GObjUserInfo userInfo = ModelConverter.convert(
+                    usersService.updateUser(ModelConverter.convert(request)));
 
             GUserInfoResponse response = GUserInfoResponse.newBuilder()
                     .setObjUserInfo(userInfo)
