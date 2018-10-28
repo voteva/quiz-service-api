@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package com.voteva.tests.grpc.model.v1;
+
+import "common/model/model.proto";
+import "tests/v1/model/model.proto";
+
+option java_multiple_files = true;
+
+
+message GGetTestCategoriesResponse {
+    repeated string categories = 1;
+}
+
+message GGetAllTestsResponse {
+    com.voteva.common.grpc.model.GPage page = 1;
+    repeated GTestInfo tests = 2;
+}
+
+message GGetTestsByCategoryResponse {
+    com.voteva.common.grpc.model.GPage page = 1;
+    repeated GTestInfo tests = 2;
+}
+
+message GGetTestResponse {
+    GTestInfo testInfo = 1;
+}
+
+message GAddTestResponse {
+    com.voteva.common.grpc.model.GUuid testUid = 1;
+}

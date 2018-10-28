@@ -2,16 +2,27 @@ package com.voteva.quiz.service;
 
 import com.voteva.quiz.model.entity.ObjUserEntity;
 import com.voteva.quiz.model.entity.RelUser2TestEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface QuizService {
 
-    ObjUserEntity addUser(ObjUserEntity entity);
+    List<RelUser2TestEntity> getUserTests(UUID userUid);
 
-    RelUser2TestEntity assignTest(UUID userUid, UUID testUid, int attemptsAllowed);
+    void assignTest(UUID userUid, UUID testUid, int attemptsAllowed);
 
     RelUser2TestEntity setTestResults(UUID userUid, UUID testUid, int percent);
+
+    Page<ObjUserEntity> getAllUsers(Pageable pageable);
+
+    ObjUserEntity getUser(UUID userUid);
+
+    ObjUserEntity addUser(ObjUserEntity entity);
+
+    void updateUser(ObjUserEntity entity);
 
     void setAdmin(UUID userUid);
 

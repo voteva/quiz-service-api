@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package com.voteva.users.grpc.model.v1;
+
+import "common/model/model.proto";
+
+option java_multiple_files = true;
+
+
+message GAddUserResponse {
+    com.voteva.common.grpc.model.GUuid userUid = 1;
+}

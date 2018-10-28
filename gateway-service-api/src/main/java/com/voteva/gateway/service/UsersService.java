@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface UsersService {
 
-    UserInfo getUserByUid(UUID userUid);
+    /*UserInfo getUserByUid(UUID userUid);
 
     UserInfo getUserByEmail(String email);
 
@@ -22,6 +22,6 @@ public interface UsersService {
 
     void blockUser(UUID userUid);
 
-    void unblockUser(UUID userUid);
+    void unblockUser(UUID userUid);*/
 
 }

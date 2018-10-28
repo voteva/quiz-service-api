@@ -26,6 +26,9 @@ public class ObjTestEntity {
     @Field(value = "testName")
     private String testName;
 
+    @Field(value = "testCategory")
+    private String testCategory;
+
     @Field(value = "questions")
     private List<ObjQuestionEntity> questions;
 
@@ -44,6 +47,15 @@ public class ObjTestEntity {
 
     public ObjTestEntity setTestName(String testName) {
         this.testName = testName;
+        return this;
+    }
+
+    public String getTestCategory() {
+        return testCategory;
+    }
+
+    public ObjTestEntity setTestCategory(String testCategory) {
+        this.testCategory = testCategory;
         return this;
     }
 

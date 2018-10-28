@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package com.voteva.quiz.grpc.model.v1;
+
+import "common/model/model.proto";
+import "quiz/v1/model/model.proto";
+
+option java_multiple_files = true;
+
+
+message GGetUserTestsResponse {
+    repeated GUser2TestInfo tests = 1;
+}
+
+message GSetTestResultsResponse {
+    GUser2TestInfo testResultsInfo = 1;
+}
+
+message GGetUserResponse {
+    GUserInfo userInfo = 1;
+}
+
+message GGetAllUsersResponse {
+    com.voteva.common.grpc.model.GPage page = 1;
+    repeated GUserInfo users = 2;
+}
+
+message GAddUserResponse {
+    GUserInfo userInfo = 1;
+}

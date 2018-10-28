@@ -7,8 +7,12 @@ import com.voteva.quiz.repository.User2TestRepository;
 import com.voteva.quiz.repository.UsersRepository;
 import com.voteva.quiz.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,12 +29,12 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public ObjUserEntity addUser(ObjUserEntity entity) {
-        return usersRepository.save(entity);
+    public List<RelUser2TestEntity> getUserTests(UUID userUid) {
+        return new ArrayList<>(); // TODO
     }
 
     @Override
-    public RelUser2TestEntity assignTest(UUID userUid, UUID testUid, int attemptsAllowed) {
+    public void assignTest(UUID userUid, UUID testUid, int attemptsAllowed) {
         checkUserExists(userUid);
 
         user2TestRepository.findById(new RelUser2TestEntity.User2TestId(userUid, testUid))
@@ -39,7 +43,7 @@ public class QuizServiceImpl implements QuizService {
                             String.format("Test=%s already assigned to user=%s", testUid, userUid));
                 });
 
-        return user2TestRepository.save(
+        user2TestRepository.save(
                 new RelUser2TestEntity()
                         .setUser2TestId(new RelUser2TestEntity.User2TestId(userUid, testUid))
                         .setAttemptsAllowed(attemptsAllowed));
@@ -67,6 +71,27 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
+    public Page<ObjUserEntity> getAllUsers(Pageable pageable) {
+        return usersRepository.findAll(pageable);
+    }
+
+    @Override
+    public ObjUserEntity getUser(UUID userUid) {
+        return usersRepository.findById(userUid)
+                .orElseThrow(() -> new NotFoundUserException("Not found user with uid=" + userUid));
+    }
+
+    @Override
+    public ObjUserEntity addUser(ObjUserEntity entity) {
+        return usersRepository.save(entity);
+    }
+
+    @Override
+    public void updateUser(ObjUserEntity entity) {
+
+    }
+
+    @Override
     public void setAdmin(UUID userUid) {
         updateUserGrantsInternal(userUid, true);
     }
@@ -87,21 +112,16 @@ public class QuizServiceImpl implements QuizService {
     }
 
     private void checkUserExists(UUID userUid) {
-        getUserByUidInternal(userUid);
-    }
-
-    private ObjUserEntity getUserByUidInternal(UUID userUid) {
-        return usersRepository.findById(userUid)
-                .orElseThrow(() -> new NotFoundUserException("Not found user with uid=" + userUid));
+        getUser(userUid);
     }
 
     private void updateUserGrantsInternal(UUID userUid, boolean isAdmin) {
-        usersRepository.save(getUserByUidInternal(userUid)
+        usersRepository.save(getUser(userUid)
                 .setAdmin(isAdmin));
     }
 
     private void updateUserStatusInternal(UUID userUid, boolean isBlocked) {
-        usersRepository.save(getUserByUidInternal(userUid)
+        usersRepository.save(getUser(userUid)
                 .setBlocked(isBlocked));
     }
 }

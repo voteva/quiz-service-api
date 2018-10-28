@@ -1,10 +1,22 @@
 package com.voteva.gateway.grpc.client;
 
-import com.voteva.quiz.grpc.model.v1.GUser2TestAssignRequest;
-import com.voteva.quiz.grpc.model.v1.GUser2TestResponse;
-import com.voteva.quiz.grpc.model.v1.GUser2TestResultRequest;
-import com.voteva.quiz.grpc.model.v1.GUserResponse;
-import com.voteva.quiz.grpc.model.v1.GUserUidRequest;
+import com.voteva.common.grpc.model.Empty;
+import com.voteva.quiz.grpc.model.v1.GAddUserRequest;
+import com.voteva.quiz.grpc.model.v1.GAddUserResponse;
+import com.voteva.quiz.grpc.model.v1.GAssignTestRequest;
+import com.voteva.quiz.grpc.model.v1.GBlockUserRequest;
+import com.voteva.quiz.grpc.model.v1.GGetAllUsersRequest;
+import com.voteva.quiz.grpc.model.v1.GGetAllUsersResponse;
+import com.voteva.quiz.grpc.model.v1.GGetUserRequest;
+import com.voteva.quiz.grpc.model.v1.GGetUserResponse;
+import com.voteva.quiz.grpc.model.v1.GGetUserTestsRequest;
+import com.voteva.quiz.grpc.model.v1.GGetUserTestsResponse;
+import com.voteva.quiz.grpc.model.v1.GRemoveAdminGrantsRequest;
+import com.voteva.quiz.grpc.model.v1.GSetAdminGrantsRequest;
+import com.voteva.quiz.grpc.model.v1.GSetTestResultsRequest;
+import com.voteva.quiz.grpc.model.v1.GSetTestResultsResponse;
+import com.voteva.quiz.grpc.model.v1.GUnblockUserRequest;
+import com.voteva.quiz.grpc.model.v1.GUpdateUserRequest;
 import com.voteva.quiz.grpc.service.v1.QuizServiceV1Grpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -33,31 +45,47 @@ public class GRpcQuizServiceClient {
         quizServiceV1BlockingStub = QuizServiceV1Grpc.newBlockingStub(managedChannel);
     }
 
-    public GUserResponse addUser(GUserUidRequest request) {
-        return quizServiceV1BlockingStub.addUser(request);
+    public GGetUserTestsResponse getUserTests(GGetUserTestsRequest request){
+        return quizServiceV1BlockingStub.getUserTests(request);
     }
 
-    public GUser2TestResponse assignTest(GUser2TestAssignRequest request) {
+    public Empty assignTest(GAssignTestRequest request) {
         return quizServiceV1BlockingStub.assignTest(request);
     }
 
-    public GUser2TestResponse setTestResults(GUser2TestResultRequest request) {
+    public GSetTestResultsResponse setTestResults(GSetTestResultsRequest request) {
         return quizServiceV1BlockingStub.setTestResults(request);
     }
 
-    public void setAdminGrants(GUserUidRequest request) {
-        quizServiceV1BlockingStub.setAdminGrants(request);
+    public GGetAllUsersResponse getAllUsers(GGetAllUsersRequest request) {
+        return quizServiceV1BlockingStub.getAllUsers(request);
     }
 
-    public void removeAdminGrants(GUserUidRequest request) {
-        quizServiceV1BlockingStub.removeAdminGrants(request);
+    public GGetUserResponse getUser(GGetUserRequest request) {
+        return quizServiceV1BlockingStub.getUser(request);
     }
 
-    public void blockUser(GUserUidRequest request) {
-        quizServiceV1BlockingStub.blockUser(request);
+    public GAddUserResponse addUser(GAddUserRequest request) {
+        return quizServiceV1BlockingStub.addUser(request);
     }
 
-    public void unblockUser(GUserUidRequest request) {
-        quizServiceV1BlockingStub.unblockUser(request);
+    public Empty updateUser(GUpdateUserRequest request) {
+        return quizServiceV1BlockingStub.updateUser(request);
+    }
+
+    public Empty setAdminGrants(GSetAdminGrantsRequest request) {
+        return quizServiceV1BlockingStub.setAdminGrants(request);
+    }
+
+    public Empty removeAdminGrants(GRemoveAdminGrantsRequest request) {
+        return quizServiceV1BlockingStub.removeAdminGrants(request);
+    }
+
+    public Empty blockUser(GBlockUserRequest request) {
+        return quizServiceV1BlockingStub.blockUser(request);
+    }
+
+    public Empty unblockUser(GUnblockUserRequest request) {
+        return quizServiceV1BlockingStub.unblockUser(request);
     }
 }

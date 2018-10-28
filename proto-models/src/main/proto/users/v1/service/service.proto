@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package com.voteva.users.grpc.service.v1;
+
+import "users/v1/model/request.proto";
+import "users/v1/model/response.proto";
+
+option java_multiple_files = true;
+
+
+service UsersServiceV1 {
+
+  rpc addUser (com.voteva.users.grpc.model.v1.GAddUserRequest) returns (com.voteva.users.grpc.model.v1.GAddUserResponse);
+
+}

@@ -35,7 +35,7 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    /*@RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserInfo>> getUsers(SpringDataWebProperties.Pageable pageable) {
         logger.debug("Getting users for page={}", pageable);
 
@@ -79,5 +79,5 @@ public class UsersController {
         usersService.unblockUser(unblockUserRequest.getUserUid());
 
         return ResponseEntity.noContent().build();
-    }
+    }*/
 }

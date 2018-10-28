@@ -24,7 +24,7 @@
         <!-- GRpc models -->
         <dependency>
             <groupId>com.voteva</groupId>
-            <artifactId>grpc-models</artifactId>
+            <artifactId>proto-models</artifactId>
             <version>${project.version}</version>
         </dependency>
 

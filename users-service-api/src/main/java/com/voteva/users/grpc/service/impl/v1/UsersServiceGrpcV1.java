@@ -1,13 +1,8 @@
 package com.voteva.users.grpc.service.impl.v1;
 
 import com.voteva.users.converter.ModelConverter;
-import com.voteva.users.exception.NotFoundUserException;
 import com.voteva.users.grpc.model.v1.GAddUserRequest;
-import com.voteva.users.grpc.model.v1.GObjUserInfo;
-import com.voteva.users.grpc.model.v1.GUpdateUserRequest;
-import com.voteva.users.grpc.model.v1.GUserEmailRequest;
-import com.voteva.users.grpc.model.v1.GUserInfoResponse;
-import com.voteva.users.grpc.model.v1.GUserUidRequest;
+import com.voteva.users.grpc.model.v1.GAddUserResponse;
 import com.voteva.users.grpc.service.v1.UsersServiceV1Grpc;
 import com.voteva.users.service.UsersService;
 import io.grpc.Status;
@@ -28,63 +23,12 @@ public class UsersServiceGrpcV1 extends UsersServiceV1Grpc.UsersServiceV1ImplBas
     }
 
     @Override
-    public void getUserInfoByUid(GUserUidRequest request, StreamObserver<GUserInfoResponse> responseObserver) {
+    public void addUser(GAddUserRequest request, StreamObserver<GAddUserResponse> responseObserver) {
         try {
-            GObjUserInfo userInfo = ModelConverter.convert(
-                    usersService.getUserByUid(UUID.fromString(request.getUuid())));
+            UUID userUid = usersService.addUser(request.getEmail(), request.getPassword());
 
-            GUserInfoResponse response = GUserInfoResponse.newBuilder()
-                    .setObjUserInfo(userInfo)
-                    .build();
-
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
-        } catch (Exception e) {
-            onError(responseObserver, e);
-        }
-    }
-
-    @Override
-    public void getUserInfoByEmail(GUserEmailRequest request, StreamObserver<GUserInfoResponse> responseObserver) {
-        try {
-            GObjUserInfo userInfo = ModelConverter.convert(usersService.getUserByEmail(request.getEmail()));
-
-            GUserInfoResponse response = GUserInfoResponse.newBuilder()
-                    .setObjUserInfo(userInfo)
-                    .build();
-
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
-        } catch (Exception e) {
-            onError(responseObserver, e);
-        }
-    }
-
-    @Override
-    public void addUser(GAddUserRequest request, StreamObserver<GUserInfoResponse> responseObserver) {
-        try {
-            GObjUserInfo userInfo = ModelConverter.convert(
-                    usersService.addUser(ModelConverter.convert(request)));
-
-            GUserInfoResponse response = GUserInfoResponse.newBuilder()
-                    .setObjUserInfo(userInfo)
-                    .build();
-
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
-        } catch (Exception e) {
-            onError(responseObserver, e);
-        }
-    }
-
-    @Override
-    public void updateUser(GUpdateUserRequest request, StreamObserver<GUserInfoResponse> responseObserver) {
-        try {
-            GObjUserInfo userInfo = ModelConverter.convert(
-                    usersService.updateUser(ModelConverter.convert(request)));
-
-            GUserInfoResponse response = GUserInfoResponse.newBuilder()
-                    .setObjUserInfo(userInfo)
+            GAddUserResponse response = GAddUserResponse.newBuilder()
+                    .setUserUid(ModelConverter.convert(userUid))
                     .build();
 
             responseObserver.onNext(response);
@@ -99,8 +43,6 @@ public class UsersServiceGrpcV1 extends UsersServiceV1Grpc.UsersServiceV1ImplBas
 
         if (e instanceof IllegalArgumentException) {
             status = Status.INVALID_ARGUMENT;
-        } else if (e instanceof NotFoundUserException) {
-            status = Status.NOT_FOUND;
         } else {
             status = Status.INTERNAL;
         }

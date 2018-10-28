@@ -20,11 +20,12 @@
     </parent>
 
     <modules>
+        <module>proto-models</module>
+        <module>common-auth</module>
         <module>users-service-api</module>
         <module>tests-service-api</module>
         <module>gateway-service-api</module>
         <module>quiz-service-api</module>
-        <module>grpc-models</module>
     </modules>
 
     <properties>

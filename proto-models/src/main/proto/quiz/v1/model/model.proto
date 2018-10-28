@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package com.voteva.quiz.grpc.model.v1;
+
+import "common/model/model.proto";
+
+option java_multiple_files = true;
+
+
+message GUserInfo {
+    com.voteva.common.grpc.model.GUuid userUid = 1;
+    string firstName = 2;
+    string lastName = 3;
+    int64 createdDtime = 4;
+    bool isAdmin = 5;
+    bool isBlocked = 6;
+}
+
+message GUser2TestInfo {
+    com.voteva.common.grpc.model.GUuid userUid = 1;
+    com.voteva.common.grpc.model.GUuid testUid = 2;
+    int32 percent = 3;
+    int32 attemptsAllowed = 4;
+}

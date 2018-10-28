@@ -4,11 +4,14 @@ import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.common.TestInfo;
 import com.voteva.gateway.web.to.in.AddTestRequest;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface TestsService {
 
-    PagedResult<TestInfo> getTests(UUID categoryUid, int page, int size);
+    List<String> getTestCategories();
+
+    PagedResult<TestInfo> getTests(String category, int page, int size);
 
     TestInfo getTestInfo(UUID testUid);
 

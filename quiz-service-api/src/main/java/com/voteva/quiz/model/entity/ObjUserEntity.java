@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -16,8 +18,11 @@ import java.util.UUID;
 public class ObjUserEntity {
 
     private UUID userUid;
+    private String firstName;
+    private String lastName;
     private boolean isAdmin = false;
     private boolean isBlocked = false;
+    private Timestamp userCreatedDtime = Timestamp.from(Instant.now());
 
     @Id
     @Column(name = "user_uid", nullable = false)
@@ -27,6 +32,28 @@ public class ObjUserEntity {
 
     public ObjUserEntity setUserUid(UUID userUid) {
         this.userUid = userUid;
+        return this;
+    }
+
+    @Basic
+    @Column(name = "first_name")
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public ObjUserEntity setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    @Basic
+    @Column(name = "last_name")
+    public String getLastName() {
+        return lastName;
+    }
+
+    public ObjUserEntity setLastName(String lastName) {
+        this.lastName = lastName;
         return this;
     }
 
@@ -50,6 +77,12 @@ public class ObjUserEntity {
     public ObjUserEntity setBlocked(boolean blocked) {
         isBlocked = blocked;
         return this;
+    }
+
+    @Basic
+    @Column(name = "created_date", nullable = false)
+    public Timestamp getUserCreatedDtime() {
+        return userCreatedDtime;
     }
 
     @Override

@@ -19,23 +19,26 @@ public class ObjQuestionEntity {
         return questionText;
     }
 
-    public void setQuestionText(String questionText) {
+    public ObjQuestionEntity setQuestionText(String questionText) {
         this.questionText = questionText;
+        return this;
     }
 
     public List<String> getAnswerChoices() {
         return answerChoices;
     }
 
-    public void setAnswerChoices(List<String> answerChoices) {
+    public ObjQuestionEntity setAnswerChoices(List<String> answerChoices) {
         this.answerChoices = answerChoices;
+        return this;
     }
 
     public int getRightAnswer() {
         return rightAnswer;
     }
 
-    public void setRightAnswer(int rightAnswer) {
+    public ObjQuestionEntity setRightAnswer(int rightAnswer) {
         this.rightAnswer = rightAnswer;
+        return this;
     }
 }

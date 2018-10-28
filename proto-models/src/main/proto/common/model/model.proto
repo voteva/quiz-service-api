@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package com.voteva.common.grpc.model;
+
+option java_multiple_files = true;
+
+
+message Empty {}
+
+message GUuid {
+    string uuid = 1;
+}
+
+message GPageable {
+    int32 page = 1;
+    int32 size = 2;
+}
+
+message GPage {
+    int32 number = 1;
+    int32 size = 2;
+    int64 totalElements = 3;
+}

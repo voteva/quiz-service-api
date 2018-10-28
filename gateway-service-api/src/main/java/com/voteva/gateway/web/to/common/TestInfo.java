@@ -3,6 +3,7 @@ package com.voteva.gateway.web.to.common;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
 import java.util.UUID;
 
 public class TestInfo {
@@ -12,6 +13,11 @@ public class TestInfo {
 
     @ApiModelProperty(example = "Test Name")
     private String testName;
+
+    @ApiModelProperty(example = "Test Category")
+    private String testCategory;
+
+    private List<QuestionInfo> questions;
 
     @JsonGetter("test_uid")
     public UUID getTestUid() {
@@ -30,6 +36,26 @@ public class TestInfo {
 
     public TestInfo setTestName(String testName) {
         this.testName = testName;
+        return this;
+    }
+
+    @JsonGetter("test_category")
+    public String getTestCategory() {
+        return testCategory;
+    }
+
+    public TestInfo setTestCategory(String testCategory) {
+        this.testCategory = testCategory;
+        return this;
+    }
+
+    @JsonGetter("questions")
+    public List<QuestionInfo> getQuestions() {
+        return questions;
+    }
+
+    public TestInfo setQuestions(List<QuestionInfo> questions) {
+        this.questions = questions;
         return this;
     }
 }

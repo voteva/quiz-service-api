@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package com.voteva.quiz.grpc.service.v1;
+
+import "common/model/model.proto";
+import "quiz/v1/model/request.proto";
+import "quiz/v1/model/response.proto";
+
+option java_multiple_files = true;
+
+
+service QuizServiceV1 {
+
+    rpc getUserTests (com.voteva.quiz.grpc.model.v1.GGetUserTestsRequest) returns (com.voteva.quiz.grpc.model.v1.GGetUserTestsResponse);
+
+    rpc assignTest (com.voteva.quiz.grpc.model.v1.GAssignTestRequest) returns (com.voteva.common.grpc.model.Empty);
+
+    rpc setTestResults (com.voteva.quiz.grpc.model.v1.GSetTestResultsRequest) returns (com.voteva.quiz.grpc.model.v1.GSetTestResultsResponse);
+
+    rpc getAllUsers (com.voteva.quiz.grpc.model.v1.GGetAllUsersRequest) returns (com.voteva.quiz.grpc.model.v1.GGetAllUsersResponse);
+
+    rpc getUser (com.voteva.quiz.grpc.model.v1.GGetUserRequest) returns (com.voteva.quiz.grpc.model.v1.GGetUserResponse);
+
+    rpc addUser (com.voteva.quiz.grpc.model.v1.GAddUserRequest) returns (com.voteva.quiz.grpc.model.v1.GAddUserResponse);
+
+    rpc updateUser (com.voteva.quiz.grpc.model.v1.GUpdateUserRequest) returns (com.voteva.common.grpc.model.Empty);
+
+    rpc setAdminGrants (com.voteva.quiz.grpc.model.v1.GSetAdminGrantsRequest) returns (com.voteva.common.grpc.model.Empty);
+
+    rpc removeAdminGrants (com.voteva.quiz.grpc.model.v1.GRemoveAdminGrantsRequest) returns (com.voteva.common.grpc.model.Empty);
+
+    rpc blockUser (com.voteva.quiz.grpc.model.v1.GBlockUserRequest) returns (com.voteva.common.grpc.model.Empty);
+
+    rpc unblockUser (com.voteva.quiz.grpc.model.v1.GUnblockUserRequest) returns (com.voteva.common.grpc.model.Empty);
+
+}

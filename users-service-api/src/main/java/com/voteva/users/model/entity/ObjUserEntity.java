@@ -3,43 +3,43 @@ package com.voteva.users.model.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users", schema = "users")
 public class ObjUserEntity {
 
-    private int userId;
-    private String userEmail;
-    private String fullName;
+    private Integer userId;
     private UUID userUid = UUID.randomUUID();
-    private Timestamp userCreatedDtime = Timestamp.from(Instant.now());
+    private String userEmail;
+    private String userPassword;
 
     @Id
-    @Column(name = "user_id", nullable = false)
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment", strategy = "increment")
-    public int getUserId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer getUserId() {
         return userId;
     }
 
-    public ObjUserEntity setUserId(int userId) {
-        this.userId = userId;
-        return this;
+    @Basic
+    @Column(name = "user_uid", nullable = false)
+    public UUID getUserUid() {
+        return userUid;
+    }
+
+    public void setUserUid(UUID userUid) {
+        this.userUid = userUid;
     }
 
     @Basic
-    @Column(name = "user_email", nullable = false)
+    @Column(name = "user_email", length = 60, nullable = false)
     public String getUserEmail() {
         return userEmail;
     }
@@ -50,35 +50,13 @@ public class ObjUserEntity {
     }
 
     @Basic
-    @Column(name = "full_name")
-    public String getFullName() {
-        return fullName;
+    @Column(name = "user_password")
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public ObjUserEntity setFullName(String fullName) {
-        this.fullName = fullName;
-        return this;
-    }
-
-    @Basic
-    @Column(name = "user_uid", nullable = false)
-    public UUID getUserUid() {
-        return userUid;
-    }
-
-    public ObjUserEntity setUserUid(UUID userUid) {
-        this.userUid = userUid;
-        return this;
-    }
-
-    @Basic
-    @Column(name = "created_date", nullable = false)
-    public Timestamp getUserCreatedDtime() {
-        return userCreatedDtime;
-    }
-
-    public ObjUserEntity setUserCreatedDtime(Timestamp userCreatedDtime) {
-        this.userCreatedDtime = userCreatedDtime;
+    public ObjUserEntity setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
         return this;
     }
 

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,12 +37,12 @@ public class TestsController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<PagedResult<TestInfo>> getTests(
-            @RequestParam("category_uid") UUID categoryUid,
+            @RequestParam("category") String category,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "20") int size) {
-        logger.debug("Getting all tests for page={} and page size={} by category uid={}", page, size, categoryUid);
+        logger.debug("Getting all tests for page={} and page size={} by category={}", page, size, category);
 
-        return ResponseEntity.ok(testsService.getTests(categoryUid, page, size));
+        return ResponseEntity.ok(testsService.getTests(category, page, size));
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{uuid}")
@@ -65,5 +66,12 @@ public class TestsController {
         testsService.deleteTest(request.getTestUid());
 
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/categories")
+    public ResponseEntity<List<String>> getCategories() {
+        logger.debug("Getting test categories");
+
+        return ResponseEntity.ok(testsService.getTestCategories());
     }
 }
