@@ -6,7 +6,7 @@ import com.voteva.common.grpc.model.GUuid;
 import com.voteva.tests.grpc.model.v1.GAddTestRequest;
 import com.voteva.tests.grpc.model.v1.GQuestion;
 import com.voteva.tests.grpc.model.v1.GTestInfo;
-import com.voteva.tests.model.entity.ObjQuestionEntity;
+import com.voteva.tests.model.entity.RefQuestionEntity;
 import com.voteva.tests.model.entity.ObjTestEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,7 +39,7 @@ public class ModelConverter {
         return UUID.fromString(guuid.getUuid());
     }
 
-    public static GQuestion convert(ObjQuestionEntity questionEntity) {
+    public static GQuestion convert(RefQuestionEntity questionEntity) {
         return GQuestion.newBuilder()
                 .setText(questionEntity.getQuestionText())
                 .setRightAnswer(questionEntity.getRightAnswer())
@@ -47,8 +47,8 @@ public class ModelConverter {
                 .build();
     }
 
-    public static ObjQuestionEntity convert(GQuestion question) {
-        return new ObjQuestionEntity()
+    public static RefQuestionEntity convert(GQuestion question) {
+        return new RefQuestionEntity()
                 .setQuestionText(question.getText())
                 .setRightAnswer(question.getRightAnswer())
                 .setAnswerChoices(question.getAnswerChoicesList());

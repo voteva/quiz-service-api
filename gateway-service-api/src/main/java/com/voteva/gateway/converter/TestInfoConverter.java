@@ -1,5 +1,7 @@
 package com.voteva.gateway.converter;
 
+import com.voteva.common.grpc.model.GPage;
+import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.common.QuestionInfo;
 import com.voteva.gateway.web.to.common.TestInfo;
 import com.voteva.gateway.web.to.in.AddTestRequest;
@@ -7,9 +9,18 @@ import com.voteva.tests.grpc.model.v1.GAddTestRequest;
 import com.voteva.tests.grpc.model.v1.GQuestion;
 import com.voteva.tests.grpc.model.v1.GTestInfo;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class TestInfoConverter {
+
+    public static PagedResult<TestInfo> convert(List<GTestInfo> testInfoList, GPage page) {
+        return new PagedResult<>(
+                page.getTotalElements(),
+                testInfoList.stream()
+                        .map(TestInfoConverter::convert)
+                        .collect(Collectors.toList()));
+    }
 
     public static TestInfo convert(GTestInfo testInfo) {
         return new TestInfo()

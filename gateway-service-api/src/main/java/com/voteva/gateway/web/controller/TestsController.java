@@ -37,7 +37,7 @@ public class TestsController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<PagedResult<TestInfo>> getTests(
-            @RequestParam("category") String category,
+            @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "20") int size) {
         logger.debug("Getting all tests for page={} and page size={} by category={}", page, size, category);

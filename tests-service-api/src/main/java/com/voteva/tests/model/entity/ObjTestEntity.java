@@ -30,7 +30,7 @@ public class ObjTestEntity {
     private String testCategory;
 
     @Field(value = "questions")
-    private List<ObjQuestionEntity> questions;
+    private List<RefQuestionEntity> questions;
 
     public UUID getTestUid() {
         return testUid;
@@ -59,11 +59,11 @@ public class ObjTestEntity {
         return this;
     }
 
-    public List<ObjQuestionEntity> getQuestions() {
+    public List<RefQuestionEntity> getQuestions() {
         return questions;
     }
 
-    public ObjTestEntity setQuestions(List<ObjQuestionEntity> questions) {
+    public ObjTestEntity setQuestions(List<RefQuestionEntity> questions) {
         this.questions = questions;
         return this;
     }

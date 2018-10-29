@@ -8,8 +8,12 @@ import com.voteva.gateway.util.GRpcExceptionUtils;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.common.TestInfo;
 import com.voteva.gateway.web.to.in.AddTestRequest;
+import com.voteva.tests.grpc.model.v1.GGetAllTestsRequest;
+import com.voteva.tests.grpc.model.v1.GGetAllTestsResponse;
 import com.voteva.tests.grpc.model.v1.GGetTestCategoriesRequest;
 import com.voteva.tests.grpc.model.v1.GGetTestRequest;
+import com.voteva.tests.grpc.model.v1.GGetTestsByCategoryRequest;
+import com.voteva.tests.grpc.model.v1.GGetTestsByCategoryResponse;
 import com.voteva.tests.grpc.model.v1.GRemoveTestRequest;
 import io.grpc.StatusRuntimeException;
 import org.slf4j.Logger;
@@ -18,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -38,15 +43,26 @@ public class TestsServiceImpl implements TestsService {
             return grpcTestsServiceClient.getTestCategories(
                     GGetTestCategoriesRequest.newBuilder().build())
                     .getCategoriesList();
+
         } catch (StatusRuntimeException e) {
             logger.error("Failed to get test categories");
+
             throw GRpcExceptionUtils.convert(e);
         }
     }
 
     @Override
     public PagedResult<TestInfo> getTests(String category, int page, int size) {
-        return null;
+        try {
+            return Optional.ofNullable(category)
+                    .map(c -> getTestsByCategoryInternal(c, page, size))
+                    .orElseGet(() -> getTestsInternal(page, size));
+
+        } catch (StatusRuntimeException e) {
+            logger.error("Failed to get all tests by category={}", category);
+
+            throw GRpcExceptionUtils.convert(e);
+        }
     }
 
     @Override
@@ -58,8 +74,10 @@ public class TestsServiceImpl implements TestsService {
                                     .setTestUid(CommonConverter.convert(testUid))
                                     .build())
                             .getTestInfo());
+
         } catch (StatusRuntimeException e) {
             logger.error("Failed to get test info by uid={}", testUid);
+
             throw GRpcExceptionUtils.convert(e);
         }
     }
@@ -71,8 +89,10 @@ public class TestsServiceImpl implements TestsService {
                     grpcTestsServiceClient.addTest(
                             TestInfoConverter.convert(request))
                             .getTestUid());
+
         } catch (StatusRuntimeException e) {
             logger.error("Failed to add test with name={}", request.getTestName());
+
             throw GRpcExceptionUtils.convert(e);
         }
     }
@@ -84,9 +104,30 @@ public class TestsServiceImpl implements TestsService {
                     GRemoveTestRequest.newBuilder()
                             .setTestUid(CommonConverter.convert(testUid))
                             .build());
+
         } catch (StatusRuntimeException e) {
             logger.error("Failed to delete test with uid={}", testUid);
+
             throw GRpcExceptionUtils.convert(e);
         }
+    }
+
+    private PagedResult<TestInfo> getTestsByCategoryInternal(String category, int page, int size) {
+        GGetTestsByCategoryResponse tests = grpcTestsServiceClient.getTestsByCategory(
+                GGetTestsByCategoryRequest.newBuilder()
+                        .setCategory(category)
+                        .setPageable(CommonConverter.convert(page, size))
+                        .build());
+
+        return TestInfoConverter.convert(tests.getTestsList(), tests.getPage());
+    }
+
+    private PagedResult<TestInfo> getTestsInternal(int page, int size) {
+        GGetAllTestsResponse tests = grpcTestsServiceClient.getAllTests(
+                GGetAllTestsRequest.newBuilder()
+                        .setPageable(CommonConverter.convert(page, size))
+                        .build());
+
+        return TestInfoConverter.convert(tests.getTestsList(), tests.getPage());
     }
 }
