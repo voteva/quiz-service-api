@@ -1,6 +1,12 @@
 grpc:
   port: 6565
 
+logging:
+  path: logs
+  level: INFO
+  level.org.hibernate: INFO
+  level.com.voteva: DEBUG
+
 spring:
   application:
     name: users-service-api

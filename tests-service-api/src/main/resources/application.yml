@@ -1,6 +1,12 @@
 grpc:
   port: 6566
 
+logging:
+  path: logs
+  level: INFO
+  level.org.hibernate: INFO
+  level.com.voteva: DEBUG
+
 spring:
   application:
     name: tests-service-api
@@ -11,6 +17,4 @@ spring:
       database: tests_db
 
 spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
-
-#spring.data.mongodb.uri: tests_db://srv_tests:0000@localhost:27017
 
