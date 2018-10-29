@@ -29,20 +29,20 @@ public class UsersServiceImpl implements UsersService {
 
     private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 
-    private final GRpcUsersServiceClient grpcUsersServiceClient;
-    private final GRpcQuizServiceClient grpcQuizServiceClient;
+    private final GRpcUsersServiceClient rpcUsersServiceClient;
+    private final GRpcQuizServiceClient rpcQuizServiceClient;
 
     @Autowired
-    public UsersServiceImpl(GRpcUsersServiceClient grpcUsersServiceClient,
-                            GRpcQuizServiceClient grpcQuizServiceClient) {
-        this.grpcUsersServiceClient = grpcUsersServiceClient;
-        this.grpcQuizServiceClient = grpcQuizServiceClient;
+    public UsersServiceImpl(GRpcUsersServiceClient rpcUsersServiceClient,
+                            GRpcQuizServiceClient rpcQuizServiceClient) {
+        this.rpcUsersServiceClient = rpcUsersServiceClient;
+        this.rpcQuizServiceClient = rpcQuizServiceClient;
     }
 
     @Override
     public PagedResult<UserInfo> getUsers(int page, int size) {
         try {
-            GGetAllUsersResponse users = grpcQuizServiceClient.getAllUsers(
+            GGetAllUsersResponse users = rpcQuizServiceClient.getAllUsers(
                     GGetAllUsersRequest.newBuilder()
                             .setPageable(CommonConverter.convert(page, size))
                             .build());
@@ -60,7 +60,7 @@ public class UsersServiceImpl implements UsersService {
     public UserInfo getUserByUid(UUID userUid) {
         try {
             return UsersInfoConverter.convert(
-                    grpcQuizServiceClient.getUser(
+                    rpcQuizServiceClient.getUser(
                             GGetUserRequest.newBuilder()
                                     .setUserUid(CommonConverter.convert(userUid))
                                     .build())
@@ -77,7 +77,7 @@ public class UsersServiceImpl implements UsersService {
     public UserInfo addUser(AddUserRequest addUserRequest) {
         try {
             /*return UsersInfoConverter.convert(
-                    grpcQuizServiceClient.addUser(
+                    rpcQuizServiceClient.addUser(
                             GGetUserRequest.newBuilder()
                                     .setUserUid(CommonConverter.convert(userUid))
                                     .build())
@@ -94,7 +94,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void setAdminGrants(UUID userUid) {
         try {
-            grpcQuizServiceClient.setAdminGrants(
+            rpcQuizServiceClient.setAdminGrants(
                     GSetAdminGrantsRequest.newBuilder()
                             .setUserUid(CommonConverter.convert(userUid))
                             .build());
@@ -109,7 +109,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void removeAdminGrants(UUID userUid) {
         try {
-            grpcQuizServiceClient.removeAdminGrants(
+            rpcQuizServiceClient.removeAdminGrants(
                     GRemoveAdminGrantsRequest.newBuilder()
                             .setUserUid(CommonConverter.convert(userUid))
                             .build());
@@ -124,7 +124,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void blockUser(UUID userUid) {
         try {
-            grpcQuizServiceClient.blockUser(
+            rpcQuizServiceClient.blockUser(
                     GBlockUserRequest.newBuilder()
                             .setUserUid(CommonConverter.convert(userUid))
                             .build());
@@ -139,7 +139,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void unblockUser(UUID userUid) {
         try {
-            grpcQuizServiceClient.unblockUser(
+            rpcQuizServiceClient.unblockUser(
                     GUnblockUserRequest.newBuilder()
                             .setUserUid(CommonConverter.convert(userUid))
                             .build());

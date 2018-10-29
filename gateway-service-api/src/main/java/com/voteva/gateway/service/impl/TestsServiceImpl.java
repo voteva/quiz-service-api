@@ -30,17 +30,17 @@ public class TestsServiceImpl implements TestsService {
 
     private static final Logger logger = LoggerFactory.getLogger(TestsServiceImpl.class);
 
-    private final GRpcTestsServiceClient grpcTestsServiceClient;
+    private final GRpcTestsServiceClient rpcTestsServiceClient;
 
     @Autowired
-    public TestsServiceImpl(GRpcTestsServiceClient grpcTestsServiceClient) {
-        this.grpcTestsServiceClient = grpcTestsServiceClient;
+    public TestsServiceImpl(GRpcTestsServiceClient rpcTestsServiceClient) {
+        this.rpcTestsServiceClient = rpcTestsServiceClient;
     }
 
     @Override
     public List<String> getTestCategories() {
         try {
-            return grpcTestsServiceClient.getTestCategories(
+            return rpcTestsServiceClient.getTestCategories(
                     GGetTestCategoriesRequest.newBuilder().build())
                     .getCategoriesList();
 
@@ -70,7 +70,7 @@ public class TestsServiceImpl implements TestsService {
     public TestInfo getTestInfo(UUID testUid) {
         try {
             return TestInfoConverter.convert(
-                    grpcTestsServiceClient.getTest(
+                    rpcTestsServiceClient.getTest(
                             GGetTestRequest.newBuilder()
                                     .setTestUid(CommonConverter.convert(testUid))
                                     .build())
@@ -87,7 +87,7 @@ public class TestsServiceImpl implements TestsService {
     public UUID addTest(AddTestRequest request) {
         try {
             return CommonConverter.convert(
-                    grpcTestsServiceClient.addTest(
+                    rpcTestsServiceClient.addTest(
                             TestInfoConverter.convert(request))
                             .getTestUid());
 
@@ -101,7 +101,7 @@ public class TestsServiceImpl implements TestsService {
     @Override
     public void deleteTest(UUID testUid) {
         try {
-            grpcTestsServiceClient.removeTest(
+            rpcTestsServiceClient.removeTest(
                     GRemoveTestRequest.newBuilder()
                             .setTestUid(CommonConverter.convert(testUid))
                             .build());
@@ -114,7 +114,7 @@ public class TestsServiceImpl implements TestsService {
     }
 
     private PagedResult<TestInfo> getTestsByCategoryInternal(String category, int page, int size) {
-        GGetTestsByCategoryResponse tests = grpcTestsServiceClient.getTestsByCategory(
+        GGetTestsByCategoryResponse tests = rpcTestsServiceClient.getTestsByCategory(
                 GGetTestsByCategoryRequest.newBuilder()
                         .setCategory(category)
                         .setPageable(CommonConverter.convert(page, size))
@@ -124,7 +124,7 @@ public class TestsServiceImpl implements TestsService {
     }
 
     private PagedResult<TestInfo> getTestsInternal(int page, int size) {
-        GGetAllTestsResponse tests = grpcTestsServiceClient.getAllTests(
+        GGetAllTestsResponse tests = rpcTestsServiceClient.getAllTests(
                 GGetAllTestsRequest.newBuilder()
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
