@@ -3,6 +3,7 @@ package com.voteva.users.model.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -29,6 +30,7 @@ public class ObjUserEntity {
     }
 
     @Basic
+    @Type(type = "pg-uuid")
     @Column(name = "user_uid", nullable = false)
     public UUID getUserUid() {
         return userUid;

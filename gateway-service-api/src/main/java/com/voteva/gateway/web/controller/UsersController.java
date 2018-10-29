@@ -1,17 +1,16 @@
 package com.voteva.gateway.web.controller;
 
 import com.voteva.gateway.service.UsersService;
+import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.common.UserInfo;
 import com.voteva.gateway.web.to.in.AddUserRequest;
-import com.voteva.gateway.web.to.in.BlockUserRequest;
-import com.voteva.gateway.web.to.in.UnblockUserRequest;
-import com.voteva.gateway.web.to.in.UpdateUserRequest;
+import com.voteva.gateway.web.to.in.UserUidRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -35,27 +33,29 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    /*@RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<UserInfo>> getUsers(SpringDataWebProperties.Pageable pageable) {
-        logger.debug("Getting users for page={}", pageable);
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<PagedResult<UserInfo>> getUsers(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "20") int size) {
+        logger.debug("Getting users for page={} and page size={}", page, size);
 
-        return ResponseEntity.ok(usersService.getUsers(pageable));
+        return ResponseEntity.ok(usersService.getUsers(page, size));
     }
 
-    @RequestMapping(path = "/get", method = RequestMethod.GET)
-    public ResponseEntity<UserInfo> getUserByUid(@RequestParam("user_uid") UUID userUid) {
-        logger.debug("Getting user info by uid={}", userUid);
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
+    public ResponseEntity<UserInfo> getUserInfo(@PathVariable UUID uuid) {
+        logger.debug("Getting user info by uid={}", uuid);
 
-        return ResponseEntity.ok(usersService.getUserByUid(userUid));
+        return ResponseEntity.ok(usersService.getUserByUid(uuid));
     }
 
-    @RequestMapping(path = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UserInfo> addUser(@RequestBody @Valid AddUserRequest addUserRequest) {
         logger.debug("Adding user={}", addUserRequest);
 
         return ResponseEntity.ok(usersService.addUser(addUserRequest));
     }
-
+/*
     @RequestMapping(path = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UserInfo> updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
         logger.debug("Updating user={}", updateUserRequest);
@@ -63,21 +63,41 @@ public class UsersController {
         return ResponseEntity.ok(usersService.updateUser(updateUserRequest));
     }
 
-    @RequestMapping(path = "/block", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Void> blockUser(@RequestBody @Valid BlockUserRequest blockUserRequest) {
-        logger.debug("Blocking user with uid={}", blockUserRequest.getUserUid());
+    */
 
-        usersService.blockUser(blockUserRequest.getUserUid());
+    @RequestMapping(path = "/admin", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Void> setAdminGrants(@RequestBody @Valid UserUidRequest userUidRequest) {
+        logger.debug("Blocking user with uid={}", userUidRequest.getUserUid());
+
+        usersService.setAdminGrants(userUidRequest.getUserUid());
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(path = "/remove-admin", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Void> removeAdminGrants(@RequestBody @Valid UserUidRequest userUidRequest) {
+        logger.debug("Unblocking user with uid={}", userUidRequest.getUserUid());
+
+        usersService.removeAdminGrants(userUidRequest.getUserUid());
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(path = "/block", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Void> blockUser(@RequestBody @Valid UserUidRequest userUidRequest) {
+        logger.debug("Blocking user with uid={}", userUidRequest.getUserUid());
+
+        usersService.blockUser(userUidRequest.getUserUid());
 
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(path = "/unblock", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Void> unblockUser(@RequestBody @Valid UnblockUserRequest unblockUserRequest) {
-        logger.debug("Unblocking user with uid={}", unblockUserRequest.getUserUid());
+    public ResponseEntity<Void> unblockUser(@RequestBody @Valid UserUidRequest userUidRequest) {
+        logger.debug("Unblocking user with uid={}", userUidRequest.getUserUid());
 
-        usersService.unblockUser(unblockUserRequest.getUserUid());
+        usersService.unblockUser(userUidRequest.getUserUid());
 
         return ResponseEntity.noContent().build();
-    }*/
+    }
 }

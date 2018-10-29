@@ -45,7 +45,7 @@ public class TestsController {
         return ResponseEntity.ok(testsService.getTests(category, page, size));
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/{uuid}")
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
     public ResponseEntity<TestInfo> getTestInfo(@PathVariable UUID uuid) {
         logger.debug("Getting test info by uid={}", uuid);
 
@@ -68,7 +68,7 @@ public class TestsController {
         return ResponseEntity.noContent().build();
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/categories")
+    @RequestMapping(path = "/categories", method = RequestMethod.GET)
     public ResponseEntity<List<String>> getCategories() {
         logger.debug("Getting test categories");
 

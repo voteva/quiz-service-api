@@ -17,13 +17,19 @@ public class UserInfo {
     @ApiModelProperty(example = "user@example.com")
     private String email;
 
-    @ApiModelProperty(example = "Vladimir Putin")
-    private String fullName;
+    @ApiModelProperty(example = "Vladimir")
+    private String firstName;
 
+    @ApiModelProperty(example = "Putin")
+    private String lastName;
+
+    @ApiModelProperty(example = "Putin")
     private long createdDatetime;
 
+    @ApiModelProperty(example = "false")
     private boolean isBlocked;
 
+    @ApiModelProperty(example = "false")
     private boolean isAdmin;
 
     @JsonGetter("user_uid")
@@ -41,14 +47,24 @@ public class UserInfo {
         return email;
     }
 
-    public UserInfo setFullName(String fullName) {
-        this.fullName = fullName;
+    public UserInfo setFirstName(String firstName) {
+        this.firstName = firstName;
         return this;
     }
 
-    @JsonGetter("full_name")
-    public String getFullName() {
-        return fullName;
+    @JsonGetter("first_name")
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public UserInfo setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    @JsonGetter("last_name")
+    public String getLastName() {
+        return lastName;
     }
 
     public UserInfo setCreatedDatetime(long createdDatetime) {

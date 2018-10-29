@@ -59,7 +59,8 @@ public class TestsServiceImpl implements TestsService {
                     .orElseGet(() -> getTestsInternal(page, size));
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to get all tests by category={}", category);
+            logger.error("Failed to get all tests by category={} for page={} and page size={}",
+                    category, page, size);
 
             throw GRpcExceptionUtils.convert(e);
         }

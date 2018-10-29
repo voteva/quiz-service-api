@@ -8,14 +8,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
-public class UnblockUserRequest {
+public class UserUidRequest {
 
     @NotNull
     @ApiModelProperty(example = "8152e3f9-449f-44c1-9d3a-e3c6f1afd752")
     private final UUID userUid;
 
     @JsonCreator
-    public UnblockUserRequest(@JsonProperty("user_uid") UUID userUid) {
+    public UserUidRequest(@JsonProperty("user_uid") UUID userUid) {
         this.userUid = userUid;
     }
 

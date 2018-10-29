@@ -23,7 +23,8 @@ public class UsersServiceGrpcV1 extends UsersServiceV1Grpc.UsersServiceV1ImplBas
     }
 
     @Override
-    public void addUser(GAddUserRequest request, StreamObserver<GAddUserResponse> responseObserver) {
+    public void addUser(GAddUserRequest request,
+                        StreamObserver<GAddUserResponse> responseObserver) {
         try {
             UUID userUid = usersService.addUser(request.getEmail(), request.getPassword());
 

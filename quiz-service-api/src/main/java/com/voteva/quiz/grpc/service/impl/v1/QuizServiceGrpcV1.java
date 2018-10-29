@@ -43,9 +43,11 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
     }
 
     @Override
-    public void getUserTests(GGetUserTestsRequest request, StreamObserver<GGetUserTestsResponse> responseObserver) {
+    public void getUserTests(GGetUserTestsRequest request,
+                             StreamObserver<GGetUserTestsResponse> responseObserver) {
         try {
-            List<RelUser2TestEntity> userTests = quizService.getUserTests(ModelConverter.convert(request.getUserUid()));
+            List<RelUser2TestEntity> userTests = quizService.getUserTests(
+                    ModelConverter.convert(request.getUserUid()));
 
             responseObserver.onNext(GGetUserTestsResponse.newBuilder()
                     .addAllTests(userTests.stream()
@@ -59,7 +61,8 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
     }
 
     @Override
-    public void assignTest(GAssignTestRequest request, StreamObserver<Empty> responseObserver) {
+    public void assignTest(GAssignTestRequest request,
+                           StreamObserver<Empty> responseObserver) {
         try {
             quizService.assignTest(
                     ModelConverter.convert(request.getUserUid()),
@@ -74,7 +77,8 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
     }
 
     @Override
-    public void setTestResults(GSetTestResultsRequest request, StreamObserver<GSetTestResultsResponse> responseObserver) {
+    public void setTestResults(GSetTestResultsRequest request,
+                               StreamObserver<GSetTestResultsResponse> responseObserver) {
         try {
             RelUser2TestEntity user2TestEntity = quizService.setTestResults(
                     ModelConverter.convert(request.getUserUid()),
@@ -91,9 +95,11 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
     }
 
     @Override
-    public void getAllUsers(GGetAllUsersRequest request, StreamObserver<GGetAllUsersResponse> responseObserver) {
+    public void getAllUsers(GGetAllUsersRequest request,
+                            StreamObserver<GGetAllUsersResponse> responseObserver) {
         try {
-            Page<ObjUserEntity> users = quizService.getAllUsers(ModelConverter.convert(request.getPageable()));
+            Page<ObjUserEntity> users = quizService.getAllUsers(
+                    ModelConverter.convert(request.getPageable()));
 
             responseObserver.onNext(GGetAllUsersResponse.newBuilder()
                     .setPage(ModelConverter.convert(users))
@@ -109,9 +115,11 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
     }
 
     @Override
-    public void getUser(GGetUserRequest request, StreamObserver<GGetUserResponse> responseObserver) {
+    public void getUser(GGetUserRequest request,
+                        StreamObserver<GGetUserResponse> responseObserver) {
         try {
-            ObjUserEntity userEntity = quizService.getUser(ModelConverter.convert(request.getUserUid()));
+            ObjUserEntity userEntity = quizService.getUser(
+                    ModelConverter.convert(request.getUserUid()));
 
             responseObserver.onNext(GGetUserResponse.newBuilder()
                     .setUserInfo(ModelConverter.convert(userEntity))
@@ -123,9 +131,11 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
     }
 
     @Override
-    public void addUser(GAddUserRequest request, StreamObserver<GAddUserResponse> responseObserver) {
+    public void addUser(GAddUserRequest request,
+                        StreamObserver<GAddUserResponse> responseObserver) {
         try {
-            ObjUserEntity userEntity = quizService.addUser(ModelConverter.convert(request.getUserInfo()));
+            ObjUserEntity userEntity = quizService.addUser(
+                    ModelConverter.convert(request.getUserInfo()));
 
             responseObserver.onNext(GAddUserResponse.newBuilder()
                     .setUserInfo(ModelConverter.convert(userEntity))
@@ -137,7 +147,8 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
     }
 
     @Override
-    public void updateUser(GUpdateUserRequest request, StreamObserver<Empty> responseObserver) {
+    public void updateUser(GUpdateUserRequest request,
+                           StreamObserver<Empty> responseObserver) {
         try {
             //quizService.addUser(ModelConverter.convert(request.getUserInfo())); TODO
 
@@ -150,7 +161,8 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
 
 
     @Override
-    public void setAdminGrants(GSetAdminGrantsRequest request, StreamObserver<Empty> responseObserver) {
+    public void setAdminGrants(GSetAdminGrantsRequest request,
+                               StreamObserver<Empty> responseObserver) {
         try {
             quizService.setAdmin(ModelConverter.convert(request.getUserUid()));
 
@@ -162,7 +174,8 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
     }
 
     @Override
-    public void removeAdminGrants(GRemoveAdminGrantsRequest request, StreamObserver<Empty> responseObserver) {
+    public void removeAdminGrants(GRemoveAdminGrantsRequest request,
+                                  StreamObserver<Empty> responseObserver) {
         try {
             quizService.resetAdmin(ModelConverter.convert(request.getUserUid()));
 
@@ -174,7 +187,8 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
     }
 
     @Override
-    public void blockUser(GBlockUserRequest request, StreamObserver<Empty> responseObserver) {
+    public void blockUser(GBlockUserRequest request,
+                          StreamObserver<Empty> responseObserver) {
         try {
             quizService.blockUser(ModelConverter.convert(request.getUserUid()));
 
@@ -186,7 +200,8 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
     }
 
     @Override
-    public void unblockUser(GUnblockUserRequest request, StreamObserver<Empty> responseObserver) {
+    public void unblockUser(GUnblockUserRequest request,
+                            StreamObserver<Empty> responseObserver) {
         try {
             quizService.unblockUser(ModelConverter.convert(request.getUserUid()));
 
