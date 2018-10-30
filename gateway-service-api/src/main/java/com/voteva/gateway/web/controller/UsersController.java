@@ -3,6 +3,7 @@ package com.voteva.gateway.web.controller;
 import com.voteva.gateway.service.UsersService;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.out.AddUserResponse;
+import com.voteva.gateway.web.to.out.QuizInfo;
 import com.voteva.gateway.web.to.out.UserInfo;
 import com.voteva.gateway.web.to.in.AddUserRequest;
 import com.voteva.gateway.web.to.in.UserUidRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -48,6 +50,13 @@ public class UsersController {
         logger.debug("Getting user info by uid={}", uuid);
 
         return ResponseEntity.ok(usersService.getUserByUid(uuid));
+    }
+
+    @RequestMapping(path = "/{uuid}/tests", method = RequestMethod.GET)
+    public ResponseEntity<List<QuizInfo>> getUserTests(@PathVariable UUID uuid) {
+        logger.debug("Getting tests for user with uid={}", uuid);
+
+        return ResponseEntity.ok(usersService.getUserTests(uuid));
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

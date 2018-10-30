@@ -54,6 +54,7 @@ public class TestInfoConverter {
     private static QuestionInfo convert(GQuestion question) {
         return new QuestionInfo(
                 question.getText(),
-                question.getAnswerChoicesList());
+                question.getAnswerChoicesList(),
+                question.getRightAnswer());
     }
 }

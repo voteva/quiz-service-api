@@ -24,6 +24,11 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UUID addUser(String email, String password) {
+        userRepository.findByUserEmail(email)
+                .ifPresent(e -> {
+                    throw new IllegalArgumentException(String.format("User=%s already exists", email));
+                });
+
         ObjUserEntity userEntity = new ObjUserEntity()
                 .setUserEmail(email)
                 .setUserPassword(passwordEncoder.encode(password));

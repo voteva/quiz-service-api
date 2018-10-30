@@ -46,7 +46,6 @@ public class TestsServiceImpl implements TestsService {
 
         } catch (StatusRuntimeException e) {
             logger.error("Failed to get test categories");
-
             throw GRpcExceptionUtils.convert(e);
         }
     }
@@ -59,9 +58,7 @@ public class TestsServiceImpl implements TestsService {
                     .orElseGet(() -> getTestsInternal(page, size));
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to get all tests by category={} for page={} and page size={}",
-                    category, page, size);
-
+            logger.error("Failed to get all tests by category={} for page={} and page size={}", category, page, size);
             throw GRpcExceptionUtils.convert(e);
         }
     }
@@ -78,7 +75,6 @@ public class TestsServiceImpl implements TestsService {
 
         } catch (StatusRuntimeException e) {
             logger.error("Failed to get test info by uid={}", testUid);
-
             throw GRpcExceptionUtils.convert(e);
         }
     }
@@ -93,7 +89,6 @@ public class TestsServiceImpl implements TestsService {
 
         } catch (StatusRuntimeException e) {
             logger.error("Failed to add test with name={}", request.getTestName());
-
             throw GRpcExceptionUtils.convert(e);
         }
     }
@@ -108,7 +103,6 @@ public class TestsServiceImpl implements TestsService {
 
         } catch (StatusRuntimeException e) {
             logger.error("Failed to delete test with uid={}", testUid);
-
             throw GRpcExceptionUtils.convert(e);
         }
     }

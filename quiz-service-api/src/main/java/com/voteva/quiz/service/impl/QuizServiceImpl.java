@@ -30,7 +30,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public List<RelUser2TestEntity> getUserTests(UUID userUid) {
-        return new ArrayList<>(); // TODO
+        return user2TestRepository.findAllByUserUid(userUid);
     }
 
     @Override

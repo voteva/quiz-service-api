@@ -2,6 +2,7 @@ package com.voteva.gateway.web.to.in;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -40,5 +41,10 @@ public class AddQuestionRequest {
 
     public int getRightAnswer() {
         return rightAnswer;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
