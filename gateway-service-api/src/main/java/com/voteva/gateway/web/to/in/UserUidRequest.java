@@ -15,7 +15,7 @@ public class UserUidRequest {
     private final UUID userUid;
 
     @JsonCreator
-    public UserUidRequest(@JsonProperty("user_uid") UUID userUid) {
+    public UserUidRequest(@JsonProperty("userUid") UUID userUid) {
         this.userUid = userUid;
     }
 

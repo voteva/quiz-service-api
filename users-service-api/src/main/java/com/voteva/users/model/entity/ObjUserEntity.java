@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users", schema = "users")
+@Table(name = "obj_users", schema = "users")
 public class ObjUserEntity {
 
     private Integer userId;
@@ -24,9 +24,15 @@ public class ObjUserEntity {
     private String userPassword;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public Integer getUserId() {
         return userId;
+    }
+
+    public ObjUserEntity setUserId(Integer userId) {
+        this.userId = userId;
+        return this;
     }
 
     @Basic
@@ -41,7 +47,7 @@ public class ObjUserEntity {
     }
 
     @Basic
-    @Column(name = "user_email", length = 60, nullable = false)
+    @Column(name = "email", length = 60, nullable = false)
     public String getUserEmail() {
         return userEmail;
     }
@@ -52,7 +58,7 @@ public class ObjUserEntity {
     }
 
     @Basic
-    @Column(name = "user_password")
+    @Column(name = "encrypted_password")
     public String getUserPassword() {
         return userPassword;
     }

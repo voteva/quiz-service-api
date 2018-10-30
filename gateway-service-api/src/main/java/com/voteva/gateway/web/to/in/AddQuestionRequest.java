@@ -1,43 +1,44 @@
-package com.voteva.gateway.web.to.common;
+package com.voteva.gateway.web.to.in;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class QuestionInfo {
+public class AddQuestionRequest {
 
+    @NotBlank
     @ApiModelProperty(example = "Question Text")
     private String questionText;
 
+    @NotNull
     @ApiModelProperty(example = "[\"ans1\", \"ans2\", \"ans3\"]")
     private List<String> answerChoices;
 
-    @ApiModelProperty(example = "1")
+    @Min(0)
+    @ApiModelProperty(example = "0")
     private int rightAnswer;
 
-    public QuestionInfo(@JsonProperty("question_text") String questionText,
-                        @JsonProperty("answer_choices") List<String> answerChoices,
-                        @JsonProperty("right_answer") int rightAnswer) {
+    public AddQuestionRequest(@JsonProperty("questionText") String questionText,
+                              @JsonProperty("answerChoices") List<String> answerChoices,
+                              @JsonProperty("rightAnswer") int rightAnswer) {
         this.questionText = questionText;
         this.answerChoices = answerChoices;
         this.rightAnswer = rightAnswer;
     }
 
-    @JsonGetter("question_text")
     public String getQuestionText() {
         return questionText;
     }
 
-    @JsonGetter("answer_choices")
     public List<String> getAnswerChoices() {
         return answerChoices;
     }
 
-    @JsonGetter("right_answer")
     public int getRightAnswer() {
         return rightAnswer;
     }
-
 }

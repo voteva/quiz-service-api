@@ -2,7 +2,8 @@ package com.voteva.gateway.web.controller;
 
 import com.voteva.gateway.service.UsersService;
 import com.voteva.gateway.web.to.common.PagedResult;
-import com.voteva.gateway.web.to.common.UserInfo;
+import com.voteva.gateway.web.to.out.AddUserResponse;
+import com.voteva.gateway.web.to.out.UserInfo;
 import com.voteva.gateway.web.to.in.AddUserRequest;
 import com.voteva.gateway.web.to.in.UserUidRequest;
 import org.slf4j.Logger;
@@ -50,20 +51,11 @@ public class UsersController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<UserInfo> addUser(@RequestBody @Valid AddUserRequest addUserRequest) {
+    public ResponseEntity<AddUserResponse> addUser(@RequestBody @Valid AddUserRequest addUserRequest) {
         logger.debug("Adding user={}", addUserRequest);
 
         return ResponseEntity.ok(usersService.addUser(addUserRequest));
     }
-/*
-    @RequestMapping(path = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<UserInfo> updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
-        logger.debug("Updating user={}", updateUserRequest);
-
-        return ResponseEntity.ok(usersService.updateUser(updateUserRequest));
-    }
-
-    */
 
     @RequestMapping(path = "/admin", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Void> setAdminGrants(@RequestBody @Valid UserUidRequest userUidRequest) {

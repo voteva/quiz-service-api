@@ -14,7 +14,7 @@ public class PagedResult<T> {
         this.items = items;
     }
 
-    @JsonGetter("total_count")
+    @JsonGetter("totalCount")
     public long getTotalCount() {
         return totalCount;
     }

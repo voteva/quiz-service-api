@@ -27,9 +27,9 @@ public class UpdateUserRequest {
 
     @JsonCreator
     public UpdateUserRequest(
-            @JsonProperty("user_uid") UUID userUid,
+            @JsonProperty("userUid") UUID userUid,
             @JsonProperty("email") String email,
-            @JsonProperty("full_name") String fullName) {
+            @JsonProperty("fullName") String fullName) {
         this.userUid = userUid;
         this.email = email;
         this.fullName = fullName;

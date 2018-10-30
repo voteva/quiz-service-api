@@ -18,17 +18,17 @@ public class QuizInfo {
         this.attemptsAllowed = attemptsAllowed;
     }
 
-    @JsonGetter("test_uid")
+    @JsonGetter("testUid")
     public UUID getTestUid() {
         return testUid;
     }
 
-    @JsonGetter("percent_completed")
+    @JsonGetter("percentCompleted")
     public int getPercentCompleted() {
         return percentCompleted;
     }
 
-    @JsonGetter("attempts_allowed")
+    @JsonGetter("attemptsAllowed")
     public int getAttemptsAllowed() {
         return attemptsAllowed;
     }

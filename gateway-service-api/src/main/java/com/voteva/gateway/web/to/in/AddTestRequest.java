@@ -2,7 +2,7 @@ package com.voteva.gateway.web.to.in;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.voteva.gateway.web.to.common.QuestionInfo;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.validation.constraints.NotBlank;
@@ -12,16 +12,20 @@ import java.util.List;
 public class AddTestRequest {
 
     @NotBlank
+    @ApiModelProperty(example = "Test Name")
     private String testName;
+
     @NotBlank
+    @ApiModelProperty(example = "Test Category")
     private String testCategory;
+
     @NotNull
-    private List<QuestionInfo> questions;
+    private List<AddQuestionRequest> questions;
 
     @JsonCreator
-    public AddTestRequest(@JsonProperty("test_name") String testName,
-                          @JsonProperty("test_category") String testCategory,
-                          @JsonProperty("questions")  List<QuestionInfo> questions) {
+    public AddTestRequest(@JsonProperty("testName") String testName,
+                          @JsonProperty("testCategory") String testCategory,
+                          @JsonProperty("questions") List<AddQuestionRequest> questions) {
         this.testName = testName;
         this.testCategory = testCategory;
         this.questions = questions;
@@ -35,7 +39,7 @@ public class AddTestRequest {
         return testCategory;
     }
 
-    public List<QuestionInfo> getQuestions() {
+    public List<AddQuestionRequest> getQuestions() {
         return questions;
     }
 

@@ -15,7 +15,7 @@ public class DeleteTestRequest {
     private UUID testUid;
 
     @JsonCreator
-    public DeleteTestRequest(@JsonProperty("test_uid") UUID testUid) {
+    public DeleteTestRequest(@JsonProperty("testUid") UUID testUid) {
         this.testUid = testUid;
     }
 

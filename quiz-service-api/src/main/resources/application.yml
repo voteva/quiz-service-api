@@ -12,9 +12,9 @@ spring:
     name: quiz-service-api
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://localhost:5432/postgres"
+    url: "jdbc:postgresql://localhost:5432/quiz"
     username: srv_quiz
     password: "0000"
 
+spring.jpa.hibernate.ddl-auto: update
 spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
-

@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users", schema = "quizzes")
+@Table(name = "obj_users", schema = "quiz")
 public class ObjUserEntity {
 
     private UUID userUid;
@@ -83,6 +83,11 @@ public class ObjUserEntity {
     @Column(name = "created_date", nullable = false)
     public Timestamp getUserCreatedDtime() {
         return userCreatedDtime;
+    }
+
+    public ObjUserEntity setUserCreatedDtime(Timestamp userCreatedDtime) {
+        this.userCreatedDtime = userCreatedDtime;
+        return this;
     }
 
     @Override

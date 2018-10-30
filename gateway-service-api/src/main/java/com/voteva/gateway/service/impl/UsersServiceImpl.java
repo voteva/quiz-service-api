@@ -7,8 +7,9 @@ import com.voteva.gateway.grpc.client.GRpcUsersServiceClient;
 import com.voteva.gateway.service.UsersService;
 import com.voteva.gateway.util.GRpcExceptionUtils;
 import com.voteva.gateway.web.to.common.PagedResult;
-import com.voteva.gateway.web.to.common.UserInfo;
 import com.voteva.gateway.web.to.in.AddUserRequest;
+import com.voteva.gateway.web.to.out.AddUserResponse;
+import com.voteva.gateway.web.to.out.UserInfo;
 import com.voteva.quiz.grpc.model.v1.GBlockUserRequest;
 import com.voteva.quiz.grpc.model.v1.GGetAllUsersRequest;
 import com.voteva.quiz.grpc.model.v1.GGetAllUsersResponse;
@@ -16,6 +17,7 @@ import com.voteva.quiz.grpc.model.v1.GGetUserRequest;
 import com.voteva.quiz.grpc.model.v1.GRemoveAdminGrantsRequest;
 import com.voteva.quiz.grpc.model.v1.GSetAdminGrantsRequest;
 import com.voteva.quiz.grpc.model.v1.GUnblockUserRequest;
+import com.voteva.users.grpc.model.v1.GAddUserRequest;
 import io.grpc.StatusRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,15 +76,21 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public UserInfo addUser(AddUserRequest addUserRequest) {
+    public AddUserResponse addUser(AddUserRequest addUserRequest) {
         try {
-            /*return UsersInfoConverter.convert(
-                    rpcQuizServiceClient.addUser(
-                            GGetUserRequest.newBuilder()
-                                    .setUserUid(CommonConverter.convert(userUid))
+            UUID userUid = CommonConverter.convert(
+                    rpcUsersServiceClient.addUser(
+                            GAddUserRequest.newBuilder()
+                                    .setEmail(addUserRequest.getEmail())
+                                    .setPassword(addUserRequest.getPassword())
                                     .build())
-                            .getUserInfo());*/
-            return null; // TODO
+                            .getUserUid());
+
+            return new AddUserResponse(
+                    userUid,
+                    rpcQuizServiceClient.addUser(
+                            UsersInfoConverter.convert(addUserRequest, userUid))
+                            .getUserInfo().getCreatedDtime());
 
         } catch (StatusRuntimeException e) {
             logger.error("Failed to add user with email={}", addUserRequest.getEmail());

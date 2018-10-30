@@ -2,8 +2,9 @@ package com.voteva.gateway.converter;
 
 import com.voteva.common.grpc.model.GPage;
 import com.voteva.gateway.web.to.common.PagedResult;
-import com.voteva.gateway.web.to.common.QuestionInfo;
-import com.voteva.gateway.web.to.common.TestInfo;
+import com.voteva.gateway.web.to.out.QuestionInfo;
+import com.voteva.gateway.web.to.out.TestInfo;
+import com.voteva.gateway.web.to.in.AddQuestionRequest;
 import com.voteva.gateway.web.to.in.AddTestRequest;
 import com.voteva.tests.grpc.model.v1.GAddTestRequest;
 import com.voteva.tests.grpc.model.v1.GQuestion;
@@ -23,11 +24,11 @@ public class TestInfoConverter {
     }
 
     public static TestInfo convert(GTestInfo testInfo) {
-        return new TestInfo()
-                .setTestUid(CommonConverter.convert(testInfo.getTestUid()))
-                .setTestName(testInfo.getTestName())
-                .setTestCategory(testInfo.getTestCategory())
-                .setQuestions(testInfo.getQuestionsList().stream()
+        return new TestInfo(
+                CommonConverter.convert(testInfo.getTestUid()),
+                testInfo.getTestName(),
+                testInfo.getTestCategory(),
+                testInfo.getQuestionsList().stream()
                         .map(TestInfoConverter::convert)
                         .collect(Collectors.toList()));
     }
@@ -42,18 +43,17 @@ public class TestInfoConverter {
                 .build();
     }
 
-    private static GQuestion convert(QuestionInfo questionInfo) {
+    private static GQuestion convert(AddQuestionRequest questionRequest) {
         return GQuestion.newBuilder()
-                .setText(questionInfo.getQuestionText())
-                .setRightAnswer(questionInfo.getRightAnswer())
-                .addAllAnswerChoices(questionInfo.getAnswerChoices())
+                .setText(questionRequest.getQuestionText())
+                .setRightAnswer(questionRequest.getRightAnswer())
+                .addAllAnswerChoices(questionRequest.getAnswerChoices())
                 .build();
     }
 
     private static QuestionInfo convert(GQuestion question) {
         return new QuestionInfo(
                 question.getText(),
-                question.getAnswerChoicesList(),
-                question.getRightAnswer());
+                question.getAnswerChoicesList());
     }
 }

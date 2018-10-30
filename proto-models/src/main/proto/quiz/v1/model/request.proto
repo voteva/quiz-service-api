@@ -40,7 +40,9 @@ message GGetAllUsersRequest {
 
 message GAddUserRequest {
     com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    GUserInfo userInfo = 2;
+    com.voteva.common.grpc.model.GUuid userUid = 2;
+    string firstName = 3;
+    string lastName = 4;
 }
 
 message GUpdateUserRequest {

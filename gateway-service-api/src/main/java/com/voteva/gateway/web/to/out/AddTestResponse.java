@@ -12,7 +12,7 @@ public class AddTestResponse {
         this.testUid = testUid;
     }
 
-    @JsonGetter("test_uid")
+    @JsonGetter("testUid")
     public UUID getTestUid() {
         return testUid;
     }

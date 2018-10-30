@@ -2,7 +2,7 @@ package com.voteva.gateway.web.controller;
 
 import com.voteva.gateway.service.TestsService;
 import com.voteva.gateway.web.to.common.PagedResult;
-import com.voteva.gateway.web.to.common.TestInfo;
+import com.voteva.gateway.web.to.out.TestInfo;
 import com.voteva.gateway.web.to.in.AddTestRequest;
 import com.voteva.gateway.web.to.in.DeleteTestRequest;
 import com.voteva.gateway.web.to.out.AddTestResponse;

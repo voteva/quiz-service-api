@@ -1,7 +1,7 @@
 package com.voteva.gateway.service;
 
 import com.voteva.gateway.web.to.common.PagedResult;
-import com.voteva.gateway.web.to.common.TestInfo;
+import com.voteva.gateway.web.to.out.TestInfo;
 import com.voteva.gateway.web.to.in.AddTestRequest;
 
 import java.util.List;

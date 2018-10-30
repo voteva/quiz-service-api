@@ -6,7 +6,7 @@ import com.voteva.gateway.grpc.client.GRpcTestsServiceClient;
 import com.voteva.gateway.service.TestsService;
 import com.voteva.gateway.util.GRpcExceptionUtils;
 import com.voteva.gateway.web.to.common.PagedResult;
-import com.voteva.gateway.web.to.common.TestInfo;
+import com.voteva.gateway.web.to.out.TestInfo;
 import com.voteva.gateway.web.to.in.AddTestRequest;
 import com.voteva.tests.grpc.model.v1.GGetAllTestsRequest;
 import com.voteva.tests.grpc.model.v1.GGetAllTestsResponse;

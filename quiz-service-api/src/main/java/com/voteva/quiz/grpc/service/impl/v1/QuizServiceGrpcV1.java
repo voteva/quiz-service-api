@@ -135,7 +135,10 @@ public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
                         StreamObserver<GAddUserResponse> responseObserver) {
         try {
             ObjUserEntity userEntity = quizService.addUser(
-                    ModelConverter.convert(request.getUserInfo()));
+                    new ObjUserEntity()
+                            .setUserUid(ModelConverter.convert(request.getUserUid()))
+                            .setFirstName(request.getFirstName())
+                            .setLastName(request.getLastName()));
 
             responseObserver.onNext(GAddUserResponse.newBuilder()
                     .setUserInfo(ModelConverter.convert(userEntity))

@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user_2_test", schema = "quizzes")
+@Table(name = "rel_user_2_test", schema = "quiz")
 public class RelUser2TestEntity {
 
     private User2TestId user2TestId;
@@ -62,6 +62,8 @@ public class RelUser2TestEntity {
     public static class User2TestId implements Serializable {
         private UUID userUid;
         private UUID testUid;
+
+        public User2TestId() {}
 
         public User2TestId(UUID userUid, UUID testUid) {
             this.userUid = userUid;
