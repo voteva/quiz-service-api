@@ -1,8 +1,7 @@
 syntax = "proto3";
 
-package com.voteva.common.grpc.model;
-
 option java_multiple_files = true;
+option java_package = "com.voteva.common.grpc.model";
 
 
 message Empty {}

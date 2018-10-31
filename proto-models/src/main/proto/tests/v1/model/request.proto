@@ -1,42 +1,41 @@
 syntax = "proto3";
 
-package com.voteva.tests.grpc.model.v1;
-
 import "common/model/model.proto";
 import "auth/v1/model/model.proto";
 import "tests/v1/model/model.proto";
 
 option java_multiple_files = true;
+option java_package = "com.voteva.tests.grpc.model.v1";
 
 
 message GGetTestCategoriesRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
+    GAuthentication authentication = 1;
 }
 
 message GGetAllTestsRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GPageable pageable = 2;
+    GAuthentication authentication = 1;
+    GPageable pageable = 2;
 }
 
 message GGetTestsByCategoryRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GPageable pageable = 2;
+    GAuthentication authentication = 1;
+    GPageable pageable = 2;
     string category = 3;
 }
 
 message GGetTestRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid testUid = 2;
+    GAuthentication authentication = 1;
+    GUuid testUid = 2;
 }
 
 message GAddTestRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
+    GAuthentication authentication = 1;
     string testName = 2;
     string testCategory = 3;
     repeated GQuestion questions = 4;
 }
 
 message GRemoveTestRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid testUid = 2;
+    GAuthentication authentication = 1;
+    GUuid testUid = 2;
 }

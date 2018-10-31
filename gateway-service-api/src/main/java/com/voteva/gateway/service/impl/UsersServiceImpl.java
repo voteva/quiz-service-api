@@ -20,7 +20,7 @@ import com.voteva.quiz.grpc.model.v1.GGetUserTestsRequest;
 import com.voteva.quiz.grpc.model.v1.GRemoveAdminGrantsRequest;
 import com.voteva.quiz.grpc.model.v1.GSetAdminGrantsRequest;
 import com.voteva.quiz.grpc.model.v1.GUnblockUserRequest;
-import com.voteva.users.grpc.model.v1.GAddUserRequest;
+import com.voteva.users.grpc.model.v1.GAddUserAuthRequest;
 import io.grpc.StatusRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,7 +100,7 @@ public class UsersServiceImpl implements UsersService {
         try {
             UUID userUid = CommonConverter.convert(
                     rpcUsersServiceClient.addUser(
-                            GAddUserRequest.newBuilder()
+                            GAddUserAuthRequest.newBuilder()
                                     .setEmail(addUserRequest.getEmail())
                                     .setPassword(addUserRequest.getPassword())
                                     .build())

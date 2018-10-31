@@ -1,7 +1,7 @@
 package com.voteva.gateway.grpc.client;
 
-import com.voteva.users.grpc.model.v1.GAddUserRequest;
-import com.voteva.users.grpc.model.v1.GAddUserResponse;
+import com.voteva.users.grpc.model.v1.GAddUserAuthRequest;
+import com.voteva.users.grpc.model.v1.GAddUserAuthResponse;
 import com.voteva.users.grpc.service.v1.UsersServiceV1Grpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -30,7 +30,7 @@ public class GRpcUsersServiceClient {
         usersServiceV1BlockingStub = UsersServiceV1Grpc.newBlockingStub(managedChannel);
     }
 
-    public GAddUserResponse addUser(GAddUserRequest request) {
+    public GAddUserAuthResponse addUser(GAddUserAuthRequest request) {
         return usersServiceV1BlockingStub.addUser(request);
     }
 }

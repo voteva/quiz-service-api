@@ -1,73 +1,71 @@
 syntax = "proto3";
 
-package com.voteva.quiz.grpc.model.v1;
-
 import "common/model/model.proto";
 import "auth/v1/model/model.proto";
-import "quiz/v1/model/model.proto";
 
 option java_multiple_files = true;
+option java_package = "com.voteva.quiz.grpc.model.v1";
 
 
 message GGetUserTestsRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid userUid = 2;
+    GAuthentication authentication = 1;
+    GUuid userUid = 2;
 }
 
 message GAssignTestRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid userUid = 2;
-    com.voteva.common.grpc.model.GUuid testUid = 3;
+    GAuthentication authentication = 1;
+    GUuid userUid = 2;
+    GUuid testUid = 3;
     int32 attemptsAllowed = 4;
 }
 
 message GSetTestResultsRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid userUid = 2;
-    com.voteva.common.grpc.model.GUuid testUid = 3;
+    GAuthentication authentication = 1;
+    GUuid userUid = 2;
+    GUuid testUid = 3;
     int32 percent = 4;
 }
 
 message GGetUserRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid userUid = 2;
+    GAuthentication authentication = 1;
+    GUuid userUid = 2;
 }
 
 message GGetAllUsersRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GPageable pageable = 2;
+    GAuthentication authentication = 1;
+    GPageable pageable = 2;
 }
 
 message GAddUserRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid userUid = 2;
+    GAuthentication authentication = 1;
+    GUuid userUid = 2;
     string firstName = 3;
     string lastName = 4;
 }
 
 message GUpdateUserRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid userUid = 2;
+    GAuthentication authentication = 1;
+    GUuid userUid = 2;
     string firstName = 3;
     string lastName = 4;
 }
 
 message GSetAdminGrantsRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid userUid = 2;
+    GAuthentication authentication = 1;
+    GUuid userUid = 2;
 }
 
 message GRemoveAdminGrantsRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid userUid = 2;
+    GAuthentication authentication = 1;
+    GUuid userUid = 2;
 }
 
 message GBlockUserRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid userUid = 2;
+    GAuthentication authentication = 1;
+    GUuid userUid = 2;
 }
 
 message GUnblockUserRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
-    com.voteva.common.grpc.model.GUuid userUid = 2;
+    GAuthentication authentication = 1;
+    GUuid userUid = 2;
 }

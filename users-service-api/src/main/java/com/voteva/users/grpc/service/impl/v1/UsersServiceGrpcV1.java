@@ -1,8 +1,8 @@
 package com.voteva.users.grpc.service.impl.v1;
 
 import com.voteva.users.converter.ModelConverter;
-import com.voteva.users.grpc.model.v1.GAddUserRequest;
-import com.voteva.users.grpc.model.v1.GAddUserResponse;
+import com.voteva.users.grpc.model.v1.GAddUserAuthRequest;
+import com.voteva.users.grpc.model.v1.GAddUserAuthResponse;
 import com.voteva.users.grpc.service.v1.UsersServiceV1Grpc;
 import com.voteva.users.service.UsersService;
 import io.grpc.Status;
@@ -23,12 +23,12 @@ public class UsersServiceGrpcV1 extends UsersServiceV1Grpc.UsersServiceV1ImplBas
     }
 
     @Override
-    public void addUser(GAddUserRequest request,
-                        StreamObserver<GAddUserResponse> responseObserver) {
+    public void addUser(GAddUserAuthRequest request,
+                        StreamObserver<GAddUserAuthResponse> responseObserver) {
         try {
             UUID userUid = usersService.addUser(request.getEmail(), request.getPassword());
 
-            GAddUserResponse response = GAddUserResponse.newBuilder()
+            GAddUserAuthResponse response = GAddUserAuthResponse.newBuilder()
                     .setUserUid(ModelConverter.convert(userUid))
                     .build();
 

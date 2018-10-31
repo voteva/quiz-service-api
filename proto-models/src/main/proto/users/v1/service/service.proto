@@ -10,6 +10,6 @@ option java_multiple_files = true;
 
 service UsersServiceV1 {
 
-  rpc addUser (com.voteva.users.grpc.model.v1.GAddUserRequest) returns (com.voteva.users.grpc.model.v1.GAddUserResponse);
+  rpc addUser (GAddUserAuthRequest) returns (GAddUserAuthResponse);
 
 }

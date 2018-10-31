@@ -1,14 +1,13 @@
 syntax = "proto3";
 
-package com.voteva.users.grpc.model.v1;
-
 import "auth/v1/model/model.proto";
 
 option java_multiple_files = true;
+option java_package = "com.voteva.users.grpc.model.v1";
 
 
-message GAddUserRequest {
-    com.voteva.auth.grpc.model.v1.GAuthentication authentication = 1;
+message GAddUserAuthRequest {
+    GAuthentication authentication = 1;
     string email = 2;
     string password = 3;
 }
