@@ -1,4 +1,4 @@
-package com.voteva.tests.grpc.service.impl.v1;
+package com.voteva.tests.grpc.service.v1.impl;
 
 import com.voteva.common.grpc.model.Empty;
 import com.voteva.tests.converter.ModelConverter;
@@ -28,12 +28,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @GRpcService
-public class TestsServiceGrpcV1 extends TestsServiceV1Grpc.TestsServiceV1ImplBase {
+public class TestsServiceV1GrpcImpl extends TestsServiceV1Grpc.TestsServiceV1ImplBase {
 
     private final TestsService testsService;
 
     @Autowired
-    public TestsServiceGrpcV1(TestsService testsService) {
+    public TestsServiceV1GrpcImpl(TestsService testsService) {
         this.testsService = testsService;
     }
 

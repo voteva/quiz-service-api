@@ -1,4 +1,4 @@
-package com.voteva.quiz.grpc.service.impl.v1;
+package com.voteva.quiz.grpc.service.v1.impl;
 
 import com.voteva.common.grpc.model.Empty;
 import com.voteva.quiz.converter.ModelConverter;
@@ -33,12 +33,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @GRpcService
-public class QuizServiceGrpcV1 extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
+public class QuizServiceV1GrpcImpl extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
 
     private final QuizService quizService;
 
     @Autowired
-    public QuizServiceGrpcV1(QuizService quizService) {
+    public QuizServiceV1GrpcImpl(QuizService quizService) {
         this.quizService = quizService;
     }
 

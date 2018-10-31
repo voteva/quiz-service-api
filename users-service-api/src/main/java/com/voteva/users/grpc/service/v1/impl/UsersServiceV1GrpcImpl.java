@@ -1,4 +1,4 @@
-package com.voteva.users.grpc.service.impl.v1;
+package com.voteva.users.grpc.service.v1.impl;
 
 import com.voteva.users.converter.ModelConverter;
 import com.voteva.users.grpc.model.v1.GAddUserAuthRequest;
@@ -13,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.UUID;
 
 @GRpcService
-public class UsersServiceGrpcV1 extends UsersServiceV1Grpc.UsersServiceV1ImplBase {
+public class UsersServiceV1GrpcImpl extends UsersServiceV1Grpc.UsersServiceV1ImplBase {
 
     private final UsersService usersService;
 
     @Autowired
-    public UsersServiceGrpcV1(UsersService usersService) {
+    public UsersServiceV1GrpcImpl(UsersService usersService) {
         this.usersService = usersService;
     }
 
