@@ -9,7 +9,7 @@ logging:
 
 spring:
   application:
-    name: tests-service-api
+    name: tests-api
   data:
     mongodb:
       host: 127.0.0.1

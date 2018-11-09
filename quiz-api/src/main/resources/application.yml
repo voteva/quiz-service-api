@@ -9,7 +9,7 @@ logging:
 
 spring:
   application:
-    name: quiz-service-api
+    name: quiz-api
   datasource:
     driver-class-name: org.postgresql.Driver
     url: "jdbc:postgresql://localhost:5432/quiz"

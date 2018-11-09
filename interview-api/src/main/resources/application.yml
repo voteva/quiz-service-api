@@ -1,5 +1,5 @@
 grpc:
-  port: 6565
+  port: 6568
 
 logging:
   path: logs
@@ -9,11 +9,11 @@ logging:
 
 spring:
   application:
-    name: users-service-api
+    name: interview-api
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://localhost:5432/users"
-    username: srv_users
+    url: "jdbc:postgresql://localhost:5432/interview"
+    username: srv_interview
     password: "0000"
 
 spring.jpa.hibernate.ddl-auto: update

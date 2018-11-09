@@ -19,18 +19,19 @@
         <version>2.0.5.RELEASE</version>
     </parent>
 
-    <modules>
-        <module>proto-models</module>
-        <module>users-service-api</module>
-        <module>tests-service-api</module>
-        <module>gateway-service-api</module>
-        <module>quiz-service-api</module>
-    </modules>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
+
+    <modules>
+        <module>proto-models</module>
+        <module>tests-api</module>
+        <module>quiz-api</module>
+        <module>interview-api</module>
+        <module>gateway-api</module>
+        <module>users-auth</module>
+    </modules>
 
 </project>
