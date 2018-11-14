@@ -23,9 +23,10 @@ public class AddTestRequest {
     private List<AddQuestionRequest> questions;
 
     @JsonCreator
-    public AddTestRequest(@JsonProperty("testName") String testName,
-                          @JsonProperty("testCategory") String testCategory,
-                          @JsonProperty("questions") List<AddQuestionRequest> questions) {
+    public AddTestRequest(
+            @JsonProperty("testName") String testName,
+            @JsonProperty("testCategory") String testCategory,
+            @JsonProperty("questions") List<AddQuestionRequest> questions) {
         this.testName = testName;
         this.testCategory = testCategory;
         this.questions = questions;

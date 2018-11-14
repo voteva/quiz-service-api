@@ -2,7 +2,7 @@ package com.voteva.gateway.web.controller;
 
 import com.voteva.gateway.service.UsersService;
 import com.voteva.gateway.web.to.common.PagedResult;
-import com.voteva.gateway.web.to.out.AddUserResponse;
+import com.voteva.gateway.web.to.out.AddUserInfo;
 import com.voteva.gateway.web.to.out.QuizInfo;
 import com.voteva.gateway.web.to.out.UserInfo;
 import com.voteva.gateway.web.to.in.AddUserRequest;
@@ -40,64 +40,64 @@ public class UsersController {
     public ResponseEntity<PagedResult<UserInfo>> getUsers(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "20") int size) {
-        logger.debug("Getting users for page={} and page size={}", page, size);
+        logger.debug("Getting users for page: {} and page size: {}", page, size);
 
         return ResponseEntity.ok(usersService.getUsers(page, size));
     }
 
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
     public ResponseEntity<UserInfo> getUserInfo(@PathVariable UUID uuid) {
-        logger.debug("Getting user info by uid={}", uuid);
+        logger.debug("Getting user info by uid: {}", uuid);
 
         return ResponseEntity.ok(usersService.getUserByUid(uuid));
     }
 
     @RequestMapping(path = "/{uuid}/tests", method = RequestMethod.GET)
     public ResponseEntity<List<QuizInfo>> getUserTests(@PathVariable UUID uuid) {
-        logger.debug("Getting tests for user with uid={}", uuid);
+        logger.debug("Getting tests for user with uid: {}", uuid);
 
         return ResponseEntity.ok(usersService.getUserTests(uuid));
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<AddUserResponse> addUser(@RequestBody @Valid AddUserRequest addUserRequest) {
-        logger.debug("Adding user={}", addUserRequest);
+    public ResponseEntity<AddUserInfo> addUser(@RequestBody @Valid AddUserRequest request) {
+        logger.debug("Adding user: {}", request);
 
-        return ResponseEntity.ok(usersService.addUser(addUserRequest));
+        return ResponseEntity.ok(usersService.addUser(request));
     }
 
     @RequestMapping(path = "/admin", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Void> setAdminGrants(@RequestBody @Valid UserUidRequest userUidRequest) {
-        logger.debug("Blocking user with uid={}", userUidRequest.getUserUid());
+    public ResponseEntity<Void> setAdminGrants(@RequestBody @Valid UserUidRequest request) {
+        logger.debug("Blocking user with uid: {}", request.getUserUid());
 
-        usersService.setAdminGrants(userUidRequest.getUserUid());
+        usersService.setAdminGrants(request.getUserUid());
 
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(path = "/remove-admin", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Void> removeAdminGrants(@RequestBody @Valid UserUidRequest userUidRequest) {
-        logger.debug("Unblocking user with uid={}", userUidRequest.getUserUid());
+    public ResponseEntity<Void> removeAdminGrants(@RequestBody @Valid UserUidRequest request) {
+        logger.debug("Unblocking user with uid: {}", request.getUserUid());
 
-        usersService.removeAdminGrants(userUidRequest.getUserUid());
+        usersService.removeAdminGrants(request.getUserUid());
 
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(path = "/block", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Void> blockUser(@RequestBody @Valid UserUidRequest userUidRequest) {
-        logger.debug("Blocking user with uid={}", userUidRequest.getUserUid());
+    public ResponseEntity<Void> blockUser(@RequestBody @Valid UserUidRequest request) {
+        logger.debug("Blocking user with uid: {}", request.getUserUid());
 
-        usersService.blockUser(userUidRequest.getUserUid());
+        usersService.blockUser(request.getUserUid());
 
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(path = "/unblock", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Void> unblockUser(@RequestBody @Valid UserUidRequest userUidRequest) {
-        logger.debug("Unblocking user with uid={}", userUidRequest.getUserUid());
+    public ResponseEntity<Void> unblockUser(@RequestBody @Valid UserUidRequest request) {
+        logger.debug("Unblocking user with uid: {}", request.getUserUid());
 
-        usersService.unblockUser(userUidRequest.getUserUid());
+        usersService.unblockUser(request.getUserUid());
 
         return ResponseEntity.noContent().build();
     }

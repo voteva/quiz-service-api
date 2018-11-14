@@ -11,9 +11,10 @@ public class QuestionInfo {
     private List<String> answerChoices;
     private int rightAnswer;
 
-    public QuestionInfo(String questionText,
-                        List<String> answerChoices,
-                        int rightAnswer) {
+    public QuestionInfo(
+            String questionText,
+            List<String> answerChoices,
+            int rightAnswer) {
         this.questionText = questionText;
         this.answerChoices = answerChoices;
         this.rightAnswer = rightAnswer;

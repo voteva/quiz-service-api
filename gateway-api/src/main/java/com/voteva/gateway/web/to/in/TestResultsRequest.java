@@ -17,9 +17,10 @@ public class TestResultsRequest {
     private Map<String, Integer> answers;
 
     @JsonCreator
-    public TestResultsRequest(@JsonProperty("userUid") UUID userUid,
-                              @JsonProperty("testUid") UUID testUid,
-                              @JsonProperty("answers") Map<String, Integer> answers) {
+    public TestResultsRequest(
+            @JsonProperty("userUid") UUID userUid,
+            @JsonProperty("testUid") UUID testUid,
+            @JsonProperty("answers") Map<String, Integer> answers) {
         this.userUid = userUid;
         this.testUid = testUid;
         this.answers = answers;

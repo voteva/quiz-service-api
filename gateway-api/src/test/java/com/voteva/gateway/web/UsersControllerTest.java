@@ -7,7 +7,7 @@ import com.voteva.gateway.web.controller.UsersController;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddUserRequest;
 import com.voteva.gateway.web.to.in.UserUidRequest;
-import com.voteva.gateway.web.to.out.AddUserResponse;
+import com.voteva.gateway.web.to.out.AddUserInfo;
 import com.voteva.gateway.web.to.out.QuizInfo;
 import com.voteva.gateway.web.to.out.UserInfo;
 import org.junit.Test;
@@ -112,7 +112,7 @@ public class UsersControllerTest {
         AddUserRequest request = new AddUserRequest(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
 
         Instant now = Instant.now();
-        AddUserResponse response = new AddUserResponse(USER_UID, now.toEpochMilli());
+        AddUserInfo response = new AddUserInfo(USER_UID, now.toEpochMilli());
 
         when(usersService.addUser(any(AddUserRequest.class))).thenReturn(response);
 

@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 
 import java.util.UUID;
 
-public class AddTestResponse {
+public class AddTestInfo {
 
     private UUID testUid;
 
-    public AddTestResponse(UUID testUid) {
+    public AddTestInfo(UUID testUid) {
         this.testUid = testUid;
     }
 

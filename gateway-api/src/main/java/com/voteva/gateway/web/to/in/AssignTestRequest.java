@@ -24,9 +24,10 @@ public class AssignTestRequest {
     private int attemptsAllowed;
 
     @JsonCreator
-    public AssignTestRequest(@JsonProperty("userUid") UUID userUid,
-                             @JsonProperty("testUid") UUID testUid,
-                             @JsonProperty("attemptsAllowed") int attemptsAllowed) {
+    public AssignTestRequest(
+            @JsonProperty("userUid") UUID userUid,
+            @JsonProperty("testUid") UUID testUid,
+            @JsonProperty("attemptsAllowed") int attemptsAllowed) {
         this.userUid = userUid;
         this.testUid = testUid;
         this.attemptsAllowed = attemptsAllowed;

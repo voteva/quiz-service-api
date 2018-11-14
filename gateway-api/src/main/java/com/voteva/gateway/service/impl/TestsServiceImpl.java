@@ -4,7 +4,7 @@ import com.voteva.gateway.converter.CommonConverter;
 import com.voteva.gateway.converter.TestInfoConverter;
 import com.voteva.gateway.grpc.client.GRpcTestsServiceClient;
 import com.voteva.gateway.service.TestsService;
-import com.voteva.gateway.util.GRpcExceptionUtils;
+import com.voteva.gateway.exception.util.GRpcExceptionUtil;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.out.TestInfo;
 import com.voteva.gateway.web.to.in.AddTestRequest;
@@ -46,7 +46,7 @@ public class TestsServiceImpl implements TestsService {
 
         } catch (StatusRuntimeException e) {
             logger.error("Failed to get test categories");
-            throw GRpcExceptionUtils.convert(e);
+            throw GRpcExceptionUtil.convertByTests(e);
         }
     }
 
@@ -58,8 +58,8 @@ public class TestsServiceImpl implements TestsService {
                     .orElseGet(() -> getTestsInternal(page, size));
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to get all tests by category={} for page={} and page size={}", category, page, size);
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to get all tests by category: {} for page: {} and page size: {}", category, page, size);
+            throw GRpcExceptionUtil.convertByTests(e);
         }
     }
 
@@ -74,8 +74,8 @@ public class TestsServiceImpl implements TestsService {
                             .getTestInfo());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to get test info by uid={}", testUid);
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to get test info by uid: {}", testUid);
+            throw GRpcExceptionUtil.convertByTests(e);
         }
     }
 
@@ -88,8 +88,8 @@ public class TestsServiceImpl implements TestsService {
                             .getTestUid());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to add test with name={}", request.getTestName());
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to add test with name: {}", request.getTestName());
+            throw GRpcExceptionUtil.convertByTests(e);
         }
     }
 
@@ -102,8 +102,8 @@ public class TestsServiceImpl implements TestsService {
                             .build());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to delete test with uid={}", testUid);
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to delete test with uid: {}", testUid);
+            throw GRpcExceptionUtil.convertByTests(e);
         }
     }
 

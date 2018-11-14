@@ -6,10 +6,10 @@ import com.voteva.gateway.converter.UsersInfoConverter;
 import com.voteva.gateway.grpc.client.GRpcQuizServiceClient;
 import com.voteva.gateway.grpc.client.GRpcUsersServiceClient;
 import com.voteva.gateway.service.UsersService;
-import com.voteva.gateway.util.GRpcExceptionUtils;
+import com.voteva.gateway.exception.util.GRpcExceptionUtil;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddUserRequest;
-import com.voteva.gateway.web.to.out.AddUserResponse;
+import com.voteva.gateway.web.to.out.AddUserInfo;
 import com.voteva.gateway.web.to.out.QuizInfo;
 import com.voteva.gateway.web.to.out.UserInfo;
 import com.voteva.quiz.grpc.model.v1.GBlockUserRequest;
@@ -40,8 +40,9 @@ public class UsersServiceImpl implements UsersService {
     private final GRpcQuizServiceClient rpcQuizServiceClient;
 
     @Autowired
-    public UsersServiceImpl(GRpcUsersServiceClient rpcUsersServiceClient,
-                            GRpcQuizServiceClient rpcQuizServiceClient) {
+    public UsersServiceImpl(
+            GRpcUsersServiceClient rpcUsersServiceClient,
+            GRpcQuizServiceClient rpcQuizServiceClient) {
         this.rpcUsersServiceClient = rpcUsersServiceClient;
         this.rpcQuizServiceClient = rpcQuizServiceClient;
     }
@@ -57,8 +58,8 @@ public class UsersServiceImpl implements UsersService {
             return UsersInfoConverter.convert(users.getUsersList(), users.getPage());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to get users for page={} and page size={}", page, size);
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to get users for page: {} and page size: {}", page, size);
+            throw GRpcExceptionUtil.convertByQuiz(e);
         }
     }
 
@@ -73,8 +74,8 @@ public class UsersServiceImpl implements UsersService {
                             .getUserInfo());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to get user info by uid={}", userUid);
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to get user info by uid: {}", userUid);
+            throw GRpcExceptionUtil.convertByQuiz(e);
         }
     }
 
@@ -90,31 +91,31 @@ public class UsersServiceImpl implements UsersService {
                     .collect(Collectors.toList());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to get tests for user with uid={}", userUid);
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to get tests for user with uid: {}", userUid);
+            throw GRpcExceptionUtil.convertByQuiz(e);
         }
     }
 
     @Override
-    public AddUserResponse addUser(AddUserRequest addUserRequest) {
+    public AddUserInfo addUser(AddUserRequest request) {
         try {
             UUID userUid = CommonConverter.convert(
                     rpcUsersServiceClient.addUser(
                             GAddUserAuthRequest.newBuilder()
-                                    .setEmail(addUserRequest.getEmail())
-                                    .setPassword(addUserRequest.getPassword())
+                                    .setEmail(request.getEmail())
+                                    .setPassword(request.getPassword())
                                     .build())
                             .getUserUid());
 
-            return new AddUserResponse(
+            return new AddUserInfo(
                     userUid,
                     rpcQuizServiceClient.addUser(
-                            UsersInfoConverter.convert(addUserRequest, userUid))
+                            UsersInfoConverter.convert(request, userUid))
                             .getUserInfo().getCreatedDtime());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to add user with email={}", addUserRequest.getEmail());
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to add user with email: {}", request.getEmail());
+            throw GRpcExceptionUtil.convertByQuiz(e);
         }
     }
 
@@ -127,8 +128,8 @@ public class UsersServiceImpl implements UsersService {
                             .build());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to set admin grants for user with uid={}", userUid);
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to set admin grants for user with uid: {}", userUid);
+            throw GRpcExceptionUtil.convertByQuiz(e);
         }
     }
 
@@ -141,8 +142,8 @@ public class UsersServiceImpl implements UsersService {
                             .build());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to remove admin grants for user with uid={}", userUid);
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to remove admin grants for user with uid: {}", userUid);
+            throw GRpcExceptionUtil.convertByQuiz(e);
         }
     }
 
@@ -155,8 +156,8 @@ public class UsersServiceImpl implements UsersService {
                             .build());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to block user with uid={}", userUid);
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to block user with uid: {}", userUid);
+            throw GRpcExceptionUtil.convertByQuiz(e);
         }
     }
 
@@ -169,8 +170,8 @@ public class UsersServiceImpl implements UsersService {
                             .build());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to unblock user with uid={}", userUid);
-            throw GRpcExceptionUtils.convert(e);
+            logger.error("Failed to unblock user with uid: {}", userUid);
+            throw GRpcExceptionUtil.convertByQuiz(e);
         }
     }
 }

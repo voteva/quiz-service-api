@@ -30,21 +30,18 @@ public class QuizController {
     }
 
     @RequestMapping(path = "/assign", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Void> assignTest(@RequestBody @Valid AssignTestRequest assignTestRequest) {
-        logger.debug("Assigning test={} to user={}", assignTestRequest.getTestUid(), assignTestRequest.getUserUid());
+    public ResponseEntity<Void> assignTest(@RequestBody @Valid AssignTestRequest request) {
+        logger.debug("Assigning test for request: {}", request);
 
-        quizService.assignTest(
-                assignTestRequest.getUserUid(),
-                assignTestRequest.getTestUid(),
-                assignTestRequest.getAttemptsAllowed());
+        quizService.assignTest(request);
 
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(path = "/results", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<QuizInfo> setTestResults(@RequestBody @Valid TestResultsRequest testResultsRequest) {
-        logger.debug("Setting results of test={} for user={}", testResultsRequest.getTestUid(), testResultsRequest.getUserUid());
+    public ResponseEntity<QuizInfo> setTestResults(@RequestBody @Valid TestResultsRequest request) {
+        logger.debug("Setting results for request: {}", request);
 
-        return ResponseEntity.ok(quizService.setTestResults(testResultsRequest));
+        return ResponseEntity.ok(quizService.setTestResults(request));
     }
 }

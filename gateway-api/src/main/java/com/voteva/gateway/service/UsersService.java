@@ -1,7 +1,7 @@
 package com.voteva.gateway.service;
 
 import com.voteva.gateway.web.to.common.PagedResult;
-import com.voteva.gateway.web.to.out.AddUserResponse;
+import com.voteva.gateway.web.to.out.AddUserInfo;
 import com.voteva.gateway.web.to.out.QuizInfo;
 import com.voteva.gateway.web.to.out.UserInfo;
 import com.voteva.gateway.web.to.in.AddUserRequest;
@@ -17,7 +17,7 @@ public interface UsersService {
 
     List<QuizInfo> getUserTests(UUID userUid);
 
-    AddUserResponse addUser(AddUserRequest addUserRequest);
+    AddUserInfo addUser(AddUserRequest request);
 
     void setAdminGrants(UUID userUid);
 

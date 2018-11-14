@@ -23,9 +23,10 @@ public class AddQuestionRequest {
     @ApiModelProperty(example = "0")
     private int rightAnswer;
 
-    public AddQuestionRequest(@JsonProperty("questionText") String questionText,
-                              @JsonProperty("answerChoices") List<String> answerChoices,
-                              @JsonProperty("rightAnswer") int rightAnswer) {
+    public AddQuestionRequest(
+            @JsonProperty("questionText") String questionText,
+            @JsonProperty("answerChoices") List<String> answerChoices,
+            @JsonProperty("rightAnswer") int rightAnswer) {
         this.questionText = questionText;
         this.answerChoices = answerChoices;
         this.rightAnswer = rightAnswer;

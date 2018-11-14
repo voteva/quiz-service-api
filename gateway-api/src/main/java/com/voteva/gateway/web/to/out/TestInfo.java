@@ -12,10 +12,11 @@ public class TestInfo {
     private String testCategory;
     private List<QuestionInfo> questions;
 
-    public TestInfo(UUID testUid,
-                    String testName,
-                    String testCategory,
-                    List<QuestionInfo> questions) {
+    public TestInfo(
+            UUID testUid,
+            String testName,
+            String testCategory,
+            List<QuestionInfo> questions) {
         this.testUid = testUid;
         this.testName = testName;
         this.testCategory = testCategory;

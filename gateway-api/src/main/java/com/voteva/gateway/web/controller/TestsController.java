@@ -2,10 +2,10 @@ package com.voteva.gateway.web.controller;
 
 import com.voteva.gateway.service.TestsService;
 import com.voteva.gateway.web.to.common.PagedResult;
+import com.voteva.gateway.web.to.out.AddTestInfo;
 import com.voteva.gateway.web.to.out.TestInfo;
 import com.voteva.gateway.web.to.in.AddTestRequest;
 import com.voteva.gateway.web.to.in.DeleteTestRequest;
-import com.voteva.gateway.web.to.out.AddTestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,28 +40,28 @@ public class TestsController {
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "20") int size) {
-        logger.debug("Getting all tests for page={} and page size={} by category={}", page, size, category);
+        logger.debug("Getting all tests for page: {} and page size: {} by category: {}", page, size, category);
 
         return ResponseEntity.ok(testsService.getTests(category, page, size));
     }
 
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
     public ResponseEntity<TestInfo> getTestInfo(@PathVariable UUID uuid) {
-        logger.debug("Getting test info by uid={}", uuid);
+        logger.debug("Getting test info by uid: {}", uuid);
 
         return ResponseEntity.ok(testsService.getTestInfo(uuid));
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<AddTestResponse> addTest(@RequestBody @Valid AddTestRequest request) {
-        logger.debug("Adding test with name={}", request.getTestName());
+    public ResponseEntity<AddTestInfo> addTest(@RequestBody @Valid AddTestRequest request) {
+        logger.debug("Adding test with name: {}", request.getTestName());
 
-        return ResponseEntity.ok(new AddTestResponse(testsService.addTest(request)));
+        return ResponseEntity.ok(new AddTestInfo(testsService.addTest(request)));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Void> deleteTest(@RequestBody @Valid DeleteTestRequest request) {
-        logger.debug("Deleting test with uid={}", request.getTestUid());
+        logger.debug("Deleting test with uid: {}", request.getTestUid());
 
         testsService.deleteTest(request.getTestUid());
 

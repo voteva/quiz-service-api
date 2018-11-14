@@ -31,10 +31,11 @@ public class AddUserRequest {
     private final String lastName;
 
     @JsonCreator
-    public AddUserRequest(@JsonProperty("email") String email,
-                          @JsonProperty("password") String password,
-                          @JsonProperty("firstName") String firstName,
-                          @JsonProperty("lastName") String lastName) {
+    public AddUserRequest(
+            @JsonProperty("email") String email,
+            @JsonProperty("password") String password,
+            @JsonProperty("firstName") String firstName,
+            @JsonProperty("lastName") String lastName) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;

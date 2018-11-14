@@ -48,7 +48,7 @@ public class QuizControllerTest {
     public void testAssignTest() throws Exception {
         AssignTestRequest request = new AssignTestRequest(USER_UID, TEST_UID, ATTEMPTS_ALLOWED);
 
-        doNothing().when(quizService).assignTest(request.getUserUid(), request.getTestUid(), ATTEMPTS_ALLOWED);
+        doNothing().when(quizService).assignTest(request);
 
         mockMvc.perform(post("/api/quiz/assign")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)

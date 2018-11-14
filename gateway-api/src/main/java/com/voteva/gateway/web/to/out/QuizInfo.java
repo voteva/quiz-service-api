@@ -10,9 +10,10 @@ public class QuizInfo {
     private int percentCompleted;
     private int attemptsAllowed;
 
-    public QuizInfo(UUID testUid,
-                    int percentCompleted,
-                    int attemptsAllowed) {
+    public QuizInfo(
+            UUID testUid,
+            int percentCompleted,
+            int attemptsAllowed) {
         this.testUid = testUid;
         this.percentCompleted = percentCompleted;
         this.attemptsAllowed = attemptsAllowed;

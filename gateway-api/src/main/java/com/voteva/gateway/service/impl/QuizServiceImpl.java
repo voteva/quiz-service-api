@@ -2,10 +2,11 @@ package com.voteva.gateway.service.impl;
 
 import com.voteva.gateway.converter.CommonConverter;
 import com.voteva.gateway.converter.QuizInfoConverter;
+import com.voteva.gateway.exception.util.GRpcExceptionUtil;
 import com.voteva.gateway.grpc.client.GRpcQuizServiceClient;
 import com.voteva.gateway.service.QuizService;
 import com.voteva.gateway.service.TestsService;
-import com.voteva.gateway.util.GRpcExceptionUtils;
+import com.voteva.gateway.web.to.in.AssignTestRequest;
 import com.voteva.gateway.web.to.in.TestResultsRequest;
 import com.voteva.gateway.web.to.out.QuizInfo;
 import com.voteva.gateway.web.to.out.TestInfo;
@@ -35,37 +36,37 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public void assignTest(UUID userUid, UUID testUid, int attemptsAllowed) {
+    public void assignTest(AssignTestRequest request) {
         try {
             rpcQuizServiceClient.assignTest(
                     GAssignTestRequest.newBuilder()
-                            .setUserUid(CommonConverter.convert(userUid))
-                            .setTestUid(CommonConverter.convert(testUid))
-                            .setAttemptsAllowed(attemptsAllowed)
+                            .setUserUid(CommonConverter.convert(request.getUserUid()))
+                            .setTestUid(CommonConverter.convert(request.getTestUid()))
+                            .setAttemptsAllowed(request.getAttemptsAllowed())
                             .build());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed to assign test={} for user={}", testUid, userUid);
-            throw GRpcExceptionUtils.convert(e);
+            logger.warn("Failed to assign test for request: {}", request);
+            throw GRpcExceptionUtil.convertByQuiz(e);
         }
     }
 
     @Override
-    public QuizInfo setTestResults(TestResultsRequest testResultsRequest) {
-        TestInfo testInfo = testsService.getTestInfo(testResultsRequest.getTestUid());
+    public QuizInfo setTestResults(TestResultsRequest request) {
+        TestInfo testInfo = testsService.getTestInfo(request.getTestUid());
 
         int rightAnswersCount = 0;
 
         for (int qIndex = 0; qIndex < testInfo.getQuestions().size(); qIndex++) {
-            if (testResultsRequest.getAnswers().get(String.valueOf(qIndex)) ==
+            if (request.getAnswers().get(String.valueOf(qIndex)) ==
                     testInfo.getQuestions().get(qIndex).getRightAnswer()) rightAnswersCount++;
         }
 
         int percentCompleted = (rightAnswersCount / testInfo.getQuestions().size()) * 100;
 
         return setTestResultsInternal(
-                testResultsRequest.getUserUid(),
-                testResultsRequest.getTestUid(),
+                request.getUserUid(),
+                request.getTestUid(),
                 percentCompleted);
     }
 
@@ -81,8 +82,8 @@ public class QuizServiceImpl implements QuizService {
                             .getTestResultsInfo());
 
         } catch (StatusRuntimeException e) {
-            logger.error("Failed set results of test={} for user={}", testUid, userUid);
-            throw GRpcExceptionUtils.convert(e);
+            logger.warn("Failed set results of test: {} for user: {}", testUid, userUid);
+            throw GRpcExceptionUtil.convertByQuiz(e);
         }
     }
 }

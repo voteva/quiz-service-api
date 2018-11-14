@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 
 import java.util.UUID;
 
-public class AddUserResponse {
+public class AddUserInfo {
 
     private UUID userUid;
     private long createdDateTime;
 
-    public AddUserResponse(UUID userUid, long createdDateTime) {
+    public AddUserInfo(UUID userUid, long createdDateTime) {
         this.userUid = userUid;
         this.createdDateTime = createdDateTime;
     }
