@@ -1,5 +1,6 @@
 package com.voteva.tests.model.entity;
 
+import com.voteva.tests.model.ref.QuestionRef;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Document(collection = "tests")
-public class ObjTestEntity {
+public class TestEntity {
 
     @Id
     private ObjectId _id;
@@ -30,13 +31,13 @@ public class ObjTestEntity {
     private String testCategory;
 
     @Field(value = "questions")
-    private List<RefQuestionEntity> questions;
+    private List<QuestionRef> questions;
 
     public UUID getTestUid() {
         return testUid;
     }
 
-    public ObjTestEntity setTestUid(UUID testUid) {
+    public TestEntity setTestUid(UUID testUid) {
         this.testUid = testUid;
         return this;
     }
@@ -45,7 +46,7 @@ public class ObjTestEntity {
         return testName;
     }
 
-    public ObjTestEntity setTestName(String testName) {
+    public TestEntity setTestName(String testName) {
         this.testName = testName;
         return this;
     }
@@ -54,16 +55,16 @@ public class ObjTestEntity {
         return testCategory;
     }
 
-    public ObjTestEntity setTestCategory(String testCategory) {
+    public TestEntity setTestCategory(String testCategory) {
         this.testCategory = testCategory;
         return this;
     }
 
-    public List<RefQuestionEntity> getQuestions() {
+    public List<QuestionRef> getQuestions() {
         return questions;
     }
 
-    public ObjTestEntity setQuestions(List<RefQuestionEntity> questions) {
+    public TestEntity setQuestions(List<QuestionRef> questions) {
         this.questions = questions;
         return this;
     }

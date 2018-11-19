@@ -3,15 +3,14 @@ package com.voteva.gateway.web;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.voteva.gateway.service.TestsService;
-import com.voteva.gateway.web.controller.TestsController;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddTestRequest;
-import com.voteva.gateway.web.to.in.DeleteTestRequest;
 import com.voteva.gateway.web.to.out.TestInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -32,8 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@SpringBootTest
+@AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@WebMvcTest(TestsController.class)
 public class TestsControllerTest {
 
     private static final UUID TEST_UID = UUID.fromString("517df602-4ffb-4e08-9626-2a0cf2db4849");
@@ -96,14 +96,9 @@ public class TestsControllerTest {
 
     @Test
     public void testDeleteTest() throws Exception {
-        DeleteTestRequest request = new DeleteTestRequest(TEST_UID);
+        doNothing().when(testsService).deleteTest(TEST_UID);
 
-        doNothing().when(testsService).deleteTest(request.getTestUid());
-
-        mockMvc.perform(delete("/api/tests")
-                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .content(gson.toJson(request)))
+        mockMvc.perform(delete("/api/tests/" + TEST_UID))
                 .andExpect(status().isNoContent());
     }
 

@@ -7,6 +7,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -14,9 +16,10 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "obj_users", schema = "quiz")
-public class ObjUserEntity {
+@Table(name = "users", schema = "quiz")
+public class UserEntity {
 
+    private Integer id;
     private UUID userUid;
     private String firstName;
     private String lastName;
@@ -25,12 +28,24 @@ public class ObjUserEntity {
     private Timestamp userCreatedDtime = Timestamp.from(Instant.now());
 
     @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    public Integer getId() {
+        return id;
+    }
+
+    public UserEntity setId(Integer id) {
+        this.id = id;
+        return this;
+    }
+
+    @Basic
     @Column(name = "user_uid", nullable = false)
     public UUID getUserUid() {
         return userUid;
     }
 
-    public ObjUserEntity setUserUid(UUID userUid) {
+    public UserEntity setUserUid(UUID userUid) {
         this.userUid = userUid;
         return this;
     }
@@ -41,7 +56,7 @@ public class ObjUserEntity {
         return firstName;
     }
 
-    public ObjUserEntity setFirstName(String firstName) {
+    public UserEntity setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -52,7 +67,7 @@ public class ObjUserEntity {
         return lastName;
     }
 
-    public ObjUserEntity setLastName(String lastName) {
+    public UserEntity setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -63,7 +78,7 @@ public class ObjUserEntity {
         return isAdmin;
     }
 
-    public ObjUserEntity setAdmin(boolean admin) {
+    public UserEntity setAdmin(boolean admin) {
         isAdmin = admin;
         return this;
     }
@@ -74,7 +89,7 @@ public class ObjUserEntity {
         return isBlocked;
     }
 
-    public ObjUserEntity setBlocked(boolean blocked) {
+    public UserEntity setBlocked(boolean blocked) {
         isBlocked = blocked;
         return this;
     }
@@ -85,7 +100,7 @@ public class ObjUserEntity {
         return userCreatedDtime;
     }
 
-    public ObjUserEntity setUserCreatedDtime(Timestamp userCreatedDtime) {
+    public UserEntity setUserCreatedDtime(Timestamp userCreatedDtime) {
         this.userCreatedDtime = userCreatedDtime;
         return this;
     }

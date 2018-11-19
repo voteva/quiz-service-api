@@ -10,11 +10,13 @@ option java_package = "com.voteva.quiz.grpc.service.v1";
 
 service QuizServiceV1 {
 
-    rpc getUserTests (GGetUserTestsRequest) returns (GGetUserTestsResponse);
-
     rpc assignTest (GAssignTestRequest) returns (Empty);
 
+    rpc getTestResults (GGetTestResultsRequest) returns (GGetTestResultsResponse);
+
     rpc setTestResults (GSetTestResultsRequest) returns (GSetTestResultsResponse);
+
+    rpc deleteResultsForTest (GDeleteResultsRequest) returns (Empty);
 
     rpc getAllUsers (GGetAllUsersRequest) returns (GGetAllUsersResponse);
 

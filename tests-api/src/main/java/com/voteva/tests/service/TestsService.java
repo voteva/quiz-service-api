@@ -1,6 +1,6 @@
 package com.voteva.tests.service;
 
-import com.voteva.tests.model.entity.ObjTestEntity;
+import com.voteva.tests.model.entity.TestEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,13 +11,13 @@ public interface TestsService {
 
     List<String> getCategories();
 
-    Page<ObjTestEntity> getAllTests(Pageable pageable);
+    Page<TestEntity> getAllTests(Pageable pageable);
 
-    Page<ObjTestEntity> getTestsByCategory(String category , Pageable pageable);
+    Page<TestEntity> getTestsByCategory(String category, Pageable pageable);
 
-    ObjTestEntity getTest(UUID testUid);
+    TestEntity getTest(UUID testUid);
 
-    UUID addTest(ObjTestEntity entity);
+    UUID addTest(TestEntity entity);
 
     void removeTest(UUID testUid);
 }

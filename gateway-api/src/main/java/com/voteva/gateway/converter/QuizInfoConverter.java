@@ -1,14 +1,13 @@
 package com.voteva.gateway.converter;
 
 import com.voteva.gateway.web.to.out.QuizInfo;
-import com.voteva.quiz.grpc.model.v1.GUser2TestInfo;
+import com.voteva.quiz.grpc.model.v1.GTestResultInfo;
 
 public class QuizInfoConverter {
 
-    public static QuizInfo convert(GUser2TestInfo user2TestInfo) {
+    public static QuizInfo convert(GTestResultInfo resultInfo) {
         return new QuizInfo(
-                CommonConverter.convert(user2TestInfo.getTestUid()),
-                user2TestInfo.getPercent(),
-                user2TestInfo.getAttemptsAllowed());
+                CommonConverter.convert(resultInfo.getTestUid()),
+                resultInfo.getPercent());
     }
 }

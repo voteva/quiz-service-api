@@ -8,21 +8,20 @@ import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddUserRequest;
 import com.voteva.gateway.web.to.in.UserUidRequest;
 import com.voteva.gateway.web.to.out.AddUserInfo;
-import com.voteva.gateway.web.to.out.QuizInfo;
 import com.voteva.gateway.web.to.out.UserInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -34,8 +33,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@SpringBootTest
+@AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@WebMvcTest(UsersController.class)
 public class UsersControllerTest {
 
     private static final UUID USER_UID = UUID.fromString("21793aac-0171-42c1-9c66-7284ec24a330");
@@ -93,18 +93,6 @@ public class UsersControllerTest {
                 .andExpect(jsonPath("$.lastName").value(response.getLastName()))
                 .andExpect(jsonPath("$.isAdmin").value(response.isAdmin()))
                 .andExpect(jsonPath("$.isBlocked").value(response.isBlocked()));
-    }
-
-    @Test
-    public void testGetUserTests() throws Exception {
-        List<QuizInfo> response = new ArrayList<>();
-
-        when(usersService.getUserTests(USER_UID)).thenReturn(response);
-
-        mockMvc.perform(get("/api/users/{uuid}/tests", USER_UID))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.length()").value(response.size()));
     }
 
     @Test

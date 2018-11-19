@@ -1,6 +1,6 @@
 package com.voteva.tests.repository;
 
-import com.voteva.tests.model.entity.ObjTestEntity;
+import com.voteva.tests.model.entity.TestEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -8,11 +8,11 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface TestsRepository extends MongoRepository<ObjTestEntity, Integer> {
+public interface TestsRepository extends MongoRepository<TestEntity, Integer> {
 
-    Optional<ObjTestEntity> findByTestUid(UUID testUid);
+    Optional<TestEntity> findByTestUid(UUID testUid);
 
-    Page<ObjTestEntity> findByTestCategory(String testCategory, Pageable pageable);
+    Page<TestEntity> findByTestCategory(String testCategory, Pageable pageable);
 
     void deleteByTestUid(UUID testUid);
 }

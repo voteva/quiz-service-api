@@ -3,10 +3,10 @@ package com.voteva.quiz.converter;
 import com.voteva.common.grpc.model.GPage;
 import com.voteva.common.grpc.model.GPageable;
 import com.voteva.common.grpc.model.GUuid;
-import com.voteva.quiz.grpc.model.v1.GUser2TestInfo;
+import com.voteva.quiz.grpc.model.v1.GTestResultInfo;
 import com.voteva.quiz.grpc.model.v1.GUserInfo;
-import com.voteva.quiz.model.entity.ObjUserEntity;
-import com.voteva.quiz.model.entity.RelUser2TestEntity;
+import com.voteva.quiz.model.entity.ResultEntity;
+import com.voteva.quiz.model.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +37,7 @@ public class ModelConverter {
         return UUID.fromString(guuid.getUuid());
     }
 
-    public static GUserInfo convert(ObjUserEntity userEntity) {
+    public static GUserInfo convert(UserEntity userEntity) {
         return GUserInfo.newBuilder()
                 .setUserUid(convert(userEntity.getUserUid()))
                 .setFirstName(userEntity.getFirstName())
@@ -48,8 +48,8 @@ public class ModelConverter {
                 .build();
     }
 
-    public static ObjUserEntity convert(GUserInfo userInfo) {
-        return new ObjUserEntity()
+    public static UserEntity convert(GUserInfo userInfo) {
+        return new UserEntity()
                 .setUserUid(convert(userInfo.getUserUid()))
                 .setFirstName(userInfo.getFirstName())
                 .setLastName(userInfo.getLastName())
@@ -57,10 +57,10 @@ public class ModelConverter {
                 .setBlocked(userInfo.getIsBlocked());
     }
 
-    public static GUser2TestInfo convert(RelUser2TestEntity entity) {
-        return GUser2TestInfo.newBuilder()
-                .setUserUid(convert(entity.getUser2TestId().getUserUid()))
-                .setTestUid(convert(entity.getUser2TestId().getTestUid()))
+    public static GTestResultInfo convert(ResultEntity entity) {
+        return GTestResultInfo.newBuilder()
+                .setUserUid(convert(entity.getResultId().getUserUid()))
+                .setTestUid(convert(entity.getResultId().getTestUid()))
                 .setPercent(entity.getPercent())
                 .setAttemptsAllowed(entity.getAttemptsAllowed())
                 .build();

@@ -1,13 +1,13 @@
 package com.voteva.users.repository;
 
-import com.voteva.users.model.entity.ObjUserEntity;
+import com.voteva.users.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<ObjUserEntity, Integer> {
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
-    Optional<ObjUserEntity> findByUserEmail(String userEmail);
+    Optional<UserEntity> findByUserEmail(String userEmail);
 }

@@ -15,7 +15,7 @@ message GUserInfo {
     bool isBlocked = 6;
 }
 
-message GUser2TestInfo {
+message GTestResultInfo {
     GUuid userUid = 1;
     GUuid testUid = 2;
     int32 percent = 3;

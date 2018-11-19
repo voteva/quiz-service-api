@@ -1,4 +1,4 @@
-package com.voteva.tests.model.entity;
+package com.voteva.tests.model.ref;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
-public class RefQuestionEntity {
+public class QuestionRef {
 
     @Field(value = "questionText")
     private String questionText;
@@ -22,7 +22,7 @@ public class RefQuestionEntity {
         return questionText;
     }
 
-    public RefQuestionEntity setQuestionText(String questionText) {
+    public QuestionRef setQuestionText(String questionText) {
         this.questionText = questionText;
         return this;
     }
@@ -31,7 +31,7 @@ public class RefQuestionEntity {
         return answerChoices;
     }
 
-    public RefQuestionEntity setAnswerChoices(List<String> answerChoices) {
+    public QuestionRef setAnswerChoices(List<String> answerChoices) {
         this.answerChoices = answerChoices;
         return this;
     }
@@ -40,7 +40,7 @@ public class RefQuestionEntity {
         return rightAnswer;
     }
 
-    public RefQuestionEntity setRightAnswer(int rightAnswer) {
+    public QuestionRef setRightAnswer(int rightAnswer) {
         this.rightAnswer = rightAnswer;
         return this;
     }

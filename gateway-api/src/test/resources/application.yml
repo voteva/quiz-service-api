@@ -1,0 +1,52 @@
+server:
+  address: 0.0.0.0
+  port: 8080
+  servlet:
+    context-path: /gateway-api
+server.error.whitelabel.enabled: false
+
+logging:
+  path: logs
+  level: INFO
+  level.com.voteva: DEBUG
+
+spring:
+  application:
+    name: gateway-api
+  mvc:
+    throw-exception-if-no-handler-found: true
+  thymeleaf:
+    cache: false
+    mode: HTML
+
+gateway:
+  web:
+    cors:
+      allowed-origins:
+      - http://127.0.0.1
+      - https://127.0.0.1
+      - http://127.0.0.1:3000
+      - https://127.0.0.1:3000
+      - http://127.0.0.1:8080
+      - https://127.0.0.1:8080
+      - http://localhost
+      - https://localhost
+      - http://localhost:3000
+      - https://localhost:3000
+      - http://localhost:8080
+      - https://localhost:8080
+
+  grpc.client:
+    InterviewServiceV1Grpc:
+      host: localhost
+      port: 6568
+    QuizServiceV1Grpc:
+      host: localhost
+      port: 6567
+    TestsServiceV1Grpc:
+      host: localhost
+      port: 6566
+    UsersServiceV1Grpc:
+      host: localhost
+      port: 6565
+

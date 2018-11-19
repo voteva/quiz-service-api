@@ -2,12 +2,14 @@ package com.voteva.gateway.service.impl;
 
 import com.voteva.gateway.converter.CommonConverter;
 import com.voteva.gateway.converter.TestInfoConverter;
+import com.voteva.gateway.exception.util.GRpcExceptionUtil;
+import com.voteva.gateway.grpc.client.GRpcQuizServiceClient;
 import com.voteva.gateway.grpc.client.GRpcTestsServiceClient;
 import com.voteva.gateway.service.TestsService;
-import com.voteva.gateway.exception.util.GRpcExceptionUtil;
 import com.voteva.gateway.web.to.common.PagedResult;
-import com.voteva.gateway.web.to.out.TestInfo;
 import com.voteva.gateway.web.to.in.AddTestRequest;
+import com.voteva.gateway.web.to.out.TestInfo;
+import com.voteva.quiz.grpc.model.v1.GDeleteResultsRequest;
 import com.voteva.tests.grpc.model.v1.GGetAllTestsRequest;
 import com.voteva.tests.grpc.model.v1.GGetAllTestsResponse;
 import com.voteva.tests.grpc.model.v1.GGetTestCategoriesRequest;
@@ -31,10 +33,14 @@ public class TestsServiceImpl implements TestsService {
     private static final Logger logger = LoggerFactory.getLogger(TestsServiceImpl.class);
 
     private final GRpcTestsServiceClient rpcTestsServiceClient;
+    private final GRpcQuizServiceClient rpcQuizServiceClient;
 
     @Autowired
-    public TestsServiceImpl(GRpcTestsServiceClient rpcTestsServiceClient) {
+    public TestsServiceImpl(
+            GRpcTestsServiceClient rpcTestsServiceClient,
+            GRpcQuizServiceClient rpcQuizServiceClient) {
         this.rpcTestsServiceClient = rpcTestsServiceClient;
+        this.rpcQuizServiceClient = rpcQuizServiceClient;
     }
 
     @Override
@@ -95,6 +101,17 @@ public class TestsServiceImpl implements TestsService {
 
     @Override
     public void deleteTest(UUID testUid) {
+        // TODO need refactor
+        try {
+            rpcQuizServiceClient.deleteResultsForTest(
+                    GDeleteResultsRequest.newBuilder()
+                            .setTestUid(CommonConverter.convert(testUid))
+                            .build());
+        } catch (StatusRuntimeException e) {
+            logger.error("Failed to delete test with uid: {}", testUid);
+            throw GRpcExceptionUtil.convertByQuiz(e);
+        }
+
         try {
             rpcTestsServiceClient.removeTest(
                     GRemoveTestRequest.newBuilder()

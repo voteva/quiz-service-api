@@ -7,11 +7,6 @@ option java_multiple_files = true;
 option java_package = "com.voteva.quiz.grpc.model.v1";
 
 
-message GGetUserTestsRequest {
-    GAuthentication authentication = 1;
-    GUuid userUid = 2;
-}
-
 message GAssignTestRequest {
     GAuthentication authentication = 1;
     GUuid userUid = 2;
@@ -19,11 +14,21 @@ message GAssignTestRequest {
     int32 attemptsAllowed = 4;
 }
 
+message GGetTestResultsRequest {
+    GAuthentication authentication = 1;
+    GUuid userUid = 2;
+}
+
 message GSetTestResultsRequest {
     GAuthentication authentication = 1;
     GUuid userUid = 2;
     GUuid testUid = 3;
     int32 percent = 4;
+}
+
+message GDeleteResultsRequest {
+    GAuthentication authentication = 1;
+    GUuid testUid = 2;
 }
 
 message GGetUserRequest {

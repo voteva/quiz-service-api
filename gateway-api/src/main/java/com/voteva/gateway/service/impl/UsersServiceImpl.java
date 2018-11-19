@@ -1,22 +1,19 @@
 package com.voteva.gateway.service.impl;
 
 import com.voteva.gateway.converter.CommonConverter;
-import com.voteva.gateway.converter.QuizInfoConverter;
 import com.voteva.gateway.converter.UsersInfoConverter;
+import com.voteva.gateway.exception.util.GRpcExceptionUtil;
 import com.voteva.gateway.grpc.client.GRpcQuizServiceClient;
 import com.voteva.gateway.grpc.client.GRpcUsersServiceClient;
 import com.voteva.gateway.service.UsersService;
-import com.voteva.gateway.exception.util.GRpcExceptionUtil;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddUserRequest;
 import com.voteva.gateway.web.to.out.AddUserInfo;
-import com.voteva.gateway.web.to.out.QuizInfo;
 import com.voteva.gateway.web.to.out.UserInfo;
 import com.voteva.quiz.grpc.model.v1.GBlockUserRequest;
 import com.voteva.quiz.grpc.model.v1.GGetAllUsersRequest;
 import com.voteva.quiz.grpc.model.v1.GGetAllUsersResponse;
 import com.voteva.quiz.grpc.model.v1.GGetUserRequest;
-import com.voteva.quiz.grpc.model.v1.GGetUserTestsRequest;
 import com.voteva.quiz.grpc.model.v1.GRemoveAdminGrantsRequest;
 import com.voteva.quiz.grpc.model.v1.GSetAdminGrantsRequest;
 import com.voteva.quiz.grpc.model.v1.GUnblockUserRequest;
@@ -27,9 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -75,23 +70,6 @@ public class UsersServiceImpl implements UsersService {
 
         } catch (StatusRuntimeException e) {
             logger.error("Failed to get user info by uid: {}", userUid);
-            throw GRpcExceptionUtil.convertByQuiz(e);
-        }
-    }
-
-    @Override
-    public List<QuizInfo> getUserTests(UUID userUid) {
-        try {
-            return rpcQuizServiceClient.getUserTests(
-                    GGetUserTestsRequest.newBuilder()
-                            .setUserUid(CommonConverter.convert(userUid))
-                            .build())
-                    .getTestsList().stream()
-                    .map(QuizInfoConverter::convert)
-                    .collect(Collectors.toList());
-
-        } catch (StatusRuntimeException e) {
-            logger.error("Failed to get tests for user with uid: {}", userUid);
             throw GRpcExceptionUtil.convertByQuiz(e);
         }
     }

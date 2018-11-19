@@ -2,10 +2,9 @@ package com.voteva.gateway.web.controller;
 
 import com.voteva.gateway.service.TestsService;
 import com.voteva.gateway.web.to.common.PagedResult;
+import com.voteva.gateway.web.to.in.AddTestRequest;
 import com.voteva.gateway.web.to.out.AddTestInfo;
 import com.voteva.gateway.web.to.out.TestInfo;
-import com.voteva.gateway.web.to.in.AddTestRequest;
-import com.voteva.gateway.web.to.in.DeleteTestRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,12 +58,11 @@ public class TestsController {
         return ResponseEntity.ok(new AddTestInfo(testsService.addTest(request)));
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Void> deleteTest(@RequestBody @Valid DeleteTestRequest request) {
-        logger.debug("Deleting test with uid: {}", request.getTestUid());
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteTest(@PathVariable UUID uuid) {
+        logger.debug("Deleting test with uid: {}", uuid);
 
-        testsService.deleteTest(request.getTestUid());
-
+        testsService.deleteTest(uuid);
         return ResponseEntity.noContent().build();
     }
 

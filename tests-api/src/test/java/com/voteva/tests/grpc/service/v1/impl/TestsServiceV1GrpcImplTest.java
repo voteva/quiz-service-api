@@ -12,7 +12,7 @@ import com.voteva.tests.grpc.model.v1.GGetTestRequest;
 import com.voteva.tests.grpc.model.v1.GGetTestResponse;
 import com.voteva.tests.grpc.model.v1.GGetTestsByCategoryRequest;
 import com.voteva.tests.grpc.model.v1.GGetTestsByCategoryResponse;
-import com.voteva.tests.model.entity.ObjTestEntity;
+import com.voteva.tests.model.entity.TestEntity;
 import com.voteva.tests.service.TestsService;
 import io.grpc.stub.StreamObserver;
 import org.junit.Test;
@@ -73,7 +73,7 @@ public class TestsServiceV1GrpcImplTest {
 
     @Test
     public void testAddUser() {
-        Page<ObjTestEntity> serviceResponse = new PageImpl<>(Collections.singletonList(getMockObjTestEntity()));
+        Page<TestEntity> serviceResponse = new PageImpl<>(Collections.singletonList(getMockObjTestEntity()));
 
         when(testsService.getAllTests(any(Pageable.class))).thenReturn(serviceResponse);
 
@@ -97,7 +97,7 @@ public class TestsServiceV1GrpcImplTest {
 
     @Test
     public void testGetTestsByCategory() {
-        Page<ObjTestEntity> serviceResponse = new PageImpl<>(Collections.singletonList(getMockObjTestEntity()));
+        Page<TestEntity> serviceResponse = new PageImpl<>(Collections.singletonList(getMockObjTestEntity()));
 
         when(testsService.getTestsByCategory(any(String.class), any(Pageable.class))).thenReturn(serviceResponse);
 
@@ -122,7 +122,7 @@ public class TestsServiceV1GrpcImplTest {
 
     @Test
     public void testGetTest() {
-        ObjTestEntity serviceResponse = getMockObjTestEntity();
+        TestEntity serviceResponse = getMockObjTestEntity();
 
         when(testsService.getTest(any(UUID.class))).thenReturn(serviceResponse);
 
@@ -146,7 +146,7 @@ public class TestsServiceV1GrpcImplTest {
 
     @Test
     public void testAddTest() {
-        when(testsService.addTest(any(ObjTestEntity.class))).thenReturn(TEST_UID);
+        when(testsService.addTest(any(TestEntity.class))).thenReturn(TEST_UID);
 
         GAddTestRequest request = GAddTestRequest.newBuilder()
                 .setTestName(TEST_NAME)
@@ -165,8 +165,8 @@ public class TestsServiceV1GrpcImplTest {
         assertEquals(response.getTestUid().getUuid(), TEST_UID.toString());
     }
 
-    private ObjTestEntity getMockObjTestEntity() {
-        return new ObjTestEntity()
+    private TestEntity getMockObjTestEntity() {
+        return new TestEntity()
                 .setTestUid(TEST_UID)
                 .setTestName(TEST_NAME)
                 .setTestCategory(CATEGORY)

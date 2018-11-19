@@ -16,20 +16,20 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "rel_user_2_test", schema = "quiz")
-public class RelUser2TestEntity {
+@Table(name = "results", schema = "quiz")
+public class ResultEntity {
 
-    private User2TestId user2TestId;
+    private ResultId resultId;
     private int percent = 0;
     private int attemptsAllowed = 100;
 
     @EmbeddedId
-    public User2TestId getUser2TestId() {
-        return user2TestId;
+    public ResultId getResultId() {
+        return resultId;
     }
 
-    public RelUser2TestEntity setUser2TestId(User2TestId user2TestId) {
-        this.user2TestId = user2TestId;
+    public ResultEntity setResultId(ResultId resultId) {
+        this.resultId = resultId;
         return this;
     }
 
@@ -41,7 +41,7 @@ public class RelUser2TestEntity {
         return percent;
     }
 
-    public RelUser2TestEntity setPercent(int percent) {
+    public ResultEntity setPercent(int percent) {
         this.percent = percent;
         return this;
     }
@@ -53,19 +53,19 @@ public class RelUser2TestEntity {
         return attemptsAllowed;
     }
 
-    public RelUser2TestEntity setAttemptsAllowed(int attemptsAllowed) {
+    public ResultEntity setAttemptsAllowed(int attemptsAllowed) {
         this.attemptsAllowed = attemptsAllowed;
         return this;
     }
 
     @Embeddable
-    public static class User2TestId implements Serializable {
+    public static class ResultId implements Serializable {
         private UUID userUid;
         private UUID testUid;
 
-        public User2TestId() {}
+        public ResultId() {}
 
-        public User2TestId(UUID userUid, UUID testUid) {
+        public ResultId(UUID userUid, UUID testUid) {
             this.userUid = userUid;
             this.testUid = testUid;
         }

@@ -1,6 +1,6 @@
 package com.voteva.users.service.impl;
 
-import com.voteva.users.model.entity.ObjUserEntity;
+import com.voteva.users.model.entity.UserEntity;
 import com.voteva.users.repository.UserRepository;
 import com.voteva.users.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class UsersServiceImpl implements UsersService {
                     throw new IllegalArgumentException(String.format("User=%s already exists", email));
                 });
 
-        ObjUserEntity userEntity = new ObjUserEntity()
+        UserEntity userEntity = new UserEntity()
                 .setUserEmail(email)
                 .setUserPassword(passwordEncoder.encode(password));
 

@@ -8,15 +8,12 @@ public class QuizInfo {
 
     private UUID testUid;
     private int percentCompleted;
-    private int attemptsAllowed;
 
     public QuizInfo(
             UUID testUid,
-            int percentCompleted,
-            int attemptsAllowed) {
+            int percentCompleted) {
         this.testUid = testUid;
         this.percentCompleted = percentCompleted;
-        this.attemptsAllowed = attemptsAllowed;
     }
 
     @JsonGetter("testUid")
@@ -27,10 +24,5 @@ public class QuizInfo {
     @JsonGetter("percentCompleted")
     public int getPercentCompleted() {
         return percentCompleted;
-    }
-
-    @JsonGetter("attemptsAllowed")
-    public int getAttemptsAllowed() {
-        return attemptsAllowed;
     }
 }

@@ -7,12 +7,13 @@ import com.voteva.quiz.grpc.model.v1.GAddUserRequest;
 import com.voteva.quiz.grpc.model.v1.GAddUserResponse;
 import com.voteva.quiz.grpc.model.v1.GAssignTestRequest;
 import com.voteva.quiz.grpc.model.v1.GBlockUserRequest;
+import com.voteva.quiz.grpc.model.v1.GDeleteResultsRequest;
 import com.voteva.quiz.grpc.model.v1.GGetAllUsersRequest;
 import com.voteva.quiz.grpc.model.v1.GGetAllUsersResponse;
+import com.voteva.quiz.grpc.model.v1.GGetTestResultsRequest;
+import com.voteva.quiz.grpc.model.v1.GGetTestResultsResponse;
 import com.voteva.quiz.grpc.model.v1.GGetUserRequest;
 import com.voteva.quiz.grpc.model.v1.GGetUserResponse;
-import com.voteva.quiz.grpc.model.v1.GGetUserTestsRequest;
-import com.voteva.quiz.grpc.model.v1.GGetUserTestsResponse;
 import com.voteva.quiz.grpc.model.v1.GRemoveAdminGrantsRequest;
 import com.voteva.quiz.grpc.model.v1.GSetAdminGrantsRequest;
 import com.voteva.quiz.grpc.model.v1.GSetTestResultsRequest;
@@ -20,9 +21,10 @@ import com.voteva.quiz.grpc.model.v1.GSetTestResultsResponse;
 import com.voteva.quiz.grpc.model.v1.GUnblockUserRequest;
 import com.voteva.quiz.grpc.model.v1.GUpdateUserRequest;
 import com.voteva.quiz.grpc.service.v1.QuizServiceV1Grpc;
-import com.voteva.quiz.model.entity.ObjUserEntity;
-import com.voteva.quiz.model.entity.RelUser2TestEntity;
+import com.voteva.quiz.model.entity.ResultEntity;
+import com.voteva.quiz.model.entity.UserEntity;
 import com.voteva.quiz.service.QuizService;
+import com.voteva.quiz.service.UsersService;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.lognet.springboot.grpc.GRpcService;
@@ -36,21 +38,40 @@ import java.util.stream.Collectors;
 public class QuizServiceV1GrpcImpl extends QuizServiceV1Grpc.QuizServiceV1ImplBase {
 
     private final QuizService quizService;
+    private final UsersService usersService;
 
     @Autowired
-    public QuizServiceV1GrpcImpl(QuizService quizService) {
+    public QuizServiceV1GrpcImpl(
+            QuizService quizService,
+            UsersService usersService) {
         this.quizService = quizService;
+        this.usersService = usersService;
     }
 
     @Override
-    public void getUserTests(GGetUserTestsRequest request,
-                             StreamObserver<GGetUserTestsResponse> responseObserver) {
+    public void assignTest(GAssignTestRequest request,
+                           StreamObserver<Empty> responseObserver) {
         try {
-            List<RelUser2TestEntity> userTests = quizService.getUserTests(
+            quizService.assignTest(
+                    ModelConverter.convert(request.getUserUid()),
+                    ModelConverter.convert(request.getTestUid()));
+
+            responseObserver.onNext(Empty.newBuilder().build());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            onError(responseObserver, e);
+        }
+    }
+
+    @Override
+    public void getTestResults(GGetTestResultsRequest request,
+                               StreamObserver<GGetTestResultsResponse> responseObserver) {
+        try {
+            List<ResultEntity> testResults = quizService.getTestResults(
                     ModelConverter.convert(request.getUserUid()));
 
-            responseObserver.onNext(GGetUserTestsResponse.newBuilder()
-                    .addAllTests(userTests.stream()
+            responseObserver.onNext(GGetTestResultsResponse.newBuilder()
+                    .addAllTestResults(testResults.stream()
                             .map(ModelConverter::convert)
                             .collect(Collectors.toList()))
                     .build());
@@ -61,15 +82,17 @@ public class QuizServiceV1GrpcImpl extends QuizServiceV1Grpc.QuizServiceV1ImplBa
     }
 
     @Override
-    public void assignTest(GAssignTestRequest request,
-                           StreamObserver<Empty> responseObserver) {
+    public void setTestResults(GSetTestResultsRequest request,
+                               StreamObserver<GSetTestResultsResponse> responseObserver) {
         try {
-            quizService.assignTest(
+            ResultEntity resultEntity = quizService.setTestResults(
                     ModelConverter.convert(request.getUserUid()),
                     ModelConverter.convert(request.getTestUid()),
-                    request.getAttemptsAllowed());
+                    request.getPercent());
 
-            responseObserver.onNext(Empty.newBuilder().build());
+            responseObserver.onNext(GSetTestResultsResponse.newBuilder()
+                    .setTestResultInfo(ModelConverter.convert(resultEntity))
+                    .build());
             responseObserver.onCompleted();
         } catch (Exception e) {
             onError(responseObserver, e);
@@ -77,17 +100,12 @@ public class QuizServiceV1GrpcImpl extends QuizServiceV1Grpc.QuizServiceV1ImplBa
     }
 
     @Override
-    public void setTestResults(GSetTestResultsRequest request,
-                               StreamObserver<GSetTestResultsResponse> responseObserver) {
+    public void deleteResultsForTest(GDeleteResultsRequest request,
+                                     StreamObserver<Empty> responseObserver) {
         try {
-            RelUser2TestEntity user2TestEntity = quizService.setTestResults(
-                    ModelConverter.convert(request.getUserUid()),
-                    ModelConverter.convert(request.getTestUid()),
-                    request.getPercent());
+            quizService.deleteResultsForTest(ModelConverter.convert(request.getTestUid()));
 
-            responseObserver.onNext(GSetTestResultsResponse.newBuilder()
-                    .setTestResultsInfo(ModelConverter.convert(user2TestEntity))
-                    .build());
+            responseObserver.onNext(Empty.newBuilder().build());
             responseObserver.onCompleted();
         } catch (Exception e) {
             onError(responseObserver, e);
@@ -98,7 +116,7 @@ public class QuizServiceV1GrpcImpl extends QuizServiceV1Grpc.QuizServiceV1ImplBa
     public void getAllUsers(GGetAllUsersRequest request,
                             StreamObserver<GGetAllUsersResponse> responseObserver) {
         try {
-            Page<ObjUserEntity> users = quizService.getAllUsers(
+            Page<UserEntity> users = usersService.getAllUsers(
                     ModelConverter.convert(request.getPageable()));
 
             responseObserver.onNext(GGetAllUsersResponse.newBuilder()
@@ -118,7 +136,7 @@ public class QuizServiceV1GrpcImpl extends QuizServiceV1Grpc.QuizServiceV1ImplBa
     public void getUser(GGetUserRequest request,
                         StreamObserver<GGetUserResponse> responseObserver) {
         try {
-            ObjUserEntity userEntity = quizService.getUser(
+            UserEntity userEntity = usersService.getUser(
                     ModelConverter.convert(request.getUserUid()));
 
             responseObserver.onNext(GGetUserResponse.newBuilder()
@@ -134,8 +152,8 @@ public class QuizServiceV1GrpcImpl extends QuizServiceV1Grpc.QuizServiceV1ImplBa
     public void addUser(GAddUserRequest request,
                         StreamObserver<GAddUserResponse> responseObserver) {
         try {
-            ObjUserEntity userEntity = quizService.addUser(
-                    new ObjUserEntity()
+            UserEntity userEntity = usersService.addUser(
+                    new UserEntity()
                             .setUserUid(ModelConverter.convert(request.getUserUid()))
                             .setFirstName(request.getFirstName())
                             .setLastName(request.getLastName()));
@@ -167,7 +185,7 @@ public class QuizServiceV1GrpcImpl extends QuizServiceV1Grpc.QuizServiceV1ImplBa
     public void setAdminGrants(GSetAdminGrantsRequest request,
                                StreamObserver<Empty> responseObserver) {
         try {
-            quizService.setAdmin(ModelConverter.convert(request.getUserUid()));
+            usersService.setAdmin(ModelConverter.convert(request.getUserUid()));
 
             responseObserver.onNext(Empty.newBuilder().build());
             responseObserver.onCompleted();
@@ -180,7 +198,7 @@ public class QuizServiceV1GrpcImpl extends QuizServiceV1Grpc.QuizServiceV1ImplBa
     public void removeAdminGrants(GRemoveAdminGrantsRequest request,
                                   StreamObserver<Empty> responseObserver) {
         try {
-            quizService.resetAdmin(ModelConverter.convert(request.getUserUid()));
+            usersService.resetAdmin(ModelConverter.convert(request.getUserUid()));
 
             responseObserver.onNext(Empty.newBuilder().build());
             responseObserver.onCompleted();
@@ -193,7 +211,7 @@ public class QuizServiceV1GrpcImpl extends QuizServiceV1Grpc.QuizServiceV1ImplBa
     public void blockUser(GBlockUserRequest request,
                           StreamObserver<Empty> responseObserver) {
         try {
-            quizService.blockUser(ModelConverter.convert(request.getUserUid()));
+            usersService.blockUser(ModelConverter.convert(request.getUserUid()));
 
             responseObserver.onNext(Empty.newBuilder().build());
             responseObserver.onCompleted();
@@ -206,7 +224,7 @@ public class QuizServiceV1GrpcImpl extends QuizServiceV1Grpc.QuizServiceV1ImplBa
     public void unblockUser(GUnblockUserRequest request,
                             StreamObserver<Empty> responseObserver) {
         try {
-            quizService.unblockUser(ModelConverter.convert(request.getUserUid()));
+            usersService.unblockUser(ModelConverter.convert(request.getUserUid()));
 
             responseObserver.onNext(Empty.newBuilder().build());
             responseObserver.onCompleted();

@@ -12,4 +12,3 @@ public class NotFoundTestException extends RuntimeException {
         super(message);
     }
 }
-

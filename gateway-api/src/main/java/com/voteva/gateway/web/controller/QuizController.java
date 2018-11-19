@@ -1,5 +1,7 @@
 package com.voteva.gateway.web.controller;
 
+import com.voteva.gateway.security.model.User;
+import com.voteva.gateway.security.util.SecurityContextUtil;
 import com.voteva.gateway.service.QuizService;
 import com.voteva.gateway.web.to.in.AssignTestRequest;
 import com.voteva.gateway.web.to.in.TestResultsRequest;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/quiz", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -31,17 +34,29 @@ public class QuizController {
 
     @RequestMapping(path = "/assign", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Void> assignTest(@RequestBody @Valid AssignTestRequest request) {
-        logger.debug("Assigning test for request: {}", request);
+        User user = SecurityContextUtil.getUser();
 
-        quizService.assignTest(request);
+        logger.debug("Assigning test: {} for user: {}", request.getTestUid(), user.getUuid());
 
+        quizService.assignTest(request, user);
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(path = "/results", method = RequestMethod.GET)
+    public ResponseEntity<List<QuizInfo>> getUserTests() {
+        User user = SecurityContextUtil.getUser();
+
+        logger.debug("Getting tests results for user with uid: {}", user.getUuid());
+
+        return ResponseEntity.ok(quizService.getTestResults(user));
     }
 
     @RequestMapping(path = "/results", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<QuizInfo> setTestResults(@RequestBody @Valid TestResultsRequest request) {
-        logger.debug("Setting results for request: {}", request);
+        User user = SecurityContextUtil.getUser();
 
-        return ResponseEntity.ok(quizService.setTestResults(request));
+        logger.debug("Setting results of test: {} for user: {}", request.getTestUid(), user.getUuid());
+
+        return ResponseEntity.ok(quizService.setTestResults(request, user));
     }
 }

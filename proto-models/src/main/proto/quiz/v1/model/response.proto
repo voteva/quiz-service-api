@@ -7,12 +7,12 @@ option java_multiple_files = true;
 option java_package = "com.voteva.quiz.grpc.model.v1";
 
 
-message GGetUserTestsResponse {
-    repeated GUser2TestInfo tests = 1;
+message GGetTestResultsResponse {
+    repeated GTestResultInfo testResults = 1;
 }
 
 message GSetTestResultsResponse {
-    GUser2TestInfo testResultsInfo = 1;
+    GTestResultInfo testResultInfo = 1;
 }
 
 message GGetUserResponse {

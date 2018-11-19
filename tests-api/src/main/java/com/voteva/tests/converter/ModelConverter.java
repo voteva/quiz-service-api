@@ -6,8 +6,8 @@ import com.voteva.common.grpc.model.GUuid;
 import com.voteva.tests.grpc.model.v1.GAddTestRequest;
 import com.voteva.tests.grpc.model.v1.GQuestion;
 import com.voteva.tests.grpc.model.v1.GTestInfo;
-import com.voteva.tests.model.entity.RefQuestionEntity;
-import com.voteva.tests.model.entity.ObjTestEntity;
+import com.voteva.tests.model.ref.QuestionRef;
+import com.voteva.tests.model.entity.TestEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,22 +39,22 @@ public class ModelConverter {
         return UUID.fromString(guuid.getUuid());
     }
 
-    public static GQuestion convert(RefQuestionEntity questionEntity) {
+    public static GQuestion convert(QuestionRef questionRef) {
         return GQuestion.newBuilder()
-                .setText(questionEntity.getQuestionText())
-                .setRightAnswer(questionEntity.getRightAnswer())
-                .addAllAnswerChoices(questionEntity.getAnswerChoices())
+                .setText(questionRef.getQuestionText())
+                .setRightAnswer(questionRef.getRightAnswer())
+                .addAllAnswerChoices(questionRef.getAnswerChoices())
                 .build();
     }
 
-    public static RefQuestionEntity convert(GQuestion question) {
-        return new RefQuestionEntity()
+    public static QuestionRef convert(GQuestion question) {
+        return new QuestionRef()
                 .setQuestionText(question.getText())
                 .setRightAnswer(question.getRightAnswer())
                 .setAnswerChoices(question.getAnswerChoicesList());
     }
 
-    public static GTestInfo convert(ObjTestEntity testEntity) {
+    public static GTestInfo convert(TestEntity testEntity) {
         return GTestInfo.newBuilder()
                 .setTestUid(convert(testEntity.getTestUid()))
                 .setTestName(testEntity.getTestName())
@@ -66,8 +66,8 @@ public class ModelConverter {
                 .build();
     }
 
-    public static ObjTestEntity convert(GTestInfo testInfo) {
-        return new ObjTestEntity()
+    public static TestEntity convert(GTestInfo testInfo) {
+        return new TestEntity()
                 .setTestUid(convert(testInfo.getTestUid()))
                 .setTestName(testInfo.getTestName())
                 .setTestCategory(testInfo.getTestCategory())
@@ -77,8 +77,8 @@ public class ModelConverter {
                         .collect(Collectors.toList()));
     }
 
-    public static ObjTestEntity convert(GAddTestRequest request) {
-        return new ObjTestEntity()
+    public static TestEntity convert(GAddTestRequest request) {
+        return new TestEntity()
                 .setTestName(request.getTestName())
                 .setTestCategory(request.getTestCategory())
                 .setQuestions(request.getQuestionsList()

@@ -15,7 +15,7 @@ import com.voteva.tests.grpc.model.v1.GGetTestsByCategoryRequest;
 import com.voteva.tests.grpc.model.v1.GGetTestsByCategoryResponse;
 import com.voteva.tests.grpc.model.v1.GRemoveTestRequest;
 import com.voteva.tests.grpc.service.v1.TestsServiceV1Grpc;
-import com.voteva.tests.model.entity.ObjTestEntity;
+import com.voteva.tests.model.entity.TestEntity;
 import com.voteva.tests.service.TestsService;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
@@ -56,7 +56,7 @@ public class TestsServiceV1GrpcImpl extends TestsServiceV1Grpc.TestsServiceV1Imp
     public void getAllTests(GGetAllTestsRequest request,
                             StreamObserver<GGetAllTestsResponse> responseObserver) {
         try {
-            Page<ObjTestEntity> tests = testsService.getAllTests(
+            Page<TestEntity> tests = testsService.getAllTests(
                     ModelConverter.convert(request.getPageable()));
 
             responseObserver.onNext(GGetAllTestsResponse.newBuilder()
@@ -76,7 +76,7 @@ public class TestsServiceV1GrpcImpl extends TestsServiceV1Grpc.TestsServiceV1Imp
     public void getTestsByCategory(GGetTestsByCategoryRequest request,
                                    StreamObserver<GGetTestsByCategoryResponse> responseObserver) {
         try {
-            Page<ObjTestEntity> tests = testsService.getTestsByCategory(
+            Page<TestEntity> tests = testsService.getTestsByCategory(
                     request.getCategory(), ModelConverter.convert(request.getPageable()));
 
             responseObserver.onNext(GGetTestsByCategoryResponse.newBuilder()
@@ -96,7 +96,7 @@ public class TestsServiceV1GrpcImpl extends TestsServiceV1Grpc.TestsServiceV1Imp
     public void getTest(GGetTestRequest request,
                         StreamObserver<GGetTestResponse> responseObserver) {
         try {
-            ObjTestEntity testEntity = testsService.getTest(
+            TestEntity testEntity = testsService.getTest(
                     ModelConverter.convert(request.getTestUid()));
 
             responseObserver.onNext(GGetTestResponse.newBuilder()

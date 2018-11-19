@@ -1,8 +1,8 @@
 package com.voteva.tests.service.impl;
 
 import com.voteva.tests.exception.NotFoundTestException;
-import com.voteva.tests.model.entity.ObjCategoryEntity;
-import com.voteva.tests.model.entity.ObjTestEntity;
+import com.voteva.tests.model.entity.CategoryEntity;
+import com.voteva.tests.model.entity.TestEntity;
 import com.voteva.tests.repository.CategoryRepository;
 import com.voteva.tests.repository.TestsRepository;
 import com.voteva.tests.service.TestsService;
@@ -37,25 +37,25 @@ public class TestsServiceImpl implements TestsService {
     public List<String> getCategories() {
         return categoryRepository.findAll()
                 .stream()
-                .map(ObjCategoryEntity::getCategoryName)
+                .map(CategoryEntity::getCategoryName)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Page<ObjTestEntity> getAllTests(Pageable pageable) {
+    public Page<TestEntity> getAllTests(Pageable pageable) {
         return testsRepository.findAll(pageable);
     }
 
     @Override
-    public Page<ObjTestEntity> getTestsByCategory(String category, Pageable pageable) {
+    public Page<TestEntity> getTestsByCategory(String category, Pageable pageable) {
         return testsRepository.findByTestCategory(category, pageable);
     }
 
     @Override
-    public ObjTestEntity getTest(UUID testUid) {
+    public TestEntity getTest(UUID testUid) {
         return testsRepository.findByTestUid(testUid)
                 .orElseThrow(() -> {
-                    logger.warn("Not found test with uid={}", testUid);
+                    logger.debug("Not found test with uid={}", testUid);
 
                     return new NotFoundTestException("Not found test with uid=" + testUid);
                 });
@@ -63,11 +63,11 @@ public class TestsServiceImpl implements TestsService {
 
     @Override
     @Transactional
-    public UUID addTest(ObjTestEntity entity) {
+    public UUID addTest(TestEntity entity) {
         if (!categoryRepository.findByCategoryName(entity.getTestCategory()).isPresent()) {
             logger.debug("Add new category with name={}", entity.getTestCategory());
 
-            categoryRepository.save(new ObjCategoryEntity(entity.getTestCategory()));
+            categoryRepository.save(new CategoryEntity(entity.getTestCategory()));
         }
 
         return testsRepository.save(entity).getTestUid();

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "obj_users", schema = "users")
-public class ObjUserEntity {
+public class UserEntity {
 
     private Integer userId;
     private UUID userUid = UUID.randomUUID();
@@ -30,7 +30,7 @@ public class ObjUserEntity {
         return userId;
     }
 
-    public ObjUserEntity setUserId(Integer userId) {
+    public UserEntity setUserId(Integer userId) {
         this.userId = userId;
         return this;
     }
@@ -52,7 +52,7 @@ public class ObjUserEntity {
         return userEmail;
     }
 
-    public ObjUserEntity setUserEmail(String userEmail) {
+    public UserEntity setUserEmail(String userEmail) {
         this.userEmail = userEmail;
         return this;
     }
@@ -63,7 +63,7 @@ public class ObjUserEntity {
         return userPassword;
     }
 
-    public ObjUserEntity setUserPassword(String userPassword) {
+    public UserEntity setUserPassword(String userPassword) {
         this.userPassword = userPassword;
         return this;
     }

@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "categories")
-public class ObjCategoryEntity {
+public class CategoryEntity {
 
     @Id
     private ObjectId _id;
@@ -19,7 +19,7 @@ public class ObjCategoryEntity {
     @Field(value = "categoryName")
     private String categoryName;
 
-    public ObjCategoryEntity(String categoryName) {
+    public CategoryEntity(String categoryName) {
         this.categoryName = categoryName;
     }
 
@@ -27,7 +27,7 @@ public class ObjCategoryEntity {
         return categoryName;
     }
 
-    public ObjCategoryEntity setCategoryName(String categoryName) {
+    public CategoryEntity setCategoryName(String categoryName) {
         this.categoryName = categoryName;
         return this;
     }
