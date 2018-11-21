@@ -8,21 +8,23 @@ option java_package = "com.voteva.interview.grpc.model.v1";
 
 
 message GGetCategoriesResponse {
-
+    repeated string categories = 1;
 }
 
 message GGetAllQuestionsResponse {
-
+    GPage page = 1;
+    repeated GInterviewQuestionInfo questions = 2;
 }
 
 message GGetQuestionsByCategoryResponse {
-
+    GPage page = 1;
+    repeated GInterviewQuestionInfo questions = 2;
 }
 
 message GGetQuestionResponse {
-
+    GInterviewQuestionInfo question = 1;
 }
 
 message GAddQuestionResponse {
-
+    GUuid questionUid = 1;
 }

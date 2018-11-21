@@ -2,9 +2,9 @@ package com.voteva.gateway.converter;
 
 import com.voteva.common.grpc.model.GPage;
 import com.voteva.gateway.web.to.common.PagedResult;
-import com.voteva.gateway.web.to.out.QuestionInfo;
+import com.voteva.gateway.web.to.out.TestQuestionInfo;
 import com.voteva.gateway.web.to.out.TestInfo;
-import com.voteva.gateway.web.to.in.AddQuestionRequest;
+import com.voteva.gateway.web.to.in.AddTestQuestionRequest;
 import com.voteva.gateway.web.to.in.AddTestRequest;
 import com.voteva.tests.grpc.model.v1.GAddTestRequest;
 import com.voteva.tests.grpc.model.v1.GQuestion;
@@ -43,7 +43,7 @@ public class TestInfoConverter {
                 .build();
     }
 
-    private static GQuestion convert(AddQuestionRequest questionRequest) {
+    private static GQuestion convert(AddTestQuestionRequest questionRequest) {
         return GQuestion.newBuilder()
                 .setText(questionRequest.getQuestionText())
                 .setRightAnswer(questionRequest.getRightAnswer())
@@ -51,8 +51,8 @@ public class TestInfoConverter {
                 .build();
     }
 
-    private static QuestionInfo convert(GQuestion question) {
-        return new QuestionInfo(
+    private static TestQuestionInfo convert(GQuestion question) {
+        return new TestQuestionInfo(
                 question.getText(),
                 question.getAnswerChoicesList(),
                 question.getRightAnswer());

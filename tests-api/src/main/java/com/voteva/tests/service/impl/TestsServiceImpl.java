@@ -27,8 +27,9 @@ public class TestsServiceImpl implements TestsService {
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public TestsServiceImpl(TestsRepository testsRepository,
-                            CategoryRepository categoryRepository) {
+    public TestsServiceImpl(
+            TestsRepository testsRepository,
+            CategoryRepository categoryRepository) {
         this.testsRepository = testsRepository;
         this.categoryRepository = categoryRepository;
     }
@@ -48,7 +49,7 @@ public class TestsServiceImpl implements TestsService {
 
     @Override
     public Page<TestEntity> getTestsByCategory(String category, Pageable pageable) {
-        return testsRepository.findByTestCategory(category, pageable);
+        return testsRepository.findByTestCategoryIgnoreCase(category, pageable);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class TestsServiceImpl implements TestsService {
     @Override
     @Transactional
     public UUID addTest(TestEntity entity) {
-        if (!categoryRepository.findByCategoryName(entity.getTestCategory()).isPresent()) {
+        if (!categoryRepository.findByCategoryNameIgnoreCase(entity.getTestCategory()).isPresent()) {
             logger.debug("Add new category with name={}", entity.getTestCategory());
 
             categoryRepository.save(new CategoryEntity(entity.getTestCategory()));

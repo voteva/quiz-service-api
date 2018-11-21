@@ -83,7 +83,8 @@ public class QuizServiceImpl implements QuizService {
                     testInfo.getQuestions().get(qIndex).getRightAnswer()) rightAnswersCount++;
         }
 
-        int percentCompleted = (rightAnswersCount / testInfo.getQuestions().size()) * 100;
+        double result = (double) rightAnswersCount / testInfo.getQuestions().size();
+        int percentCompleted = (int) (result * 100);
 
         return setTestResultsInternal(
                 user.getUuid(),

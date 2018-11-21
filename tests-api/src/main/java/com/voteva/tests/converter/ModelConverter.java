@@ -39,21 +39,6 @@ public class ModelConverter {
         return UUID.fromString(guuid.getUuid());
     }
 
-    public static GQuestion convert(QuestionRef questionRef) {
-        return GQuestion.newBuilder()
-                .setText(questionRef.getQuestionText())
-                .setRightAnswer(questionRef.getRightAnswer())
-                .addAllAnswerChoices(questionRef.getAnswerChoices())
-                .build();
-    }
-
-    public static QuestionRef convert(GQuestion question) {
-        return new QuestionRef()
-                .setQuestionText(question.getText())
-                .setRightAnswer(question.getRightAnswer())
-                .setAnswerChoices(question.getAnswerChoicesList());
-    }
-
     public static GTestInfo convert(TestEntity testEntity) {
         return GTestInfo.newBuilder()
                 .setTestUid(convert(testEntity.getTestUid()))
@@ -85,5 +70,20 @@ public class ModelConverter {
                         .stream()
                         .map(ModelConverter::convert)
                         .collect(Collectors.toList()));
+    }
+
+    private static GQuestion convert(QuestionRef questionRef) {
+        return GQuestion.newBuilder()
+                .setText(questionRef.getQuestionText())
+                .setRightAnswer(questionRef.getRightAnswer())
+                .addAllAnswerChoices(questionRef.getAnswerChoices())
+                .build();
+    }
+
+    private static QuestionRef convert(GQuestion question) {
+        return new QuestionRef()
+                .setQuestionText(question.getText())
+                .setRightAnswer(question.getRightAnswer())
+                .setAnswerChoices(question.getAnswerChoicesList());
     }
 }

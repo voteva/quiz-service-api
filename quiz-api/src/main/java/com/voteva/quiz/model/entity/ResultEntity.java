@@ -20,7 +20,7 @@ import java.util.UUID;
 public class ResultEntity {
 
     private ResultId resultId;
-    private int percent = 0;
+    private int percent;
     private int attemptsAllowed = 100;
 
     @EmbeddedId

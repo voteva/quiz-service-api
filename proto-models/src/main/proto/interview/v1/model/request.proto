@@ -14,20 +14,29 @@ message GGetCategoriesRequest {
 
 message GGetAllQuestionsRequest {
     GAuthentication authentication = 1;
+    GPageable pageable = 2;
 }
 
 message GGetQuestionsByCategoryRequest {
     GAuthentication authentication = 1;
+    GPageable pageable = 2;
+    string category = 3;
 }
 
 message GGetQuestionRequest {
     GAuthentication authentication = 1;
+    GUuid questionUid = 2;
 }
 
 message GAddQuestionRequest {
     GAuthentication authentication = 1;
+    string questionName = 2;
+    string questionCategory = 3;
+    string questionText = 4;
+    string questionAnswer = 5;
 }
 
 message GRemoveQuestionRequest {
     GAuthentication authentication = 1;
+    GUuid questionUid = 2;
 }

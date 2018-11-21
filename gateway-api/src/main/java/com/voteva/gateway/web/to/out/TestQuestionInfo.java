@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import java.beans.Transient;
 import java.util.List;
 
-public class QuestionInfo {
+public class TestQuestionInfo {
 
     private String questionText;
     private List<String> answerChoices;
     private int rightAnswer;
 
-    public QuestionInfo(
+    public TestQuestionInfo(
             String questionText,
             List<String> answerChoices,
             int rightAnswer) {

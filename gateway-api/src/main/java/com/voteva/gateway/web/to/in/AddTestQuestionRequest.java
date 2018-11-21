@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class AddQuestionRequest {
+public class AddTestQuestionRequest {
 
     @NotBlank
     @ApiModelProperty(example = "Question Text")
@@ -23,7 +23,7 @@ public class AddQuestionRequest {
     @ApiModelProperty(example = "0")
     private int rightAnswer;
 
-    public AddQuestionRequest(
+    public AddTestQuestionRequest(
             @JsonProperty("questionText") String questionText,
             @JsonProperty("answerChoices") List<String> answerChoices,
             @JsonProperty("rightAnswer") int rightAnswer) {

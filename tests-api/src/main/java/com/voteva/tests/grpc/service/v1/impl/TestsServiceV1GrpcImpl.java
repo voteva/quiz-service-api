@@ -38,8 +38,9 @@ public class TestsServiceV1GrpcImpl extends TestsServiceV1Grpc.TestsServiceV1Imp
     }
 
     @Override
-    public void getTestCategories(GGetTestCategoriesRequest request,
-                                  StreamObserver<GGetTestCategoriesResponse> responseObserver) {
+    public void getTestCategories(
+            GGetTestCategoriesRequest request,
+            StreamObserver<GGetTestCategoriesResponse> responseObserver) {
         try {
             List<String> categories = testsService.getCategories();
 
@@ -53,8 +54,9 @@ public class TestsServiceV1GrpcImpl extends TestsServiceV1Grpc.TestsServiceV1Imp
     }
 
     @Override
-    public void getAllTests(GGetAllTestsRequest request,
-                            StreamObserver<GGetAllTestsResponse> responseObserver) {
+    public void getAllTests(
+            GGetAllTestsRequest request,
+            StreamObserver<GGetAllTestsResponse> responseObserver) {
         try {
             Page<TestEntity> tests = testsService.getAllTests(
                     ModelConverter.convert(request.getPageable()));
@@ -73,8 +75,9 @@ public class TestsServiceV1GrpcImpl extends TestsServiceV1Grpc.TestsServiceV1Imp
     }
 
     @Override
-    public void getTestsByCategory(GGetTestsByCategoryRequest request,
-                                   StreamObserver<GGetTestsByCategoryResponse> responseObserver) {
+    public void getTestsByCategory(
+            GGetTestsByCategoryRequest request,
+            StreamObserver<GGetTestsByCategoryResponse> responseObserver) {
         try {
             Page<TestEntity> tests = testsService.getTestsByCategory(
                     request.getCategory(), ModelConverter.convert(request.getPageable()));
@@ -93,8 +96,9 @@ public class TestsServiceV1GrpcImpl extends TestsServiceV1Grpc.TestsServiceV1Imp
     }
 
     @Override
-    public void getTest(GGetTestRequest request,
-                        StreamObserver<GGetTestResponse> responseObserver) {
+    public void getTest(
+            GGetTestRequest request,
+            StreamObserver<GGetTestResponse> responseObserver) {
         try {
             TestEntity testEntity = testsService.getTest(
                     ModelConverter.convert(request.getTestUid()));
@@ -109,8 +113,9 @@ public class TestsServiceV1GrpcImpl extends TestsServiceV1Grpc.TestsServiceV1Imp
     }
 
     @Override
-    public void addTest(GAddTestRequest request,
-                        StreamObserver<GAddTestResponse> responseObserver) {
+    public void addTest(
+            GAddTestRequest request,
+            StreamObserver<GAddTestResponse> responseObserver) {
         try {
             UUID testUid = testsService.addTest(ModelConverter.convert(request));
 
@@ -124,8 +129,9 @@ public class TestsServiceV1GrpcImpl extends TestsServiceV1Grpc.TestsServiceV1Imp
     }
 
     @Override
-    public void removeTest(GRemoveTestRequest request,
-                           StreamObserver<Empty> responseObserver) {
+    public void removeTest(
+            GRemoveTestRequest request,
+            StreamObserver<Empty> responseObserver) {
         try {
             testsService.removeTest(ModelConverter.convert(request.getTestUid()));
 

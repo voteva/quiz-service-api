@@ -10,13 +10,13 @@ public class TestInfo {
     private UUID testUid;
     private String testName;
     private String testCategory;
-    private List<QuestionInfo> questions;
+    private List<TestQuestionInfo> questions;
 
     public TestInfo(
             UUID testUid,
             String testName,
             String testCategory,
-            List<QuestionInfo> questions) {
+            List<TestQuestionInfo> questions) {
         this.testUid = testUid;
         this.testName = testName;
         this.testCategory = testCategory;
@@ -39,7 +39,7 @@ public class TestInfo {
     }
 
     @JsonGetter("questions")
-    public List<QuestionInfo> getQuestions() {
+    public List<TestQuestionInfo> getQuestions() {
         return questions;
     }
 }

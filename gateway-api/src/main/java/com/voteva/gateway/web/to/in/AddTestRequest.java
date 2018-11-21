@@ -20,13 +20,13 @@ public class AddTestRequest {
     private String testCategory;
 
     @NotNull
-    private List<AddQuestionRequest> questions;
+    private List<AddTestQuestionRequest> questions;
 
     @JsonCreator
     public AddTestRequest(
             @JsonProperty("testName") String testName,
             @JsonProperty("testCategory") String testCategory,
-            @JsonProperty("questions") List<AddQuestionRequest> questions) {
+            @JsonProperty("questions") List<AddTestQuestionRequest> questions) {
         this.testName = testName;
         this.testCategory = testCategory;
         this.questions = questions;
@@ -40,7 +40,7 @@ public class AddTestRequest {
         return testCategory;
     }
 
-    public List<AddQuestionRequest> getQuestions() {
+    public List<AddTestQuestionRequest> getQuestions() {
         return questions;
     }
 

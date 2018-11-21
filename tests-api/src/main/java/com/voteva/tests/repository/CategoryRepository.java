@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface CategoryRepository extends MongoRepository<CategoryEntity, Integer> {
 
-    Optional<CategoryEntity> findByCategoryName(String categoryName);
+    Optional<CategoryEntity> findByCategoryNameIgnoreCase(String categoryName);
 }

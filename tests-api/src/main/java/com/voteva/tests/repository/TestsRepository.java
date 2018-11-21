@@ -12,7 +12,7 @@ public interface TestsRepository extends MongoRepository<TestEntity, Integer> {
 
     Optional<TestEntity> findByTestUid(UUID testUid);
 
-    Page<TestEntity> findByTestCategory(String testCategory, Pageable pageable);
+    Page<TestEntity> findByTestCategoryIgnoreCase(String testCategory, Pageable pageable);
 
     void deleteByTestUid(UUID testUid);
 }
