@@ -10,10 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +36,7 @@ public class InterviewController {
         this.interviewService = interviewService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<PagedResult<InterviewQuestionInfo>> getQuestions(
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -44,21 +46,21 @@ public class InterviewController {
         return ResponseEntity.ok(interviewService.getQuestions(category, page, size));
     }
 
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
+    @GetMapping(path = "/{uuid}")
     public ResponseEntity<InterviewQuestionInfo> getQuestionInfo(@PathVariable UUID uuid) {
         logger.debug("Getting question info by uid: {}", uuid);
 
         return ResponseEntity.ok(interviewService.getQuestionInfo(uuid));
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AddInterviewQuestionInfo> addQuestion(@RequestBody @Valid AddInterviewQuestionRequest request) {
         logger.debug("Adding question with name: {}", request.getQuestionName());
 
         return ResponseEntity.ok(new AddInterviewQuestionInfo(interviewService.addQuestion(request)));
     }
 
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
+    @DeleteMapping(path = "/{uuid}")
     public ResponseEntity<Void> deleteQuestion(@PathVariable UUID uuid) {
         logger.debug("Deleting question with uid: {}", uuid);
 
@@ -66,7 +68,7 @@ public class InterviewController {
         return ResponseEntity.noContent().build();
     }
 
-    @RequestMapping(path = "/categories", method = RequestMethod.GET)
+    @GetMapping(path = "/categories")
     public ResponseEntity<List<String>> getCategories() {
         logger.debug("Getting question categories");
 

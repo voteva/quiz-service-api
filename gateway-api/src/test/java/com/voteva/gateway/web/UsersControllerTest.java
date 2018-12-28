@@ -2,8 +2,7 @@ package com.voteva.gateway.web;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.voteva.gateway.service.UsersService;
-import com.voteva.gateway.web.controller.UsersController;
+import com.voteva.gateway.service.CommonAuthService;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddUserRequest;
 import com.voteva.gateway.web.to.in.UserUidRequest;
@@ -13,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -50,7 +48,7 @@ public class UsersControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private UsersService usersService;
+    private CommonAuthService commonAuthService;
 
     @Test
     public void testGetUsers() throws Exception {
@@ -62,7 +60,7 @@ public class UsersControllerTest {
                         .setAdmin(false)
                         .setBlocked(false)));
 
-        when(usersService.getUsers(0, 20)).thenReturn(response);
+        when(commonAuthService.getUsers(0, 20)).thenReturn(response);
 
         mockMvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
@@ -83,7 +81,7 @@ public class UsersControllerTest {
                 .setAdmin(false)
                 .setBlocked(false);
 
-        when(usersService.getUserByUid(USER_UID)).thenReturn(response);
+        when(commonAuthService.getUserByUid(USER_UID)).thenReturn(response);
 
         mockMvc.perform(get("/api/users/{uuid}", USER_UID))
                 .andExpect(status().isOk())
@@ -102,7 +100,7 @@ public class UsersControllerTest {
         Instant now = Instant.now();
         AddUserInfo response = new AddUserInfo(USER_UID, now.toEpochMilli());
 
-        when(usersService.addUser(any(AddUserRequest.class))).thenReturn(response);
+        when(commonAuthService.addUser(any(AddUserRequest.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -118,7 +116,7 @@ public class UsersControllerTest {
     public void testSetAdminGrants() throws Exception {
         UserUidRequest request = new UserUidRequest(USER_UID);
 
-        doNothing().when(usersService).setAdminGrants(request.getUserUid());
+        doNothing().when(commonAuthService).setAdminGrants(request.getUserUid());
 
         mockMvc.perform(post("/api/users/admin")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -131,7 +129,7 @@ public class UsersControllerTest {
     public void testRemoveAdminGrants() throws Exception {
         UserUidRequest request = new UserUidRequest(USER_UID);
 
-        doNothing().when(usersService).removeAdminGrants(request.getUserUid());
+        doNothing().when(commonAuthService).removeAdminGrants(request.getUserUid());
 
         mockMvc.perform(post("/api/users/remove-admin")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -144,7 +142,7 @@ public class UsersControllerTest {
     public void testBlockUser() throws Exception {
         UserUidRequest request = new UserUidRequest(USER_UID);
 
-        doNothing().when(usersService).blockUser(request.getUserUid());
+        doNothing().when(commonAuthService).blockUser(request.getUserUid());
 
         mockMvc.perform(post("/api/users/block")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -157,7 +155,7 @@ public class UsersControllerTest {
     public void testUnblockUser() throws Exception {
         UserUidRequest request = new UserUidRequest(USER_UID);
 
-        doNothing().when(usersService).unblockUser(request.getUserUid());
+        doNothing().when(commonAuthService).unblockUser(request.getUserUid());
 
         mockMvc.perform(post("/api/users/unblock")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)

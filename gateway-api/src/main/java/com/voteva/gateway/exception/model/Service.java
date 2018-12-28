@@ -2,7 +2,7 @@ package com.voteva.gateway.exception.model;
 
 public enum Service {
     GATEWAY,
-    USERS_AUTH,
+    COMMON_AUTH,
     INTERVIEW,
     QUIZ,
     TESTS

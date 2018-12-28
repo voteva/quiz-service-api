@@ -11,9 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -32,7 +33,7 @@ public class QuizController {
         this.quizService = quizService;
     }
 
-    @RequestMapping(path = "/assign", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/assign", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Void> assignTest(@RequestBody @Valid AssignTestRequest request) {
         User user = SecurityContextUtil.getUser();
 
@@ -42,7 +43,7 @@ public class QuizController {
         return ResponseEntity.noContent().build();
     }
 
-    @RequestMapping(path = "/results", method = RequestMethod.GET)
+    @GetMapping(path = "/results")
     public ResponseEntity<List<QuizInfo>> getUserTests() {
         User user = SecurityContextUtil.getUser();
 
@@ -51,7 +52,7 @@ public class QuizController {
         return ResponseEntity.ok(quizService.getTestResults(user));
     }
 
-    @RequestMapping(path = "/results", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/results", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<QuizInfo> setTestResults(@RequestBody @Valid TestResultsRequest request) {
         User user = SecurityContextUtil.getUser();
 

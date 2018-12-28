@@ -2,10 +2,11 @@ package com.voteva.gateway.service.impl;
 
 import com.voteva.gateway.converter.CommonConverter;
 import com.voteva.gateway.converter.TestInfoConverter;
-import com.voteva.gateway.exception.util.GRpcExceptionUtil;
+import com.voteva.gateway.exception.util.GatewayService;
 import com.voteva.gateway.grpc.client.GRpcQuizServiceClient;
 import com.voteva.gateway.grpc.client.GRpcTestsServiceClient;
 import com.voteva.gateway.service.TestsService;
+import com.voteva.gateway.util.Logged;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddTestRequest;
 import com.voteva.gateway.web.to.out.TestInfo;
@@ -17,20 +18,16 @@ import com.voteva.tests.grpc.model.v1.GGetTestRequest;
 import com.voteva.tests.grpc.model.v1.GGetTestsByCategoryRequest;
 import com.voteva.tests.grpc.model.v1.GGetTestsByCategoryResponse;
 import com.voteva.tests.grpc.model.v1.GRemoveTestRequest;
-import io.grpc.StatusRuntimeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
-public class TestsServiceImpl implements TestsService {
+import static com.voteva.gateway.exception.model.Service.TESTS;
 
-    private static final Logger logger = LoggerFactory.getLogger(TestsServiceImpl.class);
+@GatewayService(serviceName = TESTS)
+public class TestsServiceImpl implements TestsService {
 
     private final GRpcTestsServiceClient rpcTestsServiceClient;
     private final GRpcQuizServiceClient rpcQuizServiceClient;
@@ -43,85 +40,55 @@ public class TestsServiceImpl implements TestsService {
         this.rpcQuizServiceClient = rpcQuizServiceClient;
     }
 
+    @Logged
     @Override
     public List<String> getTestCategories() {
-        try {
-            return rpcTestsServiceClient.getTestCategories(
-                    GGetTestCategoriesRequest.newBuilder().build())
-                    .getCategoriesList();
-
-        } catch (StatusRuntimeException e) {
-            logger.error("Failed to get test categories");
-            throw GRpcExceptionUtil.convertByTests(e);
-        }
+        return rpcTestsServiceClient.getTestCategories(
+                GGetTestCategoriesRequest.newBuilder().build())
+                .getCategoriesList();
     }
 
+    @Logged
     @Override
     public PagedResult<TestInfo> getTests(String category, int page, int size) {
-        try {
-            return Optional.ofNullable(category)
-                    .map(c -> getTestsByCategoryInternal(c, page, size))
-                    .orElseGet(() -> getTestsInternal(page, size));
-
-        } catch (StatusRuntimeException e) {
-            logger.error("Failed to get all tests by category: {} for page: {} and page size: {}", category, page, size);
-            throw GRpcExceptionUtil.convertByTests(e);
-        }
+        return Optional.ofNullable(category)
+                .map(c -> getTestsByCategoryInternal(c, page, size))
+                .orElseGet(() -> getTestsInternal(page, size));
     }
 
+    @Logged
     @Override
     public TestInfo getTestInfo(UUID testUid) {
-        try {
-            return TestInfoConverter.convert(
-                    rpcTestsServiceClient.getTest(
-                            GGetTestRequest.newBuilder()
-                                    .setTestUid(CommonConverter.convert(testUid))
-                                    .build())
-                            .getTestInfo());
-
-        } catch (StatusRuntimeException e) {
-            logger.error("Failed to get test info by uid: {}", testUid);
-            throw GRpcExceptionUtil.convertByTests(e);
-        }
+        return TestInfoConverter.convert(
+                rpcTestsServiceClient.getTest(
+                        GGetTestRequest.newBuilder()
+                                .setTestUid(CommonConverter.convert(testUid))
+                                .build())
+                        .getTestInfo());
     }
 
+    @Logged
     @Override
     public UUID addTest(AddTestRequest request) {
-        try {
-            return CommonConverter.convert(
-                    rpcTestsServiceClient.addTest(
-                            TestInfoConverter.convert(request))
-                            .getTestUid());
-
-        } catch (StatusRuntimeException e) {
-            logger.error("Failed to add test with name: {}", request.getTestName());
-            throw GRpcExceptionUtil.convertByTests(e);
-        }
+        return CommonConverter.convert(
+                rpcTestsServiceClient.addTest(
+                        TestInfoConverter.convert(request))
+                        .getTestUid());
     }
 
+    @Logged
     @Override
     public void deleteTest(UUID testUid) {
-        // TODO need refactor
-        try {
-            rpcQuizServiceClient.deleteResultsForTest(
-                    GDeleteResultsRequest.newBuilder()
-                            .setTestUid(CommonConverter.convert(testUid))
-                            .build());
-        } catch (StatusRuntimeException e) {
-            logger.error("Failed to delete test with uid: {}", testUid);
-            throw GRpcExceptionUtil.convertByQuiz(e);
-        }
+        // TODO
+        rpcQuizServiceClient.deleteResultsForTest(
+                GDeleteResultsRequest.newBuilder()
+                        .setTestUid(CommonConverter.convert(testUid))
+                        .build());
 
-        try {
-            rpcTestsServiceClient.removeTest(
-                    GRemoveTestRequest.newBuilder()
-                            .setTestUid(CommonConverter.convert(testUid))
-                            .build());
-
-        } catch (StatusRuntimeException e) {
-            logger.error("Failed to delete test with uid: {}", testUid);
-            throw GRpcExceptionUtil.convertByTests(e);
-        }
+        rpcTestsServiceClient.removeTest(
+                GRemoveTestRequest.newBuilder()
+                        .setTestUid(CommonConverter.convert(testUid))
+                        .build());
     }
 
     private PagedResult<TestInfo> getTestsByCategoryInternal(String category, int page, int size) {
