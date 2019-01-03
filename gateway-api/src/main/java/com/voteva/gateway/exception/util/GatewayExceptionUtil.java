@@ -6,9 +6,9 @@ import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import org.springframework.http.HttpStatus;
 
-class GatewayExceptionUtil {
+public class GatewayExceptionUtil {
 
-    static GatewayApiException convert(Service service, Exception ex) {
+    public static GatewayApiException convert(Service service, Exception ex) {
         if (ex instanceof StatusRuntimeException) {
             return new GatewayApiException(
                     service,

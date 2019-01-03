@@ -2,11 +2,11 @@ package com.voteva.gateway.service.impl;
 
 import com.voteva.gateway.converter.CommonConverter;
 import com.voteva.gateway.converter.UsersInfoConverter;
-import com.voteva.gateway.exception.util.GatewayService;
+import com.voteva.gateway.annotation.GatewayService;
 import com.voteva.gateway.grpc.client.GRpcQuizServiceClient;
 import com.voteva.gateway.grpc.client.GRpcUsersServiceClient;
 import com.voteva.gateway.service.CommonAuthService;
-import com.voteva.gateway.util.Logged;
+import com.voteva.gateway.annotation.Logged;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddUserRequest;
 import com.voteva.gateway.web.to.out.AddUserInfo;

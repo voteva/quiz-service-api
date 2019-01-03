@@ -1,4 +1,4 @@
-package com.voteva.gateway.util;
+package com.voteva.gateway.annotation;
 
 import org.slf4j.event.Level;
 

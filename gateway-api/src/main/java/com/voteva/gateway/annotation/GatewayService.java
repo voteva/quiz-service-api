@@ -1,4 +1,4 @@
-package com.voteva.gateway.exception.util;
+package com.voteva.gateway.annotation;
 
 import com.voteva.gateway.exception.model.Service;
 

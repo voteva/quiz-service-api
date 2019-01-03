@@ -31,7 +31,7 @@
         <module>quiz-api</module>
         <module>interview-api</module>
         <module>gateway-api</module>
-        <module>users-auth</module>
+        <module>common-auth</module>
     </modules>
 
 </project>

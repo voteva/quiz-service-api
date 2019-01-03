@@ -1,8 +1,9 @@
-package com.voteva.gateway.util;
+package com.voteva.gateway.annotation.aop;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.voteva.gateway.annotation.Logged;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -31,7 +32,7 @@ public class LoggableMethodAdvice {
             });
 
     @AfterThrowing(value = "@annotation(loggedAnnotation)", throwing = "ex")
-    private void afterThrowing(JoinPoint jp, Exception ex, Logged loggedAnnotation) {
+    public void afterThrowing(JoinPoint jp, Exception ex, Logged loggedAnnotation) {
         Signature signature = jp.getSignature();
         Object[] args = jp.getArgs();
 

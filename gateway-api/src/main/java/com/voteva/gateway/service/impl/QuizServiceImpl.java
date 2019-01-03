@@ -2,12 +2,12 @@ package com.voteva.gateway.service.impl;
 
 import com.voteva.gateway.converter.CommonConverter;
 import com.voteva.gateway.converter.QuizInfoConverter;
-import com.voteva.gateway.exception.util.GatewayService;
+import com.voteva.gateway.annotation.GatewayService;
 import com.voteva.gateway.grpc.client.GRpcQuizServiceClient;
 import com.voteva.gateway.security.model.User;
 import com.voteva.gateway.service.QuizService;
 import com.voteva.gateway.service.TestsService;
-import com.voteva.gateway.util.Logged;
+import com.voteva.gateway.annotation.Logged;
 import com.voteva.gateway.web.to.in.AssignTestRequest;
 import com.voteva.gateway.web.to.in.TestResultsRequest;
 import com.voteva.gateway.web.to.out.QuizInfo;

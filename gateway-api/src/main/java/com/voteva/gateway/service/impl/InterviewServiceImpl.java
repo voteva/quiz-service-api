@@ -1,11 +1,11 @@
 package com.voteva.gateway.service.impl;
 
+import com.voteva.gateway.annotation.GatewayService;
+import com.voteva.gateway.annotation.Logged;
 import com.voteva.gateway.converter.CommonConverter;
 import com.voteva.gateway.converter.InterviewInfoConverter;
-import com.voteva.gateway.exception.util.GatewayService;
 import com.voteva.gateway.grpc.client.GRpcInterviewServiceClient;
 import com.voteva.gateway.service.InterviewService;
-import com.voteva.gateway.util.Logged;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddInterviewQuestionRequest;
 import com.voteva.gateway.web.to.out.InterviewQuestionInfo;
