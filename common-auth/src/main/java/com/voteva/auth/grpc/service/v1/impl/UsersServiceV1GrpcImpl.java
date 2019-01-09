@@ -1,11 +1,10 @@
 package com.voteva.auth.grpc.service.v1.impl;
 
 import com.voteva.auth.converter.ModelConverter;
+import com.voteva.auth.service.UsersService;
 import com.voteva.users.grpc.model.v1.GAddUserAuthRequest;
 import com.voteva.users.grpc.model.v1.GAddUserAuthResponse;
 import com.voteva.users.grpc.service.v1.UsersServiceV1Grpc;
-import com.voteva.auth.service.UsersService;
-import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,31 +25,14 @@ public class UsersServiceV1GrpcImpl extends UsersServiceV1Grpc.UsersServiceV1Imp
     public void addUser(
             GAddUserAuthRequest request,
             StreamObserver<GAddUserAuthResponse> responseObserver) {
-        try {
-            UUID userUid = usersService.addUser(request.getEmail(), request.getPassword());
 
-            GAddUserAuthResponse response = GAddUserAuthResponse.newBuilder()
-                    .setUserUid(ModelConverter.convert(userUid))
-                    .build();
+        UUID userUid = usersService.addUser(request.getEmail(), request.getPassword());
 
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
-        } catch (Exception e) {
-            onError(responseObserver, e);
-        }
-    }
+        GAddUserAuthResponse response = GAddUserAuthResponse.newBuilder()
+                .setUserUid(ModelConverter.convert(userUid))
+                .build();
 
-    private void onError(StreamObserver<?> responseObserver, Exception e) {
-        Status status;
-
-        if (e instanceof IllegalArgumentException) {
-            status = Status.INVALID_ARGUMENT;
-        } else {
-            status = Status.INTERNAL;
-        }
-
-        responseObserver.onError(status
-                .withDescription(e.getMessage())
-                .asRuntimeException());
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }

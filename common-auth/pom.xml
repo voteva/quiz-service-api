@@ -14,6 +14,7 @@
 
     <properties>
         <grpc-spring-boot-starter.version>2.3.2</grpc-spring-boot-starter.version>
+        <aspectj.version>1.8.9</aspectj.version>
         <google-guava.version>23.6-jre</google-guava.version>
         <apache-httpcomponents.version>4.4.8</apache-httpcomponents.version>
         <apache-commons.version>3.6</apache-commons.version>
@@ -65,6 +66,11 @@
         </dependency>
 
         <!-- 3rd parties -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>

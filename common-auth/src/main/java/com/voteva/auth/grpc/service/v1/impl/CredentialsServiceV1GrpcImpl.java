@@ -6,7 +6,6 @@ import com.voteva.auth.grpc.model.v1.GGetPrincipalKeyResponse;
 import com.voteva.auth.grpc.service.v1.CredentialsServiceV1Grpc;
 import com.voteva.auth.model.entity.PrincipalKey;
 import com.voteva.auth.service.CredentialsService;
-import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,33 +24,16 @@ public class CredentialsServiceV1GrpcImpl extends CredentialsServiceV1Grpc.Crede
     public void getPrincipalKey(
             GGetPrincipalKeyRequest request,
             StreamObserver<GGetPrincipalKeyResponse> responseObserver) {
-        try {
-            PrincipalKey principalKey = credentialsService.getPrincipalKey(
-                    request.getSubsystem(),
-                    ModelConverter.convert(request.getCredentials()));
 
-            GGetPrincipalKeyResponse response = GGetPrincipalKeyResponse.newBuilder()
-                    .setPrincipalKey(ModelConverter.convert(principalKey))
-                    .build();
+        PrincipalKey principalKey = credentialsService.getPrincipalKey(
+                request.getSubsystem(),
+                ModelConverter.convert(request.getCredentials()));
 
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
-        } catch (Exception e) {
-            onError(responseObserver, e);
-        }
-    }
+        GGetPrincipalKeyResponse response = GGetPrincipalKeyResponse.newBuilder()
+                .setPrincipalKey(ModelConverter.convert(principalKey))
+                .build();
 
-    private void onError(StreamObserver<?> responseObserver, Exception e) {
-        Status status;
-
-        if (e instanceof IllegalArgumentException) {
-            status = Status.INVALID_ARGUMENT;
-        } else {
-            status = Status.INTERNAL;
-        }
-
-        responseObserver.onError(status
-                .withDescription(e.getMessage())
-                .asRuntimeException());
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }
