@@ -2,7 +2,8 @@ package com.voteva.gateway.web;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.voteva.gateway.service.CommonAuthService;
+import com.voteva.gateway.service.AuthenticationService;
+import com.voteva.gateway.service.QuizService;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddUserRequest;
 import com.voteva.gateway.web.to.in.UserUidRequest;
@@ -48,7 +49,9 @@ public class UsersControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private CommonAuthService commonAuthService;
+    private AuthenticationService authenticationService;
+    @MockBean
+    private QuizService quizService;
 
     @Test
     public void testGetUsers() throws Exception {
@@ -60,7 +63,7 @@ public class UsersControllerTest {
                         .setAdmin(false)
                         .setBlocked(false)));
 
-        when(commonAuthService.getUsers(0, 20)).thenReturn(response);
+        when(quizService.getUsers(0, 20)).thenReturn(response);
 
         mockMvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
@@ -81,7 +84,7 @@ public class UsersControllerTest {
                 .setAdmin(false)
                 .setBlocked(false);
 
-        when(commonAuthService.getUserByUid(USER_UID)).thenReturn(response);
+        when(quizService.getUserByUid(USER_UID)).thenReturn(response);
 
         mockMvc.perform(get("/api/users/{uuid}", USER_UID))
                 .andExpect(status().isOk())
@@ -100,7 +103,7 @@ public class UsersControllerTest {
         Instant now = Instant.now();
         AddUserInfo response = new AddUserInfo(USER_UID, now.toEpochMilli());
 
-        when(commonAuthService.addUser(any(AddUserRequest.class))).thenReturn(response);
+        when(quizService.addUser(any(AddUserRequest.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/users")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -116,7 +119,7 @@ public class UsersControllerTest {
     public void testSetAdminGrants() throws Exception {
         UserUidRequest request = new UserUidRequest(USER_UID);
 
-        doNothing().when(commonAuthService).setAdminGrants(request.getUserUid());
+        doNothing().when(quizService).setAdminGrants(request.getUserUid());
 
         mockMvc.perform(post("/api/users/admin")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -129,7 +132,7 @@ public class UsersControllerTest {
     public void testRemoveAdminGrants() throws Exception {
         UserUidRequest request = new UserUidRequest(USER_UID);
 
-        doNothing().when(commonAuthService).removeAdminGrants(request.getUserUid());
+        doNothing().when(quizService).removeAdminGrants(request.getUserUid());
 
         mockMvc.perform(post("/api/users/remove-admin")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -142,7 +145,7 @@ public class UsersControllerTest {
     public void testBlockUser() throws Exception {
         UserUidRequest request = new UserUidRequest(USER_UID);
 
-        doNothing().when(commonAuthService).blockUser(request.getUserUid());
+        doNothing().when(quizService).blockUser(request.getUserUid());
 
         mockMvc.perform(post("/api/users/block")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -155,7 +158,7 @@ public class UsersControllerTest {
     public void testUnblockUser() throws Exception {
         UserUidRequest request = new UserUidRequest(USER_UID);
 
-        doNothing().when(commonAuthService).unblockUser(request.getUserUid());
+        doNothing().when(quizService).unblockUser(request.getUserUid());
 
         mockMvc.perform(post("/api/users/unblock")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -2,7 +2,7 @@ package com.voteva.gateway.web;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.voteva.gateway.security.model.User;
+import com.voteva.gateway.security.model.Principal;
 import com.voteva.gateway.service.QuizService;
 import com.voteva.gateway.web.to.in.AssignTestRequest;
 import com.voteva.gateway.web.to.in.TestResultsRequest;
@@ -39,6 +39,8 @@ public class QuizControllerTest {
     private static final UUID TEST_UID = UUID.fromString("517df602-4ffb-4e08-9626-2a0cf2db4849");
     private static final int PERCENT_COMPLETED = 75;
 
+    private Principal principal = new Principal("testing-api", UUID.randomUUID());
+
     private Gson gson = new GsonBuilder().create();
 
     @Autowired
@@ -50,9 +52,8 @@ public class QuizControllerTest {
     @Test
     public void testAssignTest() throws Exception {
         AssignTestRequest request = new AssignTestRequest(TEST_UID);
-        User user = new User();
 
-        doNothing().when(quizService).assignTest(request, user);
+        doNothing().when(quizService).assignTest(request, principal);
 
         mockMvc.perform(post("/api/quiz/assign")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -64,9 +65,8 @@ public class QuizControllerTest {
     @Test
     public void testGetUserTests() throws Exception {
         List<QuizInfo> response = new ArrayList<>();
-        User user = new User();
 
-        when(quizService.getTestResults(user)).thenReturn(response);
+        when(quizService.getTestResults(principal)).thenReturn(response);
 
         mockMvc.perform(get("/api/quiz/results"))
                 .andExpect(status().isOk())
@@ -79,7 +79,7 @@ public class QuizControllerTest {
         TestResultsRequest request = new TestResultsRequest(TEST_UID, new HashMap<>());
         QuizInfo response = new QuizInfo(TEST_UID, PERCENT_COMPLETED);
 
-        when(quizService.setTestResults(any(TestResultsRequest.class), any(User.class))).thenReturn(response);
+        when(quizService.setTestResults(any(TestResultsRequest.class), any(Principal.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/quiz/results")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)

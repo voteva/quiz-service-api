@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UsersApiApplication {
+public class CommonAuthApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UsersApiApplication.class, args);
+        SpringApplication.run(CommonAuthApplication.class, args);
     }
 }

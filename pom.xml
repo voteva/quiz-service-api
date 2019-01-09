@@ -27,11 +27,11 @@
 
     <modules>
         <module>proto-models</module>
+        <module>common-auth</module>
         <module>tests-api</module>
         <module>quiz-api</module>
         <module>interview-api</module>
         <module>gateway-api</module>
-        <module>common-auth</module>
     </modules>
 
 </project>

@@ -4,4 +4,46 @@ option java_multiple_files = true;
 option java_package = "com.voteva.auth.grpc.model.v1";
 
 
-message GAuthentication {}
+message GAuthentication {
+    GToken token = 1;
+    GPrincipalKey principal = 2;
+}
+
+message GPrincipalKey {
+    string subsystem = 1;
+    string extId = 2;
+}
+
+message GCredentials {
+    GLogin login = 1;
+    GSecret secret = 2;
+}
+
+message GLogin {
+    GLoginType type = 1;
+    string value = 2;
+
+    enum GLoginType {
+        EMAIL = 0;
+        PHONE = 1;
+    }
+}
+
+message GSecret {
+    GSecretType type = 1;
+    string value = 2;
+
+    enum GSecretType {
+        PASSWORD = 0;
+    }
+}
+
+message GToken {
+    string token = 1;
+    int64 validFromMills = 2;
+    int64 validTillMills = 3;
+}
+
+message GFingerPrint {
+
+}

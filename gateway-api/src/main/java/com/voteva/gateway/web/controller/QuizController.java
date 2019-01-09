@@ -1,6 +1,6 @@
 package com.voteva.gateway.web.controller;
 
-import com.voteva.gateway.security.model.User;
+import com.voteva.gateway.security.model.Principal;
 import com.voteva.gateway.security.util.SecurityContextUtil;
 import com.voteva.gateway.service.QuizService;
 import com.voteva.gateway.web.to.in.AssignTestRequest;
@@ -35,29 +35,29 @@ public class QuizController {
 
     @PostMapping(path = "/assign", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Void> assignTest(@RequestBody @Valid AssignTestRequest request) {
-        User user = SecurityContextUtil.getUser();
+        Principal principal = SecurityContextUtil.getPrincipal();
 
-        logger.debug("Assigning test: {} for user: {}", request.getTestUid(), user.getUuid());
+        logger.debug("Assigning test: {} for user: {}", request.getTestUid(), principal.getExtId());
 
-        quizService.assignTest(request, user);
+        quizService.assignTest(request, principal);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(path = "/results")
     public ResponseEntity<List<QuizInfo>> getUserTests() {
-        User user = SecurityContextUtil.getUser();
+        Principal principal = SecurityContextUtil.getPrincipal();
 
-        logger.debug("Getting tests results for user with uid: {}", user.getUuid());
+        logger.debug("Getting tests results for user with uid: {}", principal.getExtId());
 
-        return ResponseEntity.ok(quizService.getTestResults(user));
+        return ResponseEntity.ok(quizService.getTestResults(principal));
     }
 
     @PostMapping(path = "/results", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<QuizInfo> setTestResults(@RequestBody @Valid TestResultsRequest request) {
-        User user = SecurityContextUtil.getUser();
+        Principal principal = SecurityContextUtil.getPrincipal();
 
-        logger.debug("Setting results of test: {} for user: {}", request.getTestUid(), user.getUuid());
+        logger.debug("Setting results of test: {} for user: {}", request.getTestUid(), principal.getExtId());
 
-        return ResponseEntity.ok(quizService.setTestResults(request, user));
+        return ResponseEntity.ok(quizService.setTestResults(request, principal));
     }
 }

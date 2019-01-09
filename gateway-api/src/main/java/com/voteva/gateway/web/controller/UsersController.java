@@ -1,10 +1,13 @@
 package com.voteva.gateway.web.controller;
 
-import com.voteva.gateway.service.CommonAuthService;
+import com.voteva.gateway.service.AuthenticationService;
+import com.voteva.gateway.service.QuizService;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddUserRequest;
+import com.voteva.gateway.web.to.in.LoginUserRequest;
 import com.voteva.gateway.web.to.in.UserUidRequest;
 import com.voteva.gateway.web.to.out.AddUserInfo;
+import com.voteva.gateway.web.to.out.LoginInfo;
 import com.voteva.gateway.web.to.out.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -28,11 +33,26 @@ public class UsersController {
 
     private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
-    private final CommonAuthService commonAuthService;
+    private final AuthenticationService authenticationService;
+    private final QuizService quizService;
 
     @Autowired
-    public UsersController(CommonAuthService commonAuthService) {
-        this.commonAuthService = commonAuthService;
+    public UsersController(
+            AuthenticationService authenticationService,
+            QuizService quizService) {
+        this.authenticationService = authenticationService;
+        this.quizService = quizService;
+    }
+
+    @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<LoginInfo> login(
+            @RequestBody @Valid LoginUserRequest loginUserRequest,
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse) {
+
+        logger.debug("Login user: {}", loginUserRequest.getUsername());
+
+        return ResponseEntity.ok(authenticationService.login(loginUserRequest, httpServletRequest, httpServletResponse));
     }
 
     @GetMapping
@@ -42,7 +62,7 @@ public class UsersController {
 
         logger.debug("Getting users for page: {} and page size: {}", page, size);
 
-        return ResponseEntity.ok(commonAuthService.getUsers(page, size));
+        return ResponseEntity.ok(quizService.getUsers(page, size));
     }
 
     @GetMapping(path = "/{uuid}")
@@ -50,7 +70,7 @@ public class UsersController {
 
         logger.debug("Getting user info by uid: {}", uuid);
 
-        return ResponseEntity.ok(commonAuthService.getUserByUid(uuid));
+        return ResponseEntity.ok(quizService.getUserByUid(uuid));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -58,7 +78,7 @@ public class UsersController {
 
         logger.debug("Adding user: {}", request);
 
-        return ResponseEntity.ok(commonAuthService.addUser(request));
+        return ResponseEntity.ok(quizService.addUser(request));
     }
 
     @PostMapping(path = "/admin", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -66,7 +86,7 @@ public class UsersController {
 
         logger.debug("Blocking user with uid: {}", request.getUserUid());
 
-        commonAuthService.setAdminGrants(request.getUserUid());
+        quizService.setAdminGrants(request.getUserUid());
         return ResponseEntity.noContent().build();
     }
 
@@ -75,7 +95,7 @@ public class UsersController {
 
         logger.debug("Unblocking user with uid: {}", request.getUserUid());
 
-        commonAuthService.removeAdminGrants(request.getUserUid());
+        quizService.removeAdminGrants(request.getUserUid());
         return ResponseEntity.noContent().build();
     }
 
@@ -84,7 +104,7 @@ public class UsersController {
 
         logger.debug("Blocking user with uid: {}", request.getUserUid());
 
-        commonAuthService.blockUser(request.getUserUid());
+        quizService.blockUser(request.getUserUid());
         return ResponseEntity.noContent().build();
     }
 
@@ -93,7 +113,7 @@ public class UsersController {
 
         logger.debug("Unblocking user with uid: {}", request.getUserUid());
 
-        commonAuthService.unblockUser(request.getUserUid());
+        quizService.unblockUser(request.getUserUid());
         return ResponseEntity.noContent().build();
     }
 }

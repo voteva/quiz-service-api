@@ -9,7 +9,7 @@ logging:
 
 spring:
   application:
-    name: users-auth
+    name: common-auth
   datasource:
     driver-class-name: org.postgresql.Driver
     url: "jdbc:postgresql://localhost:5432/users"

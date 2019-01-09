@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "common/model/model.proto";
+import "auth/v1/model/request.proto";
+import "auth/v1/model/response.proto";
+
+option java_multiple_files = true;
+option java_package = "com.voteva.auth.grpc.service.v1";
+
+
+service AuthServiceV1 {
+
+    rpc authenticateAny (GAuthenticateAnyRequest) returns (GAuthenticateAnyResponse);
+
+    rpc getAuthentication (GGetAuthenticationRequest) returns (GGetAuthenticationResponse);
+
+    rpc generateToken (GGenerateTokenRequest) returns (GGenerateTokenResponse);
+
+}
+
+service CredentialsServiceV1 {
+
+    rpc getPrincipalKey (GGetPrincipalKeyRequest) returns (GGetPrincipalKeyResponse);
+
+}

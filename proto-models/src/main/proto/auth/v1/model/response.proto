@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+import "common/model/model.proto";
+import "auth/v1/model/model.proto";
+
+option java_multiple_files = true;
+option java_package = "com.voteva.auth.grpc.model.v1";
+
+
+message GGetPrincipalKeyResponse {
+    GPrincipalKey principalKey = 1;
+}
+
+message GAuthenticateAnyResponse {
+    GAuthentication authentication = 1;
+}
+
+message GGetAuthenticationResponse {
+    GAuthentication authentication = 1;
+}
+
+message GGenerateTokenResponse {
+    GToken token = 1;
+}

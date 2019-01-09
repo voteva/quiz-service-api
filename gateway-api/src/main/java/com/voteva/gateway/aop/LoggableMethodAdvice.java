@@ -1,4 +1,4 @@
-package com.voteva.gateway.annotation.aop;
+package com.voteva.gateway.aop;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;

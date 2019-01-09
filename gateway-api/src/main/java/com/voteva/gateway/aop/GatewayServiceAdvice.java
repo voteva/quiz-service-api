@@ -1,4 +1,4 @@
-package com.voteva.gateway.annotation.aop;
+package com.voteva.gateway.aop;
 
 import com.voteva.gateway.exception.util.GatewayExceptionUtil;
 import com.voteva.gateway.annotation.GatewayService;
