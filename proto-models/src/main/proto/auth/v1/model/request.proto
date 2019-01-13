@@ -9,8 +9,7 @@ option java_package = "com.voteva.auth.grpc.model.v1";
 
 message GGetPrincipalKeyRequest {
     GAuthentication authentication = 1;
-    string subsystem = 2;
-    GCredentials credentials = 3;
+    GCredentials credentials = 2;
 }
 
 message GAuthenticateAnyRequest {
@@ -21,6 +20,11 @@ message GAuthenticateAnyRequest {
 }
 
 message GGetAuthenticationRequest {
+    GAuthentication authentication = 1;
+    string token = 2;
+}
+
+message GRevokeAuthenticationRequest {
     GAuthentication authentication = 1;
     string token = 2;
 }

@@ -6,7 +6,9 @@ import com.voteva.auth.grpc.model.v1.GGenerateTokenRequest;
 import com.voteva.auth.grpc.model.v1.GGenerateTokenResponse;
 import com.voteva.auth.grpc.model.v1.GGetAuthenticationRequest;
 import com.voteva.auth.grpc.model.v1.GGetAuthenticationResponse;
+import com.voteva.auth.grpc.model.v1.GRevokeAuthenticationRequest;
 import com.voteva.auth.grpc.service.v1.AuthServiceV1Grpc;
+import com.voteva.common.grpc.model.Empty;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,5 +46,9 @@ public class GRpcAuthServiceClient {
 
     public GAuthenticateAnyResponse authenticateAny(GAuthenticateAnyRequest request) {
         return authServiceV1BlockingStub.authenticateAny(request);
+    }
+
+    public Empty revokeAuthentication(GRevokeAuthenticationRequest request) {
+        return authServiceV1BlockingStub.revokeAuthentication(request);
     }
 }

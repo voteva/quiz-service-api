@@ -1,5 +1,6 @@
 package com.voteva.auth.grpc.service;
 
+import com.voteva.auth.exception.AuthException;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -29,6 +30,8 @@ public class GRpcServiceAdvice {
 
         if (e instanceof IllegalArgumentException) {
             status = Status.INVALID_ARGUMENT;
+        } else if (e instanceof AuthException) {
+            status = Status.UNAUTHENTICATED;
         } else {
             status = Status.INTERNAL;
         }

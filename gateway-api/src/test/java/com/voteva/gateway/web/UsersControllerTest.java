@@ -8,7 +8,7 @@ import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddUserRequest;
 import com.voteva.gateway.web.to.in.UserUidRequest;
 import com.voteva.gateway.web.to.out.AddUserInfo;
-import com.voteva.gateway.web.to.out.UserInfo;
+import com.voteva.gateway.web.to.out.UserFullInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +57,8 @@ public class UsersControllerTest {
 
     @Test
     public void testGetUsers() throws Exception {
-        PagedResult<UserInfo> response = new PagedResult<>(1,
-                Collections.singletonList(new UserInfo()
+        PagedResult<UserFullInfo> response = new PagedResult<>(1,
+                Collections.singletonList(new UserFullInfo()
                         .setUserUid(USER_UID)
                         .setFirstName(FIRST_NAME)
                         .setLastName(LAST_NAME)
@@ -79,7 +79,7 @@ public class UsersControllerTest {
 
     @Test
     public void testGetUserInfo() throws Exception {
-        UserInfo response = new UserInfo()
+        UserFullInfo response = new UserFullInfo()
                 .setUserUid(USER_UID)
                 .setFirstName(FIRST_NAME)
                 .setLastName(LAST_NAME)

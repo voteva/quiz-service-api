@@ -1,5 +1,8 @@
 package com.voteva.gateway.web.controller;
 
+import com.voteva.gateway.security.SecurityContextUtil;
+import com.voteva.gateway.security.model.AuthenticationToken;
+import com.voteva.gateway.security.model.Principal;
 import com.voteva.gateway.service.AuthenticationService;
 import com.voteva.gateway.service.QuizService;
 import com.voteva.gateway.web.to.common.PagedResult;
@@ -8,6 +11,7 @@ import com.voteva.gateway.web.to.in.LoginUserRequest;
 import com.voteva.gateway.web.to.in.UserUidRequest;
 import com.voteva.gateway.web.to.out.AddUserInfo;
 import com.voteva.gateway.web.to.out.LoginInfo;
+import com.voteva.gateway.web.to.out.UserFullInfo;
 import com.voteva.gateway.web.to.out.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,13 +54,30 @@ public class UsersController {
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse) {
 
-        logger.debug("Login user: {}", loginUserRequest.getUsername());
+        logger.debug("Getting request to login by user: {}", loginUserRequest.getUsername());
 
         return ResponseEntity.ok(authenticationService.login(loginUserRequest, httpServletRequest, httpServletResponse));
     }
 
+    @PostMapping(path = "/logout")
+    public ResponseEntity<LoginInfo> logout() {
+        AuthenticationToken authentication = SecurityContextUtil.getAuthentication();
+
+        logger.debug("Logout current user");
+
+        authenticationService.logout(authentication);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(path = "/me")
+    public ResponseEntity<UserInfo> me() {
+        logger.debug("Getting info for current user");
+
+        return ResponseEntity.ok(authenticationService.getUserInfo(SecurityContextUtil.getPrincipal()));
+    }
+
     @GetMapping
-    public ResponseEntity<PagedResult<UserInfo>> getUsers(
+    public ResponseEntity<PagedResult<UserFullInfo>> getUsers(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "20") int size) {
 
@@ -66,7 +87,7 @@ public class UsersController {
     }
 
     @GetMapping(path = "/{uuid}")
-    public ResponseEntity<UserInfo> getUserInfo(@PathVariable UUID uuid) {
+    public ResponseEntity<UserFullInfo> getUserInfo(@PathVariable UUID uuid) {
 
         logger.debug("Getting user info by uid: {}", uuid);
 

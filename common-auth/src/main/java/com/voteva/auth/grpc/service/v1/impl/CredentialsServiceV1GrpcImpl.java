@@ -26,8 +26,8 @@ public class CredentialsServiceV1GrpcImpl extends CredentialsServiceV1Grpc.Crede
             StreamObserver<GGetPrincipalKeyResponse> responseObserver) {
 
         PrincipalKey principalKey = credentialsService.getPrincipalKey(
-                request.getSubsystem(),
-                ModelConverter.convert(request.getCredentials()));
+                request.getCredentials().getLogin().getValue(),
+                request.getCredentials().getSecret().getValue());
 
         GGetPrincipalKeyResponse response = GGetPrincipalKeyResponse.newBuilder()
                 .setPrincipalKey(ModelConverter.convert(principalKey))

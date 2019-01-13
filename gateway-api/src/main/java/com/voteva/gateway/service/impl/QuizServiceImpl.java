@@ -16,7 +16,7 @@ import com.voteva.gateway.web.to.in.TestResultsRequest;
 import com.voteva.gateway.web.to.out.AddUserInfo;
 import com.voteva.gateway.web.to.out.QuizInfo;
 import com.voteva.gateway.web.to.out.TestInfo;
-import com.voteva.gateway.web.to.out.UserInfo;
+import com.voteva.gateway.web.to.out.UserFullInfo;
 import com.voteva.quiz.grpc.model.v1.GAssignTestRequest;
 import com.voteva.quiz.grpc.model.v1.GBlockUserRequest;
 import com.voteva.quiz.grpc.model.v1.GGetAllUsersRequest;
@@ -27,7 +27,6 @@ import com.voteva.quiz.grpc.model.v1.GRemoveAdminGrantsRequest;
 import com.voteva.quiz.grpc.model.v1.GSetAdminGrantsRequest;
 import com.voteva.quiz.grpc.model.v1.GSetTestResultsRequest;
 import com.voteva.quiz.grpc.model.v1.GUnblockUserRequest;
-import com.voteva.users.grpc.model.v1.GAddUserAuthRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -95,7 +94,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Logged
     @Override
-    public PagedResult<UserInfo> getUsers(int page, int size) {
+    public PagedResult<UserFullInfo> getUsers(int page, int size) {
         GGetAllUsersResponse users = rpcQuizServiceClient.getAllUsers(
                 GGetAllUsersRequest.newBuilder()
                         .setPageable(CommonConverter.convert(page, size))
@@ -106,7 +105,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Logged
     @Override
-    public UserInfo getUserByUid(UUID userUid) {
+    public UserFullInfo getUserByUid(UUID userUid) {
         return UsersInfoConverter.convert(
                 rpcQuizServiceClient.getUser(
                         GGetUserRequest.newBuilder()

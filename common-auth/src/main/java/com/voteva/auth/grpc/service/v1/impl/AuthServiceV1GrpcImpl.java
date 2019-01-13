@@ -7,10 +7,12 @@ import com.voteva.auth.grpc.model.v1.GGenerateTokenRequest;
 import com.voteva.auth.grpc.model.v1.GGenerateTokenResponse;
 import com.voteva.auth.grpc.model.v1.GGetAuthenticationRequest;
 import com.voteva.auth.grpc.model.v1.GGetAuthenticationResponse;
+import com.voteva.auth.grpc.model.v1.GRevokeAuthenticationRequest;
 import com.voteva.auth.grpc.service.v1.AuthServiceV1Grpc;
 import com.voteva.auth.model.entity.Authentication;
 import com.voteva.auth.service.AuthenticationService;
 import com.voteva.auth.service.TokenService;
+import com.voteva.common.grpc.model.Empty;
 import io.grpc.stub.StreamObserver;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,17 @@ public class AuthServiceV1GrpcImpl extends AuthServiceV1Grpc.AuthServiceV1ImplBa
                 .build();
 
         responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void revokeAuthentication(
+            GRevokeAuthenticationRequest request,
+            StreamObserver<Empty> responseObserver) {
+
+        authenticationService.revokeAuthentication(request.getToken());
+
+        responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
     }
 

@@ -5,14 +5,13 @@ import com.voteva.auth.grpc.model.v1.GCredentials;
 import com.voteva.auth.grpc.model.v1.GFingerPrint;
 import com.voteva.auth.grpc.model.v1.GPrincipalKey;
 import com.voteva.auth.grpc.model.v1.GToken;
+import com.voteva.auth.model.entity.AuthToken;
 import com.voteva.auth.model.entity.Authentication;
 import com.voteva.auth.model.entity.Credentials;
 import com.voteva.auth.model.entity.FingerPrint;
 import com.voteva.auth.model.entity.PrincipalKey;
-import com.voteva.auth.model.entity.Token;
 import com.voteva.common.grpc.model.GUuid;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -31,19 +30,19 @@ public class ModelConverter {
                 .build();
     }
 
-    public static GToken convert(Token token) {
+    public static GToken convert(AuthToken token) {
         return GToken.newBuilder()
                 .setToken(token.getToken())
-                .setValidFromMills(token.getValidFromMillis().getTime())
-                .setValidTillMills(token.getValidTillMillis().getTime())
+                .setValidFromMills(token.getValidFromMillis().toEpochMilli())
+                .setValidTillMills(token.getValidTillMillis().toEpochMilli())
                 .build();
     }
 
-    public static Token convert(GToken token) {
-        return new Token(
-                token.getToken(),
-                Timestamp.from(Instant.ofEpochMilli(token.getValidFromMills())),
-                Timestamp.from(Instant.ofEpochMilli(token.getValidTillMills())));
+    public static AuthToken convert(GToken token) {
+        return new AuthToken()
+                .setToken(token.getToken())
+                .setValidFromMillis(Instant.ofEpochMilli(token.getValidFromMills()))
+                .setValidTillMillis(Instant.ofEpochMilli(token.getValidTillMills()));
     }
 
     public static Credentials convert(GCredentials credentials) {
@@ -52,15 +51,13 @@ public class ModelConverter {
 
     public static GPrincipalKey convert(PrincipalKey principalKey) {
         return GPrincipalKey.newBuilder()
-                .setSubsystem(principalKey.getSubsystem())
                 .setExtId(principalKey.getExtId())
                 .build();
     }
 
     public static PrincipalKey convert(GPrincipalKey principalKey) {
-        return new PrincipalKey(
-                principalKey.getSubsystem(),
-                principalKey.getExtId());
+        return new PrincipalKey()
+                .setExtId(principalKey.getExtId());
     }
 
     public static FingerPrint convert(GFingerPrint fingerPrint) {

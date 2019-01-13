@@ -5,17 +5,20 @@ import com.voteva.auth.grpc.model.v1.GGenerateTokenRequest;
 import com.voteva.auth.grpc.model.v1.GGetAuthenticationRequest;
 import com.voteva.auth.grpc.model.v1.GGetPrincipalKeyRequest;
 import com.voteva.auth.grpc.model.v1.GPrincipalKey;
+import com.voteva.auth.grpc.model.v1.GRevokeAuthenticationRequest;
 import com.voteva.auth.grpc.model.v1.GToken;
 import com.voteva.gateway.annotation.GatewayService;
 import com.voteva.gateway.converter.AuthConverter;
 import com.voteva.gateway.grpc.client.GRpcAuthServiceClient;
 import com.voteva.gateway.grpc.client.GRpcCredentialsServiceClient;
-import com.voteva.gateway.grpc.client.GRpcUsersServiceClient;
-import com.voteva.gateway.security.config.TokenConfig;
+import com.voteva.gateway.security.TokenConfig;
 import com.voteva.gateway.security.model.Authentication;
+import com.voteva.gateway.security.model.AuthenticationToken;
+import com.voteva.gateway.security.model.Principal;
 import com.voteva.gateway.service.AuthenticationService;
 import com.voteva.gateway.web.to.in.LoginUserRequest;
 import com.voteva.gateway.web.to.out.LoginInfo;
+import com.voteva.gateway.web.to.out.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,19 +32,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final TokenConfig tokenConfig;
     private final GRpcAuthServiceClient rpcAuthServiceClient;
     private final GRpcCredentialsServiceClient rpcCredentialsServiceClient;
-    private final GRpcUsersServiceClient rpcUsersServiceClient;
 
     @Autowired
     public AuthenticationServiceImpl(
             TokenConfig tokenConfig,
             GRpcAuthServiceClient rpcAuthServiceClient,
-            GRpcCredentialsServiceClient rpcCredentialsServiceClient,
-            GRpcUsersServiceClient rpcUsersServiceClient) {
+            GRpcCredentialsServiceClient rpcCredentialsServiceClient) {
 
         this.tokenConfig = tokenConfig;
         this.rpcAuthServiceClient = rpcAuthServiceClient;
         this.rpcCredentialsServiceClient = rpcCredentialsServiceClient;
-        this.rpcUsersServiceClient = rpcUsersServiceClient;
     }
 
     @Override
@@ -66,6 +66,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    public void logout(AuthenticationToken authentication) {
+        rpcAuthServiceClient.revokeAuthentication(
+                GRevokeAuthenticationRequest.newBuilder()
+                        .setToken(authentication.getToken())
+                        .build());
+    }
+
+    @Override
     public Authentication getAuthentication(String token) {
         return AuthConverter.toAuthentication(
                 rpcAuthServiceClient.getAuthentication(
@@ -73,6 +81,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                                 .setToken(token)
                                 .build())
                         .getAuthentication());
+    }
+
+    @Override
+    public UserInfo getUserInfo(Principal principal) {
+        return new UserInfo(principal.getExtId());
     }
 
     private GPrincipalKey getPrincipalKey(LoginUserRequest request) {

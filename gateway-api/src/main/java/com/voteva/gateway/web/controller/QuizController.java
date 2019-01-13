@@ -1,7 +1,7 @@
 package com.voteva.gateway.web.controller;
 
 import com.voteva.gateway.security.model.Principal;
-import com.voteva.gateway.security.util.SecurityContextUtil;
+import com.voteva.gateway.security.SecurityContextUtil;
 import com.voteva.gateway.service.QuizService;
 import com.voteva.gateway.web.to.in.AssignTestRequest;
 import com.voteva.gateway.web.to.in.TestResultsRequest;

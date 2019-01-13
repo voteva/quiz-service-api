@@ -12,9 +12,14 @@ spring:
     name: common-auth
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://localhost:5432/users"
-    username: srv_users
+    url: "jdbc:postgresql://localhost:5432/auth"
+    username: postgres
     password: "0000"
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: auth_db
 
 spring.jpa.hibernate.ddl-auto: update
 spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false

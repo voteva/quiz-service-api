@@ -1,6 +1,5 @@
-package com.voteva.gateway.security.filter;
+package com.voteva.gateway.security;
 
-import com.voteva.gateway.security.config.TokenConfig;
 import com.voteva.gateway.security.model.Authentication;
 import com.voteva.gateway.security.model.AuthenticationToken;
 import com.voteva.gateway.service.AuthenticationService;
@@ -13,12 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class TokenAuthenticationFilter extends OncePerRequestFilter {
+class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final AuthenticationService authenticationService;
     private final TokenConfig tokenConfig;
 
-    public TokenAuthenticationFilter(
+    TokenAuthenticationFilter(
             AuthenticationService authenticationService,
             TokenConfig tokenConfig) {
 

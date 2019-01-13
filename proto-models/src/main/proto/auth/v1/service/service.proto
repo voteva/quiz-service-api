@@ -14,6 +14,8 @@ service AuthServiceV1 {
 
     rpc getAuthentication (GGetAuthenticationRequest) returns (GGetAuthenticationResponse);
 
+    rpc revokeAuthentication (GRevokeAuthenticationRequest) returns (Empty);
+
     rpc generateToken (GGenerateTokenRequest) returns (GGenerateTokenResponse);
 
 }

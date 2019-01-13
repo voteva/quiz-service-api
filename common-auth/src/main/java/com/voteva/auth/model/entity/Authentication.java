@@ -2,17 +2,17 @@ package com.voteva.auth.model.entity;
 
 public class Authentication {
 
-    private Token token;
+    private AuthToken token;
     private PrincipalKey principalKey;
 
     public Authentication(
-            Token token,
+            AuthToken token,
             PrincipalKey principalKey) {
         this.token = token;
         this.principalKey = principalKey;
     }
 
-    public Token getToken() {
+    public AuthToken getToken() {
         return token;
     }
 

@@ -7,7 +7,7 @@ import com.voteva.gateway.web.to.in.AssignTestRequest;
 import com.voteva.gateway.web.to.in.TestResultsRequest;
 import com.voteva.gateway.web.to.out.AddUserInfo;
 import com.voteva.gateway.web.to.out.QuizInfo;
-import com.voteva.gateway.web.to.out.UserInfo;
+import com.voteva.gateway.web.to.out.UserFullInfo;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,9 +20,9 @@ public interface QuizService {
 
     QuizInfo setTestResults(TestResultsRequest request, Principal principal);
 
-    PagedResult<UserInfo> getUsers(int page, int size);
+    PagedResult<UserFullInfo> getUsers(int page, int size);
 
-    UserInfo getUserByUid(UUID userUid);
+    UserFullInfo getUserByUid(UUID userUid);
 
     AddUserInfo addUser(AddUserRequest request);
 

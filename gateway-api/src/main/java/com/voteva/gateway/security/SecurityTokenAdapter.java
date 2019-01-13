@@ -1,8 +1,8 @@
-package com.voteva.gateway.security.config;
+package com.voteva.gateway.security;
 
-import com.voteva.gateway.security.filter.TokenAuthenticationFilter;
 import com.voteva.gateway.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -36,6 +36,7 @@ public class SecurityTokenAdapter extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterAfter(new TokenAuthenticationFilter(authenticationService, tokenConfig), BasicAuthenticationFilter.class)
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/api/users/login").permitAll()
                 .anyRequest().authenticated();
     }

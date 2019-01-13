@@ -3,7 +3,7 @@ package com.voteva.gateway.converter;
 import com.voteva.common.grpc.model.GPage;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddUserRequest;
-import com.voteva.gateway.web.to.out.UserInfo;
+import com.voteva.gateway.web.to.out.UserFullInfo;
 import com.voteva.quiz.grpc.model.v1.GAddUserRequest;
 import com.voteva.quiz.grpc.model.v1.GUserInfo;
 
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class UsersInfoConverter {
 
-    public static PagedResult<UserInfo> convert(List<GUserInfo> userInfoList, GPage page) {
+    public static PagedResult<UserFullInfo> convert(List<GUserInfo> userInfoList, GPage page) {
         return new PagedResult<>(
                 page.getTotalElements(),
                 userInfoList.stream()
@@ -21,8 +21,8 @@ public class UsersInfoConverter {
                         .collect(Collectors.toList()));
     }
 
-    public static UserInfo convert(GUserInfo userInfo) {
-        return new UserInfo()
+    public static UserFullInfo convert(GUserInfo userInfo) {
+        return new UserFullInfo()
                 .setUserUid(CommonConverter.convert(userInfo.getUserUid()))
                 .setFirstName(userInfo.getFirstName())
                 .setLastName(userInfo.getLastName())
