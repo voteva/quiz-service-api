@@ -2,6 +2,8 @@ package com.voteva.gateway.grpc.client;
 
 import com.voteva.auth.grpc.model.v1.GAuthenticateAnyRequest;
 import com.voteva.auth.grpc.model.v1.GAuthenticateAnyResponse;
+import com.voteva.auth.grpc.model.v1.GAuthenticateServiceRequest;
+import com.voteva.auth.grpc.model.v1.GAuthenticateServiceResponse;
 import com.voteva.auth.grpc.model.v1.GGenerateTokenRequest;
 import com.voteva.auth.grpc.model.v1.GGenerateTokenResponse;
 import com.voteva.auth.grpc.model.v1.GGetAuthenticationRequest;
@@ -36,16 +38,20 @@ public class GRpcAuthServiceClient {
         authServiceV1BlockingStub = AuthServiceV1Grpc.newBlockingStub(managedChannel);
     }
 
+    public GAuthenticateAnyResponse authenticateAny(GAuthenticateAnyRequest request) {
+        return authServiceV1BlockingStub.authenticateAny(request);
+    }
+
+    public GAuthenticateServiceResponse authenticateService(GAuthenticateServiceRequest request) {
+        return authServiceV1BlockingStub.authenticateService(request);
+    }
+
     public GGenerateTokenResponse generateToken(GGenerateTokenRequest request) {
         return authServiceV1BlockingStub.generateToken(request);
     }
 
     public GGetAuthenticationResponse getAuthentication(GGetAuthenticationRequest request) {
         return authServiceV1BlockingStub.getAuthentication(request);
-    }
-
-    public GAuthenticateAnyResponse authenticateAny(GAuthenticateAnyRequest request) {
-        return authServiceV1BlockingStub.authenticateAny(request);
     }
 
     public Empty revokeAuthentication(GRevokeAuthenticationRequest request) {

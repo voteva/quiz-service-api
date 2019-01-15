@@ -12,11 +12,19 @@ service AuthServiceV1 {
 
     rpc authenticateAny (GAuthenticateAnyRequest) returns (GAuthenticateAnyResponse);
 
+    rpc authenticateService (GAuthenticateServiceRequest) returns (GAuthenticateServiceResponse);
+
     rpc getAuthentication (GGetAuthenticationRequest) returns (GGetAuthenticationResponse);
 
     rpc revokeAuthentication (GRevokeAuthenticationRequest) returns (Empty);
 
     rpc generateToken (GGenerateTokenRequest) returns (GGenerateTokenResponse);
+
+}
+
+service AccessServiceV1 {
+
+    rpc checkAccess (GCheckAccessRequest) returns (Empty);
 
 }
 
@@ -27,6 +35,7 @@ service OAuthServiceV1 {
     rpc getToken (GOAuthTokenRequest) returns (GOAuthTokenResponse);
 
     rpc refreshToken (GOAuthRefreshTokenRequest) returns (GOAuthRefreshTokenResponse);
+
 }
 
 service CredentialsServiceV1 {

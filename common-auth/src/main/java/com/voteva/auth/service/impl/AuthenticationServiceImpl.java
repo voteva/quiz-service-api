@@ -6,6 +6,7 @@ import com.voteva.auth.model.entity.Authentication;
 import com.voteva.auth.model.entity.FingerPrint;
 import com.voteva.auth.model.entity.PrincipalKey;
 import com.voteva.auth.service.AuthenticationService;
+import com.voteva.auth.service.CredentialsService;
 import com.voteva.auth.service.PrincipalService;
 import com.voteva.auth.service.TokenService;
 import org.apache.commons.lang3.StringUtils;
@@ -20,13 +21,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private static final long TOKEN_INACTION_MAX_SECONDS = 1800L;
 
     private final PrincipalService principalService;
+    private final CredentialsService credentialsService;
     private final TokenService tokenService;
 
     @Autowired
     public AuthenticationServiceImpl(
             PrincipalService principalService,
+            CredentialsService credentialsService,
             TokenService tokenService) {
         this.principalService = principalService;
+        this.credentialsService = credentialsService;
         this.tokenService = tokenService;
     }
 
@@ -47,6 +51,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         tokenService.saveToken(token);
 
         return new Authentication(token, principal);
+    }
+
+    @Override
+    public Authentication authenticateService(String serviceId, String serviceSecret) {
+        PrincipalKey principal = credentialsService.getPrincipalKey(serviceId, serviceSecret);
+
+        return authenticateAny(null, principal, null);
     }
 
     @Override

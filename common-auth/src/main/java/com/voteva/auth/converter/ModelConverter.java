@@ -24,6 +24,10 @@ public class ModelConverter {
                 .build();
     }
 
+    public static String toToken(GAuthentication authentication) {
+        return authentication.getToken().getToken();
+    }
+
     public static GUuid convert(UUID uuid) {
         return GUuid.newBuilder()
                 .setUuid(String.valueOf(uuid))

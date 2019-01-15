@@ -5,6 +5,7 @@ import com.voteva.gateway.converter.TestInfoConverter;
 import com.voteva.gateway.annotation.GatewayService;
 import com.voteva.gateway.grpc.client.GRpcQuizServiceClient;
 import com.voteva.gateway.grpc.client.GRpcTestsServiceClient;
+import com.voteva.gateway.security.InternalAuthService;
 import com.voteva.gateway.service.TestsService;
 import com.voteva.gateway.annotation.Logged;
 import com.voteva.gateway.web.to.common.PagedResult;
@@ -29,13 +30,17 @@ import static com.voteva.gateway.exception.model.Service.TESTS;
 @GatewayService(serviceName = TESTS)
 public class TestsServiceImpl implements TestsService {
 
+    private final InternalAuthService internalAuthService;
     private final GRpcTestsServiceClient rpcTestsServiceClient;
     private final GRpcQuizServiceClient rpcQuizServiceClient;
 
     @Autowired
     public TestsServiceImpl(
+            InternalAuthService internalAuthService,
             GRpcTestsServiceClient rpcTestsServiceClient,
             GRpcQuizServiceClient rpcQuizServiceClient) {
+
+        this.internalAuthService = internalAuthService;
         this.rpcTestsServiceClient = rpcTestsServiceClient;
         this.rpcQuizServiceClient = rpcQuizServiceClient;
     }
@@ -44,7 +49,9 @@ public class TestsServiceImpl implements TestsService {
     @Override
     public List<String> getTestCategories() {
         return rpcTestsServiceClient.getTestCategories(
-                GGetTestCategoriesRequest.newBuilder().build())
+                GGetTestCategoriesRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .build())
                 .getCategoriesList();
     }
 
@@ -62,6 +69,7 @@ public class TestsServiceImpl implements TestsService {
         return TestInfoConverter.convert(
                 rpcTestsServiceClient.getTest(
                         GGetTestRequest.newBuilder()
+                                .setAuthentication(internalAuthService.getGAuthentication())
                                 .setTestUid(CommonConverter.convert(testUid))
                                 .build())
                         .getTestInfo());
@@ -79,14 +87,15 @@ public class TestsServiceImpl implements TestsService {
     @Logged
     @Override
     public void deleteTest(UUID testUid) {
-        // TODO
         rpcQuizServiceClient.deleteResultsForTest(
                 GDeleteResultsRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setTestUid(CommonConverter.convert(testUid))
                         .build());
 
         rpcTestsServiceClient.removeTest(
                 GRemoveTestRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setTestUid(CommonConverter.convert(testUid))
                         .build());
     }
@@ -94,6 +103,7 @@ public class TestsServiceImpl implements TestsService {
     private PagedResult<TestInfo> getTestsByCategoryInternal(String category, int page, int size) {
         GGetTestsByCategoryResponse tests = rpcTestsServiceClient.getTestsByCategory(
                 GGetTestsByCategoryRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setCategory(category)
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
@@ -104,6 +114,7 @@ public class TestsServiceImpl implements TestsService {
     private PagedResult<TestInfo> getTestsInternal(int page, int size) {
         GGetAllTestsResponse tests = rpcTestsServiceClient.getAllTests(
                 GGetAllTestsRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
 

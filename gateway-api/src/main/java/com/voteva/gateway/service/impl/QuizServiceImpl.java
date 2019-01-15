@@ -6,6 +6,7 @@ import com.voteva.gateway.converter.CommonConverter;
 import com.voteva.gateway.converter.QuizInfoConverter;
 import com.voteva.gateway.converter.UsersInfoConverter;
 import com.voteva.gateway.grpc.client.GRpcQuizServiceClient;
+import com.voteva.gateway.security.InternalAuthService;
 import com.voteva.gateway.security.model.Principal;
 import com.voteva.gateway.service.QuizService;
 import com.voteva.gateway.service.TestsService;
@@ -28,6 +29,7 @@ import com.voteva.quiz.grpc.model.v1.GSetAdminGrantsRequest;
 import com.voteva.quiz.grpc.model.v1.GSetTestResultsRequest;
 import com.voteva.quiz.grpc.model.v1.GUnblockUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,13 +40,17 @@ import static com.voteva.gateway.exception.model.Service.QUIZ;
 @GatewayService(serviceName = QUIZ)
 public class QuizServiceImpl implements QuizService {
 
+    private final InternalAuthService internalAuthService;
     private final TestsService testsService;
     private final GRpcQuizServiceClient rpcQuizServiceClient;
 
     @Autowired
     public QuizServiceImpl(
+            InternalAuthService internalAuthService,
             TestsService testsService,
             GRpcQuizServiceClient rpcQuizServiceClient) {
+
+        this.internalAuthService = internalAuthService;
         this.testsService = testsService;
         this.rpcQuizServiceClient = rpcQuizServiceClient;
     }
@@ -54,6 +60,7 @@ public class QuizServiceImpl implements QuizService {
     public void assignTest(AssignTestRequest request, Principal principal) {
         rpcQuizServiceClient.assignTest(
                 GAssignTestRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setUserUid(CommonConverter.convert(principal.getExtId()))
                         .setTestUid(CommonConverter.convert(request.getTestUid()))
                         .build());
@@ -64,6 +71,7 @@ public class QuizServiceImpl implements QuizService {
     public List<QuizInfo> getTestResults(Principal principal) {
         return rpcQuizServiceClient.getTestResults(
                 GGetTestResultsRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setUserUid(CommonConverter.convert(principal.getExtId()))
                         .build())
                 .getTestResultsList().stream()
@@ -97,6 +105,7 @@ public class QuizServiceImpl implements QuizService {
     public PagedResult<UserFullInfo> getUsers(int page, int size) {
         GGetAllUsersResponse users = rpcQuizServiceClient.getAllUsers(
                 GGetAllUsersRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
 
@@ -109,6 +118,7 @@ public class QuizServiceImpl implements QuizService {
         return UsersInfoConverter.convert(
                 rpcQuizServiceClient.getUser(
                         GGetUserRequest.newBuilder()
+                                .setAuthentication(internalAuthService.getGAuthentication())
                                 .setUserUid(CommonConverter.convert(userUid))
                                 .build())
                         .getUserInfo());
@@ -117,21 +127,7 @@ public class QuizServiceImpl implements QuizService {
     @Logged
     @Override
     public AddUserInfo addUser(AddUserRequest request) {
-        /*UUID userUid = CommonConverter.convert(
-                rpcUsersServiceClient.addUser(
-                        GAddUserAuthRequest.newBuilder()
-                                .setEmail(request.getEmail())
-                                .setPassword(request.getPassword())
-                                .build())
-                        .getUserUid());
-
-        return new AddUserInfo(
-                userUid,
-                rpcQuizServiceClient.addUser(
-                        UsersInfoConverter.convert(request, userUid))
-                        .getUserInfo().getCreatedDtime());*/
-        // TODO
-        return null;
+        throw new NotImplementedException();
     }
 
     @Logged
@@ -139,6 +135,7 @@ public class QuizServiceImpl implements QuizService {
     public void setAdminGrants(UUID userUid) {
         rpcQuizServiceClient.setAdminGrants(
                 GSetAdminGrantsRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setUserUid(CommonConverter.convert(userUid))
                         .build());
     }
@@ -148,6 +145,7 @@ public class QuizServiceImpl implements QuizService {
     public void removeAdminGrants(UUID userUid) {
         rpcQuizServiceClient.removeAdminGrants(
                 GRemoveAdminGrantsRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setUserUid(CommonConverter.convert(userUid))
                         .build());
     }
@@ -157,6 +155,7 @@ public class QuizServiceImpl implements QuizService {
     public void blockUser(UUID userUid) {
         rpcQuizServiceClient.blockUser(
                 GBlockUserRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setUserUid(CommonConverter.convert(userUid))
                         .build());
     }
@@ -166,6 +165,7 @@ public class QuizServiceImpl implements QuizService {
     public void unblockUser(UUID userUid) {
         rpcQuizServiceClient.unblockUser(
                 GUnblockUserRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setUserUid(CommonConverter.convert(userUid))
                         .build());
     }
@@ -174,6 +174,7 @@ public class QuizServiceImpl implements QuizService {
         return QuizInfoConverter.convert(
                 rpcQuizServiceClient.setTestResults(
                         GSetTestResultsRequest.newBuilder()
+                                .setAuthentication(internalAuthService.getGAuthentication())
                                 .setUserUid(CommonConverter.convert(userUid))
                                 .setTestUid(CommonConverter.convert(testUid))
                                 .setPercent(percent)

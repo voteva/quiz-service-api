@@ -4,17 +4,14 @@ import com.voteva.auth.grpc.model.v1.GAuthentication;
 import com.voteva.auth.grpc.model.v1.GCredentials;
 import com.voteva.auth.grpc.model.v1.GFingerPrint;
 import com.voteva.auth.grpc.model.v1.GLogin;
-import com.voteva.auth.grpc.model.v1.GOAuthRefreshTokenRequest;
 import com.voteva.auth.grpc.model.v1.GOAuthRefreshTokenResponse;
-import com.voteva.auth.grpc.model.v1.GOAuthTokenRequest;
 import com.voteva.auth.grpc.model.v1.GOAuthTokenResponse;
 import com.voteva.auth.grpc.model.v1.GPrincipalKey;
 import com.voteva.auth.grpc.model.v1.GSecret;
+import com.voteva.auth.grpc.model.v1.GToken;
 import com.voteva.gateway.security.model.Authentication;
 import com.voteva.gateway.security.model.Principal;
 import com.voteva.gateway.web.to.in.LoginUserRequest;
-import com.voteva.gateway.web.to.in.OAuthRefreshTokenRequest;
-import com.voteva.gateway.web.to.in.OAuthTokenRequest;
 import com.voteva.gateway.web.to.out.OAuthTokenResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +24,12 @@ public class AuthConverter {
         return new Authentication(
                 authentication.getToken().getToken(),
                 toPrincipal(authentication.getPrincipal()));
+    }
+
+    public static GAuthentication toGAuthentication(Authentication authentication) {
+        return GAuthentication.newBuilder()
+                .setToken(GToken.newBuilder().setToken(authentication.getToken()).build())
+                .build();
     }
 
     public static Principal toPrincipal(GPrincipalKey principal) {
@@ -44,22 +47,6 @@ public class AuthConverter {
         return GCredentials.newBuilder()
                 .setLogin(toGLogin(request.getUsername()))
                 .setSecret(toGSecret(request.getPassword()))
-                .build();
-    }
-
-    public static GOAuthTokenRequest convert(OAuthTokenRequest request) {
-        return GOAuthTokenRequest.newBuilder()
-                .setClientId(request.getClientId())
-                .setClientSecret(request.getClientSecret())
-                .setAuthorizationCode(request.getAuthorizationCode())
-                .build();
-    }
-
-    public static GOAuthRefreshTokenRequest convert(OAuthRefreshTokenRequest request) {
-        return GOAuthRefreshTokenRequest.newBuilder()
-                .setClientId(request.getClientId())
-                .setClientSecret(request.getClientSecret())
-                .setRefreshToken(request.getRefreshToken())
                 .build();
     }
 

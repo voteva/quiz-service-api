@@ -5,6 +5,7 @@ import com.voteva.gateway.annotation.Logged;
 import com.voteva.gateway.converter.CommonConverter;
 import com.voteva.gateway.converter.InterviewInfoConverter;
 import com.voteva.gateway.grpc.client.GRpcInterviewServiceClient;
+import com.voteva.gateway.security.InternalAuthService;
 import com.voteva.gateway.service.InterviewService;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddInterviewQuestionRequest;
@@ -27,10 +28,15 @@ import static com.voteva.gateway.exception.model.Service.INTERVIEW;
 @GatewayService(serviceName = INTERVIEW)
 public class InterviewServiceImpl implements InterviewService {
 
+    private final InternalAuthService internalAuthService;
     private final GRpcInterviewServiceClient rpcInterviewServiceClient;
 
     @Autowired
-    public InterviewServiceImpl(GRpcInterviewServiceClient rpcInterviewServiceClient) {
+    public InterviewServiceImpl(
+            InternalAuthService internalAuthService,
+            GRpcInterviewServiceClient rpcInterviewServiceClient) {
+
+        this.internalAuthService = internalAuthService;
         this.rpcInterviewServiceClient = rpcInterviewServiceClient;
     }
 
@@ -38,7 +44,9 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     public List<String> getQuestionCategories() {
         return rpcInterviewServiceClient.getCategories(
-                GGetCategoriesRequest.newBuilder().build())
+                GGetCategoriesRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
+                        .build())
                 .getCategoriesList();
     }
 
@@ -56,6 +64,7 @@ public class InterviewServiceImpl implements InterviewService {
         return InterviewInfoConverter.convert(
                 rpcInterviewServiceClient.getQuestion(
                         GGetQuestionRequest.newBuilder()
+                                .setAuthentication(internalAuthService.getGAuthentication())
                                 .setQuestionUid(CommonConverter.convert(questionUid))
                                 .build())
                         .getQuestion());
@@ -75,6 +84,7 @@ public class InterviewServiceImpl implements InterviewService {
     public void deleteQuestion(UUID questionUid) {
         rpcInterviewServiceClient.removeQuestion(
                 GRemoveQuestionRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setQuestionUid(CommonConverter.convert(questionUid))
                         .build());
     }
@@ -82,6 +92,7 @@ public class InterviewServiceImpl implements InterviewService {
     private PagedResult<InterviewQuestionInfo> getQuestionsByCategoryInternal(String category, int page, int size) {
         GGetQuestionsByCategoryResponse response = rpcInterviewServiceClient.getQuestionsByCategory(
                 GGetQuestionsByCategoryRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setCategory(category)
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
@@ -92,6 +103,7 @@ public class InterviewServiceImpl implements InterviewService {
     private PagedResult<InterviewQuestionInfo> getQuestionsInternal(int page, int size) {
         GGetAllQuestionsResponse response = rpcInterviewServiceClient.getAllQuestions(
                 GGetAllQuestionsRequest.newBuilder()
+                        .setAuthentication(internalAuthService.getGAuthentication())
                         .setPageable(CommonConverter.convert(page, size))
                         .build());
 

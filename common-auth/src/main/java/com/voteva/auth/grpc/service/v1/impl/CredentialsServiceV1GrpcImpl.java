@@ -5,6 +5,8 @@ import com.voteva.auth.grpc.model.v1.GGetPrincipalKeyRequest;
 import com.voteva.auth.grpc.model.v1.GGetPrincipalKeyResponse;
 import com.voteva.auth.grpc.service.v1.CredentialsServiceV1Grpc;
 import com.voteva.auth.model.entity.PrincipalKey;
+import com.voteva.auth.security.Grants;
+import com.voteva.auth.service.AccessService;
 import com.voteva.auth.service.CredentialsService;
 import io.grpc.stub.StreamObserver;
 import org.lognet.springboot.grpc.GRpcService;
@@ -13,10 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 @GRpcService
 public class CredentialsServiceV1GrpcImpl extends CredentialsServiceV1Grpc.CredentialsServiceV1ImplBase {
 
+    private final AccessService accessService;
     private final CredentialsService credentialsService;
 
     @Autowired
-    public CredentialsServiceV1GrpcImpl(CredentialsService credentialsService) {
+    public CredentialsServiceV1GrpcImpl(
+            AccessService accessService,
+            CredentialsService credentialsService) {
+
+        this.accessService = accessService;
         this.credentialsService = credentialsService;
     }
 
@@ -24,6 +31,10 @@ public class CredentialsServiceV1GrpcImpl extends CredentialsServiceV1Grpc.Crede
     public void getPrincipalKey(
             GGetPrincipalKeyRequest request,
             StreamObserver<GGetPrincipalKeyResponse> responseObserver) {
+
+        accessService.checkAccess(
+                ModelConverter.toToken(request.getAuthentication()),
+                Grants.AUTHORIZATION_GRANT.getValue());
 
         PrincipalKey principalKey = credentialsService.getPrincipalKey(
                 request.getCredentials().getLogin().getValue(),

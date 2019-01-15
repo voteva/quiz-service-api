@@ -15,6 +15,10 @@ message GAuthenticateAnyResponse {
     GAuthentication authentication = 1;
 }
 
+message GAuthenticateServiceResponse {
+    GAuthentication authentication = 1;
+}
+
 message GGetAuthenticationResponse {
     GAuthentication authentication = 1;
 }

@@ -12,6 +12,8 @@ public interface AuthenticationService {
             PrincipalKey principalKey,
             FingerPrint fingerPrint);
 
+    Authentication authenticateService(String serviceId, String serviceSecret);
+
     Authentication getAuthentication(String token);
 
     void revokeAuthentication(String token);

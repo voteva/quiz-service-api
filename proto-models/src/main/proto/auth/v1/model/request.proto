@@ -19,6 +19,11 @@ message GAuthenticateAnyRequest {
     GFingerPrint fingerPrint = 4;
 }
 
+message GAuthenticateServiceRequest {
+    string serviceId = 1;
+    string serviceSecret = 2;
+}
+
 message GGetAuthenticationRequest {
     GAuthentication authentication = 1;
     string token = 2;
@@ -32,6 +37,11 @@ message GRevokeAuthenticationRequest {
 message GGenerateTokenRequest {
     GAuthentication authentication = 1;
     int64 tokenTtlSeconds = 2;
+}
+
+message GCheckAccessRequest {
+    GAuthentication authentication = 1;
+    string grant = 2;
 }
 
 message GOAuthAuthorizeRequest {
