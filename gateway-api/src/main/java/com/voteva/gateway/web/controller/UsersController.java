@@ -32,7 +32,7 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/api/users", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "/api/v1/users", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class UsersController {
 
     private static final Logger logger = LoggerFactory.getLogger(UsersController.class);

@@ -17,7 +17,7 @@ import java.time.Instant;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private static final long TOKEN_INACTION_MAX_SECONDS = 180L;
+    private static final long TOKEN_INACTION_MAX_SECONDS = 1800L;
 
     private final PrincipalService principalService;
     private final TokenService tokenService;

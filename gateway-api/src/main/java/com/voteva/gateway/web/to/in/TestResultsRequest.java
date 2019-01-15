@@ -11,6 +11,7 @@ public class TestResultsRequest {
 
     @NotNull
     private UUID testUid;
+
     @NotNull
     private Map<String, Integer> answers;
 

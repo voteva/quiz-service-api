@@ -33,3 +33,23 @@ message GGenerateTokenRequest {
     GAuthentication authentication = 1;
     int64 tokenTtlSeconds = 2;
 }
+
+message GOAuthAuthorizeRequest {
+    GAuthentication authentication = 1;
+    string clientId = 2;
+    string userAccessToken = 3;
+}
+
+message GOAuthTokenRequest {
+    GAuthentication authentication = 1;
+    string clientId = 2;
+    string clientSecret = 3;
+    string authorizationCode = 4;
+}
+
+message GOAuthRefreshTokenRequest {
+    GAuthentication authentication = 1;
+    string clientId = 2;
+    string clientSecret = 3;
+    string refreshToken = 4;
+}

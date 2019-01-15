@@ -22,3 +22,21 @@ message GGetAuthenticationResponse {
 message GGenerateTokenResponse {
     GToken token = 1;
 }
+
+message GOAuthAuthorizeResponse {
+    string authorizationCode = 1;
+}
+
+message GOAuthTokenResponse {
+    string accessToken = 1;
+    string tokenType = 2;
+    int64 expiresIn = 3;
+    string refreshToken = 4;
+}
+
+message GOAuthRefreshTokenResponse {
+    string accessToken = 1;
+    string tokenType = 2;
+    int64 expiresIn = 3;
+    string refreshToken = 4;
+}

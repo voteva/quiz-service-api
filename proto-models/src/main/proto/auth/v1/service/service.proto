@@ -20,6 +20,15 @@ service AuthServiceV1 {
 
 }
 
+service OAuthServiceV1 {
+
+    rpc authorize (GOAuthAuthorizeRequest) returns (GOAuthAuthorizeResponse);
+
+    rpc getToken (GOAuthTokenRequest) returns (GOAuthTokenResponse);
+
+    rpc refreshToken (GOAuthRefreshTokenRequest) returns (GOAuthRefreshTokenResponse);
+}
+
 service CredentialsServiceV1 {
 
     rpc getPrincipalKey (GGetPrincipalKeyRequest) returns (GGetPrincipalKeyResponse);

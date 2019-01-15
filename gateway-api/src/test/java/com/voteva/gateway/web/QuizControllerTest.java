@@ -41,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(value = "spring")
 public class QuizControllerTest {
 
+    private static final String BASE_URL = "/api/v1/quiz/";
     private static final UUID TEST_UID = UUID.fromString("517df602-4ffb-4e08-9626-2a0cf2db4849");
     private static final int PERCENT_COMPLETED = 75;
 
@@ -65,7 +66,7 @@ public class QuizControllerTest {
 
         doNothing().when(quizService).assignTest(request, principal);
 
-        mockMvc.perform(post("/api/quiz/assign")
+        mockMvc.perform(post(BASE_URL + "assign")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(gson.toJson(request)))
@@ -78,7 +79,7 @@ public class QuizControllerTest {
 
         when(quizService.getTestResults(principal)).thenReturn(response);
 
-        mockMvc.perform(get("/api/quiz/results"))
+        mockMvc.perform(get(BASE_URL + "results"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.length()").value(response.size()));
@@ -91,7 +92,7 @@ public class QuizControllerTest {
 
         when(quizService.setTestResults(any(TestResultsRequest.class), any(Principal.class))).thenReturn(response);
 
-        mockMvc.perform(post("/api/quiz/results")
+        mockMvc.perform(post(BASE_URL + "results")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(gson.toJson(request)))

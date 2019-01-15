@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/quiz", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "/api/v1/quiz", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class QuizController {
 
     private static final Logger logger = LoggerFactory.getLogger(QuizController.class);

@@ -39,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(value = "spring")
 public class UsersControllerTest {
 
+    private static final String BASE_URL = "/api/v1/users/";
     private static final UUID USER_UID = UUID.fromString("21793aac-0171-42c1-9c66-7284ec24a330");
     private static final String EMAIL = "user@example.com";
     private static final String PASSWORD = "$eCuReP@$$wOrD";
@@ -67,7 +68,7 @@ public class UsersControllerTest {
 
         when(quizService.getUsers(0, 20)).thenReturn(response);
 
-        mockMvc.perform(get("/api/users"))
+        mockMvc.perform(get(BASE_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.totalCount").value(response.getTotalCount()))
@@ -88,7 +89,7 @@ public class UsersControllerTest {
 
         when(quizService.getUserByUid(USER_UID)).thenReturn(response);
 
-        mockMvc.perform(get("/api/users/{uuid}", USER_UID))
+        mockMvc.perform(get(BASE_URL + "{uuid}", USER_UID))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.userUid").value(response.getUserUid().toString()))
@@ -107,7 +108,7 @@ public class UsersControllerTest {
 
         when(quizService.addUser(any(AddUserRequest.class))).thenReturn(response);
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post(BASE_URL)
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(gson.toJson(request)))
@@ -123,7 +124,7 @@ public class UsersControllerTest {
 
         doNothing().when(quizService).setAdminGrants(request.getUserUid());
 
-        mockMvc.perform(post("/api/users/admin")
+        mockMvc.perform(post(BASE_URL + "admin")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(gson.toJson(request)))
@@ -136,7 +137,7 @@ public class UsersControllerTest {
 
         doNothing().when(quizService).removeAdminGrants(request.getUserUid());
 
-        mockMvc.perform(post("/api/users/remove-admin")
+        mockMvc.perform(post(BASE_URL + "remove-admin")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(gson.toJson(request)))
@@ -149,7 +150,7 @@ public class UsersControllerTest {
 
         doNothing().when(quizService).blockUser(request.getUserUid());
 
-        mockMvc.perform(post("/api/users/block")
+        mockMvc.perform(post(BASE_URL + "block")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(gson.toJson(request)))
@@ -162,7 +163,7 @@ public class UsersControllerTest {
 
         doNothing().when(quizService).unblockUser(request.getUserUid());
 
-        mockMvc.perform(post("/api/users/unblock")
+        mockMvc.perform(post(BASE_URL + "unblock")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(gson.toJson(request)))

@@ -37,7 +37,12 @@ public class SecurityTokenAdapter extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new TokenAuthenticationFilter(authenticationService, tokenConfig), BasicAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/api/users/login").permitAll()
+                .antMatchers(
+                        "/api/v1/users/login",
+                        "/api/v1/oauth",
+                        "/api/v1/oauth/token",
+                        "/api/v1/oauth/refresh")
+                .permitAll()
                 .anyRequest().authenticated();
     }
 }

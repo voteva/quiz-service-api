@@ -38,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(value = "spring")
 public class TestsControllerTest {
 
+    private static final String BASE_URL = "/api/v1/tests/";
     private static final UUID TEST_UID = UUID.fromString("517df602-4ffb-4e08-9626-2a0cf2db4849");
     private static final String TEST_NAME = "Java Test";
     private static final String CATEGORY = "Java";
@@ -57,7 +58,7 @@ public class TestsControllerTest {
 
         when(testsService.getTests(null, 0, 20)).thenReturn(response);
 
-        mockMvc.perform(get("/api/tests"))
+        mockMvc.perform(get(BASE_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.totalCount").value(response.getTotalCount()))
@@ -73,7 +74,7 @@ public class TestsControllerTest {
 
         when(testsService.getTestInfo(TEST_UID)).thenReturn(response);
 
-        mockMvc.perform(get("/api/tests/{uuid}", TEST_UID))
+        mockMvc.perform(get(BASE_URL + "{uuid}", TEST_UID))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.testUid").value(response.getTestUid().toString()))
@@ -87,7 +88,7 @@ public class TestsControllerTest {
 
         when(testsService.addTest(any(AddTestRequest.class))).thenReturn(TEST_UID);
 
-        mockMvc.perform(post("/api/tests")
+        mockMvc.perform(post(BASE_URL)
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(gson.toJson(request)))
@@ -100,7 +101,7 @@ public class TestsControllerTest {
     public void testDeleteTest() throws Exception {
         doNothing().when(testsService).deleteTest(TEST_UID);
 
-        mockMvc.perform(delete("/api/tests/" + TEST_UID))
+        mockMvc.perform(delete(BASE_URL + TEST_UID))
                 .andExpect(status().isNoContent());
     }
 
@@ -110,7 +111,7 @@ public class TestsControllerTest {
 
         when(testsService.getTestCategories()).thenReturn(response);
 
-        mockMvc.perform(get("/api/tests/categories"))
+        mockMvc.perform(get(BASE_URL + "categories"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.length()").value(response.size()))

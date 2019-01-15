@@ -55,6 +55,9 @@ gateway:
     AuthServiceV1Grpc:
       host: localhost
       port: 6565
+    OAuthServiceV1Grpc:
+      host: localhost
+      port: 6565
     CredentialsServiceV1Grpc:
       host: localhost
       port: 6565

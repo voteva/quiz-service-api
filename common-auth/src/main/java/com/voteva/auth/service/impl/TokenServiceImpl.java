@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Service
 public class TokenServiceImpl implements TokenService {
-    private static final long DEFAULT_TOKEN_TTL_DAYS = 365;
+    private static final long DEFAULT_TOKEN_TTL_DAYS = 30;
 
     private final TokenRepository tokenRepository;
 

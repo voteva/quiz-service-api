@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/api/tests", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "/api/v1/tests", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TestsController {
 
     private static final Logger logger = LoggerFactory.getLogger(TestsController.class);
