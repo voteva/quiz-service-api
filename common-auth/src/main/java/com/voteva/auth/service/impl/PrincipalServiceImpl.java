@@ -28,4 +28,16 @@ public class PrincipalServiceImpl implements PrincipalService {
         return principalRepository.findByExtId(externalId)
                 .orElseThrow(() -> new AuthException("Principal not found"));
     }
+
+    @Override
+    public PrincipalKey addPrincipal(String externalId) {
+        PrincipalKey principal = new PrincipalKey().setExtId(externalId);
+        return principalRepository.save(principal);
+    }
+
+    @Override
+    public void deletePrincipal(String externalId) {
+        principalRepository.findByExtId(externalId)
+                .ifPresent(principalRepository::delete);
+    }
 }

@@ -16,10 +16,6 @@ public class AddUserRequest {
     @ApiModelProperty(example = "user@example.com")
     private final String email;
 
-    @Size(min = 8, max = 40)
-    @ApiModelProperty(example = "$eCuReP@$$wOrD")
-    private final String password;
-
     @NotBlank
     @Size(max = 40)
     @ApiModelProperty(example = "Ivan")
@@ -30,24 +26,23 @@ public class AddUserRequest {
     @ApiModelProperty(example = "Ivanov")
     private final String lastName;
 
+    @ApiModelProperty(example = "false")
+    private final boolean isAdmin;
+
     @JsonCreator
     public AddUserRequest(
             @JsonProperty("email") String email,
-            @JsonProperty("password") String password,
             @JsonProperty("firstName") String firstName,
-            @JsonProperty("lastName") String lastName) {
+            @JsonProperty("lastName") String lastName,
+            @JsonProperty("isAdmin") boolean isAdmin) {
         this.email = email;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.isAdmin = isAdmin;
     }
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getFirstName() {
@@ -62,9 +57,9 @@ public class AddUserRequest {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("email", email)
-                .append("password", "[PROTECTED]")
                 .append("firstName", firstName)
                 .append("lastName", lastName)
+                .append("isAdmin", isAdmin)
                 .toString();
     }
 }

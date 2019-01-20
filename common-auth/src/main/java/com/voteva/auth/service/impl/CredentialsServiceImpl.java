@@ -1,6 +1,7 @@
 package com.voteva.auth.service.impl;
 
 import com.voteva.auth.exception.AuthException;
+import com.voteva.auth.model.entity.Credentials;
 import com.voteva.auth.model.entity.PrincipalKey;
 import com.voteva.auth.repository.CredentialsRepository;
 import com.voteva.auth.service.CredentialsService;
@@ -34,6 +35,14 @@ public class CredentialsServiceImpl implements CredentialsService {
                 .filter(c -> passwordEncoder.matches(secret, c.getSecret()))
                 .map(c -> principalService.getPrincipalById(c.getPrincipalId()))
                 .orElseThrow(() -> new AuthException("Invalid credentials"));
+    }
+
+    @Override
+    public void addCredentials(PrincipalKey principal, String login, String secret) {
+        credentialsRepository.save(new Credentials()
+                .setPrincipalId(principal.getId())
+                .setLogin(login)
+                .setSecret(passwordEncoder.encode(secret)));
     }
 
     @Bean

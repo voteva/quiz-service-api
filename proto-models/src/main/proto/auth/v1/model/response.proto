@@ -44,3 +44,7 @@ message GOAuthRefreshTokenResponse {
     int64 expiresIn = 3;
     string refreshToken = 4;
 }
+
+message GAddPrincipalResponse {
+    GPrincipalKey principalKey = 1;
+}

@@ -20,6 +20,8 @@ public interface QuizService {
 
     QuizInfo setTestResults(TestResultsRequest request, Principal principal);
 
+    void deleteTestResults(UUID testUid);
+
     PagedResult<UserFullInfo> getUsers(int page, int size);
 
     UserFullInfo getUserByUid(UUID userUid);

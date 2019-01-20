@@ -88,7 +88,9 @@ public class QuizControllerTest {
     @Test
     public void testSetTestResults() throws Exception {
         TestResultsRequest request = new TestResultsRequest(TEST_UID, new HashMap<>());
-        QuizInfo response = new QuizInfo(TEST_UID, PERCENT_COMPLETED);
+        QuizInfo response = new QuizInfo()
+                .setTestUid(TEST_UID)
+                .setPercentCompleted(PERCENT_COMPLETED);
 
         when(quizService.setTestResults(any(TestResultsRequest.class), any(Principal.class))).thenReturn(response);
 

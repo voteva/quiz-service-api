@@ -43,7 +43,7 @@ public class TestInfoConverter {
                 .build();
     }
 
-    private static GQuestion convert(AddTestQuestionRequest questionRequest) {
+    public static GQuestion convert(AddTestQuestionRequest questionRequest) {
         return GQuestion.newBuilder()
                 .setText(questionRequest.getQuestionText())
                 .setRightAnswer(questionRequest.getRightAnswer())

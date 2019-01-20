@@ -63,3 +63,19 @@ message GOAuthRefreshTokenRequest {
     string clientSecret = 3;
     string refreshToken = 4;
 }
+
+message GAddCredentialsRequest {
+    GAuthentication authentication = 1;
+    GPrincipalKey principalKey = 2;
+    GCredentials credentials = 3;
+}
+
+message GAddPrincipalRequest {
+    GAuthentication authentication = 1;
+    string principalExtId = 2;
+}
+
+message GDeletePrincipalRequest {
+    GAuthentication authentication = 1;
+    string principalExtId = 2;
+}

@@ -26,16 +26,16 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/api/v1/oauth", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class OAuth2Controller {
+public class OAuthController {
 
-    private static final Logger logger = LoggerFactory.getLogger(OAuth2Controller.class);
+    private static final Logger logger = LoggerFactory.getLogger(OAuthController.class);
     private static final String AUTHORIZE_CALLBACK_URI_TEMPLATE = "%s://%s/callback?code=%s";
 
     private final OAuthConfig oAuthConfig;
     private final OAuth2Service oAuth2Service;
 
     @Autowired
-    public OAuth2Controller(
+    public OAuthController(
             OAuthConfig oAuthConfig,
             OAuth2Service oAuth2Service) {
         this.oAuthConfig = oAuthConfig;

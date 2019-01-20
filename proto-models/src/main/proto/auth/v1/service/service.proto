@@ -42,4 +42,14 @@ service CredentialsServiceV1 {
 
     rpc getPrincipalKey (GGetPrincipalKeyRequest) returns (GGetPrincipalKeyResponse);
 
+    rpc addCredentials (GAddCredentialsRequest) returns (Empty);
+
+}
+
+service PrincipalServiceV1 {
+
+    rpc addPrincipal (GAddPrincipalRequest) returns (GAddPrincipalResponse);
+
+    rpc deletePrincipal (GDeletePrincipalRequest) returns (Empty);
+
 }

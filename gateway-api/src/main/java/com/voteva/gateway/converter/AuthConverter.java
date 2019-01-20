@@ -50,6 +50,13 @@ public class AuthConverter {
                 .build();
     }
 
+    public static GCredentials toGCredentials(String login, String secret) {
+        return GCredentials.newBuilder()
+                .setLogin(toGLogin(login))
+                .setSecret(toGSecret(secret))
+                .build();
+    }
+
     public static OAuthTokenResponse convert(GOAuthTokenResponse response) {
         return new OAuthTokenResponse(
                 response.getAccessToken(),

@@ -1,8 +1,10 @@
 package com.voteva.gateway.grpc.client;
 
+import com.voteva.auth.grpc.model.v1.GAddCredentialsRequest;
 import com.voteva.auth.grpc.model.v1.GGetPrincipalKeyRequest;
 import com.voteva.auth.grpc.model.v1.GGetPrincipalKeyResponse;
 import com.voteva.auth.grpc.service.v1.CredentialsServiceV1Grpc;
+import com.voteva.common.grpc.model.Empty;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,5 +34,9 @@ public class GRpcCredentialsServiceClient {
 
     public GGetPrincipalKeyResponse getPrincipalKey(GGetPrincipalKeyRequest request) {
         return credentialsServiceV1BlockingStub.getPrincipalKey(request);
+    }
+
+    public Empty addCredentials(GAddCredentialsRequest request) {
+        return credentialsServiceV1BlockingStub.addCredentials(request);
     }
 }

@@ -44,7 +44,7 @@ public class QuizController {
     }
 
     @GetMapping(path = "/results")
-    public ResponseEntity<List<QuizInfo>> getUserTests() {
+    public ResponseEntity<List<QuizInfo>> getTestResults() {
         Principal principal = SecurityContextUtil.getPrincipal();
 
         logger.debug("Getting tests results for user with uid: {}", principal.getExtId());

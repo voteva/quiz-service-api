@@ -46,18 +46,18 @@ public class TestsController {
         return ResponseEntity.ok(testsService.getTests(category, page, size));
     }
 
-    @GetMapping(path = "/{uuid}")
-    public ResponseEntity<TestInfo> getTestInfo(@PathVariable UUID uuid) {
-        logger.debug("Getting test info by uid: {}", uuid);
-
-        return ResponseEntity.ok(testsService.getTestInfo(uuid));
-    }
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AddTestInfo> addTest(@RequestBody @Valid AddTestRequest request) {
         logger.debug("Adding test with name: {}", request.getTestName());
 
         return ResponseEntity.ok(new AddTestInfo(testsService.addTest(request)));
+    }
+
+    @GetMapping(path = "/{uuid}")
+    public ResponseEntity<TestInfo> getTestInfo(@PathVariable UUID uuid) {
+        logger.debug("Getting test info by uid: {}", uuid);
+
+        return ResponseEntity.ok(testsService.getTestInfo(uuid));
     }
 
     @DeleteMapping(path = "/{uuid}")

@@ -101,7 +101,7 @@ public class UsersControllerTest {
 
     @Test
     public void testAddUser() throws Exception {
-        AddUserRequest request = new AddUserRequest(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+        AddUserRequest request = new AddUserRequest(EMAIL, FIRST_NAME, LAST_NAME, false);
 
         Instant now = Instant.now();
         AddUserInfo response = new AddUserInfo(USER_UID, now.toEpochMilli());

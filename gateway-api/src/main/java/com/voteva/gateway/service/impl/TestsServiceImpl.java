@@ -1,17 +1,21 @@
 package com.voteva.gateway.service.impl;
 
+import com.voteva.gateway.annotation.GatewayService;
+import com.voteva.gateway.annotation.Logged;
 import com.voteva.gateway.converter.CommonConverter;
 import com.voteva.gateway.converter.TestInfoConverter;
-import com.voteva.gateway.annotation.GatewayService;
 import com.voteva.gateway.grpc.client.GRpcQuizServiceClient;
 import com.voteva.gateway.grpc.client.GRpcTestsServiceClient;
+import com.voteva.gateway.redis.MessagePublisher;
+import com.voteva.gateway.redis.model.Task;
+import com.voteva.gateway.redis.model.Topic;
 import com.voteva.gateway.security.InternalAuthService;
 import com.voteva.gateway.service.TestsService;
-import com.voteva.gateway.annotation.Logged;
 import com.voteva.gateway.web.to.common.PagedResult;
 import com.voteva.gateway.web.to.in.AddTestRequest;
 import com.voteva.gateway.web.to.out.TestInfo;
 import com.voteva.quiz.grpc.model.v1.GDeleteResultsRequest;
+import com.voteva.tests.grpc.model.v1.GAddTestRequest;
 import com.voteva.tests.grpc.model.v1.GGetAllTestsRequest;
 import com.voteva.tests.grpc.model.v1.GGetAllTestsResponse;
 import com.voteva.tests.grpc.model.v1.GGetTestCategoriesRequest;
@@ -24,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.voteva.gateway.exception.model.Service.TESTS;
 
@@ -33,16 +38,19 @@ public class TestsServiceImpl implements TestsService {
     private final InternalAuthService internalAuthService;
     private final GRpcTestsServiceClient rpcTestsServiceClient;
     private final GRpcQuizServiceClient rpcQuizServiceClient;
+    private final MessagePublisher messagePublisher;
 
     @Autowired
     public TestsServiceImpl(
             InternalAuthService internalAuthService,
             GRpcTestsServiceClient rpcTestsServiceClient,
-            GRpcQuizServiceClient rpcQuizServiceClient) {
+            GRpcQuizServiceClient rpcQuizServiceClient,
+            MessagePublisher messagePublisher) {
 
         this.internalAuthService = internalAuthService;
         this.rpcTestsServiceClient = rpcTestsServiceClient;
         this.rpcQuizServiceClient = rpcQuizServiceClient;
+        this.messagePublisher = messagePublisher;
     }
 
     @Logged
@@ -80,24 +88,27 @@ public class TestsServiceImpl implements TestsService {
     public UUID addTest(AddTestRequest request) {
         return CommonConverter.convert(
                 rpcTestsServiceClient.addTest(
-                        TestInfoConverter.convert(request))
+                        GAddTestRequest.newBuilder()
+                                .setAuthentication(internalAuthService.getGAuthentication())
+                                .setTestName(request.getTestName())
+                                .setTestCategory(request.getTestCategory())
+                                .addAllQuestions(request.getQuestions().stream()
+                                        .map(TestInfoConverter::convert)
+                                        .collect(Collectors.toList()))
+                                .build())
                         .getTestUid());
     }
 
     @Logged
     @Override
     public void deleteTest(UUID testUid) {
-        rpcQuizServiceClient.deleteResultsForTest(
-                GDeleteResultsRequest.newBuilder()
-                        .setAuthentication(internalAuthService.getGAuthentication())
-                        .setTestUid(CommonConverter.convert(testUid))
-                        .build());
-
         rpcTestsServiceClient.removeTest(
                 GRemoveTestRequest.newBuilder()
                         .setAuthentication(internalAuthService.getGAuthentication())
                         .setTestUid(CommonConverter.convert(testUid))
                         .build());
+
+        deleteTestResults(testUid);
     }
 
     private PagedResult<TestInfo> getTestsByCategoryInternal(String category, int page, int size) {
@@ -119,5 +130,19 @@ public class TestsServiceImpl implements TestsService {
                         .build());
 
         return TestInfoConverter.convert(tests.getTestsList(), tests.getPage());
+    }
+
+    private void deleteTestResults(UUID testUid) {
+        try {
+            rpcQuizServiceClient.deleteResultsForTest(
+                    GDeleteResultsRequest.newBuilder()
+                            .setAuthentication(internalAuthService.getGAuthentication())
+                            .setTestUid(CommonConverter.convert(testUid))
+                            .build());
+        } catch (Exception e) {
+            messagePublisher.publish(
+                    Topic.TESTS_DELETE.getName(),
+                    new Task().setContent(testUid.toString()));
+        }
     }
 }

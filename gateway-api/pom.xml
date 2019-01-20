@@ -13,6 +13,8 @@
     </parent>
 
     <properties>
+        <jedis.version>2.9.0</jedis.version>
+        <spring-data-redis.version>2.0.4.RELEASE</spring-data-redis.version>
         <springfox-swagger.version>2.7.0</springfox-swagger.version>
         <aspectj.version>1.8.9</aspectj.version>
         <google-guava.version>23.6-jre</google-guava.version>
@@ -53,6 +55,18 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
+        </dependency>
+
+        <!-- Redis -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>${spring-data-redis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
         </dependency>
 
         <!-- 3rd parties -->
