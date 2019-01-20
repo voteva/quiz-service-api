@@ -47,6 +47,10 @@ gateway:
   oauth:
     redirect-oauth-uri-template: "http://localhost:4000/oauth/authorize?clientId=%s&redirectUri=%s"
 
+  redis:
+    host: "localhost"
+    port: 6379
+
   grpc.client:
     InterviewServiceV1Grpc:
       host: localhost
@@ -67,5 +71,8 @@ gateway:
       host: localhost
       port: 6565
     CredentialsServiceV1Grpc:
+      host: localhost
+      port: 6565
+    PrincipalServiceV1Grpc:
       host: localhost
       port: 6565

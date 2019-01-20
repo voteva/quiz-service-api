@@ -1,7 +1,9 @@
 package com.voteva.tests.grpc.service.v1.impl;
 
+import com.voteva.common.grpc.model.Empty;
 import com.voteva.common.grpc.model.GPageable;
 import com.voteva.common.grpc.model.GUuid;
+import com.voteva.tests.grpc.client.GRpcAccessServiceClient;
 import com.voteva.tests.grpc.model.v1.GAddTestRequest;
 import com.voteva.tests.grpc.model.v1.GAddTestResponse;
 import com.voteva.tests.grpc.model.v1.GGetAllTestsRequest;
@@ -32,6 +34,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -43,9 +46,13 @@ public class TestsServiceV1GrpcImplTest {
     private static final UUID TEST_UID = UUID.fromString("517df602-4ffb-4e08-9626-2a0cf2db4849");
     private static final String TEST_NAME = "Java Test";
     private static final String CATEGORY = "Java";
+    private static final Empty EMPTY = Empty.newBuilder().build();
 
     @Mock
     private TestsService testsService;
+
+    @Mock
+    private GRpcAccessServiceClient accessServiceClient;
 
     @InjectMocks
     private TestsServiceV1GrpcImpl testsServiceV1Grpc;
@@ -54,6 +61,7 @@ public class TestsServiceV1GrpcImplTest {
     public void testGetTestCategories() {
         List<String> serviceResponse = Collections.singletonList(CATEGORY);
 
+        when(accessServiceClient.checkAccess(any())).thenReturn(EMPTY);
         when(testsService.getCategories()).thenReturn(serviceResponse);
 
         GGetTestCategoriesRequest request = GGetTestCategoriesRequest.newBuilder().build();
@@ -75,6 +83,7 @@ public class TestsServiceV1GrpcImplTest {
     public void testAddUser() {
         Page<TestEntity> serviceResponse = new PageImpl<>(Collections.singletonList(getMockObjTestEntity()));
 
+        when(accessServiceClient.checkAccess(any())).thenReturn(EMPTY);
         when(testsService.getAllTests(any(Pageable.class))).thenReturn(serviceResponse);
 
         GGetAllTestsRequest request = GGetAllTestsRequest.newBuilder()
@@ -99,6 +108,7 @@ public class TestsServiceV1GrpcImplTest {
     public void testGetTestsByCategory() {
         Page<TestEntity> serviceResponse = new PageImpl<>(Collections.singletonList(getMockObjTestEntity()));
 
+        when(accessServiceClient.checkAccess(any())).thenReturn(EMPTY);
         when(testsService.getTestsByCategory(any(String.class), any(Pageable.class))).thenReturn(serviceResponse);
 
         GGetTestsByCategoryRequest request = GGetTestsByCategoryRequest.newBuilder()
@@ -124,6 +134,7 @@ public class TestsServiceV1GrpcImplTest {
     public void testGetTest() {
         TestEntity serviceResponse = getMockObjTestEntity();
 
+        when(accessServiceClient.checkAccess(any())).thenReturn(EMPTY);
         when(testsService.getTest(any(UUID.class))).thenReturn(serviceResponse);
 
         GGetTestRequest request = GGetTestRequest.newBuilder()
@@ -146,6 +157,7 @@ public class TestsServiceV1GrpcImplTest {
 
     @Test
     public void testAddTest() {
+        when(accessServiceClient.checkAccess(any())).thenReturn(EMPTY);
         when(testsService.addTest(any(TestEntity.class))).thenReturn(TEST_UID);
 
         GAddTestRequest request = GAddTestRequest.newBuilder()
